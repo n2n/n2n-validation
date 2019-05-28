@@ -2,6 +2,7 @@
 namespace n2n\validation\impl;
 
 use n2n\util\uri\Url;
+use n2n\util\StringUtils;
 
 class ValidationUtils {
 	/**
@@ -41,6 +42,10 @@ class ValidationUtils {
 	}
 	
 	public static function isNotLongerThen(string $str, int $maxlength) {
-		
+		return mb_strlen($str) <= $maxlength;
+	}
+	
+	static function isNotEmpty(?string $str) {
+		return $str !== null && StringUtils::isEmpty($str);
 	}
 }

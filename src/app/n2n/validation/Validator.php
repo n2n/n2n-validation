@@ -8,4 +8,3 @@ interface Validator {
 	 */
 	function validate(ValidatableModel $validatableModel);
 }
-
