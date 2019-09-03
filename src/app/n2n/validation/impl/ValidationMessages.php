@@ -44,4 +44,32 @@ class ValidationMessages {
 		
 		return Message::createCodeArg('field_max_elements_err', ['field' => $fieldName], null, self::NS, $max);
 	}
+	
+	/**
+	 * @param int $maxSize
+	 */
+	static function uploadMaxSize(int $maxSize, string $fileName, string $size, string $fieldName = null) {
+		if ($fieldName) {
+			return Message::createCodeArg('upload_size_err', ['fileName' => $fileName, 'size' => $size], 
+					null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_upload_max_size_err', 
+				['fileName' => $fileName, 'size' => $size, 'field' => $fieldName], null, self::NS);
+	}
+	
+	/**
+	 * @param string $fileName
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function uploadIncomplete(string $fileName, string $fieldName = null) {
+		if ($fieldName) {
+			return Message::createCodeArg('upload_incomplete_err', ['fileName' => $fileName],
+					null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_upload_incomplete_err',
+				['fileName' => $fileName, 'field' => $fieldName], null, self::NS);
+	}
 }
