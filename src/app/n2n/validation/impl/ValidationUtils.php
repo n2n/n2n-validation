@@ -3,6 +3,9 @@ namespace n2n\validation\impl;
 
 use n2n\util\uri\Url;
 use n2n\util\StringUtils;
+use n2n\io\managed\File;
+use n2n\io\IoUtils;
+use n2n\io\managed\img\ImageFile;
 
 class ValidationUtils {
 	/**
@@ -48,4 +51,24 @@ class ValidationUtils {
 	static function isNotEmpty(?string $str) {
 		return $str !== null && StringUtils::isEmpty($str);
 	}
+	
+	static function isFileTypeSupported(File $file, ?array $allowedMimeTypes, array $allowedExtensions = null) {
+		return ($allowedMimeTypes === null && $allowedExtensions === null)
+				|| ($allowedExtensions !== null && in_array($file->getOriginalExtension(), $allowedExtensions))
+				|| ($allowedMimeTypes !== null && in_array($file->getFileSource()->getMimeType(), $allowedMimeTypes));
+	}
+	
+	const RESERVATED_MEMORY_SIZE = 1048576;
+	
+	/**
+	 * @param ImageFile $imageFile
+	 */
+	static function isImageResolutionManagable(ImageFile $imageFile) {
+		$memoryLimit = IoUtils::determinMemoryLimit();
+		$requiredMemorySize = $imageFile->getImageSource()->calcResourceMemorySize();
+
+		return !(self::RESERVATED_MEMORY_SIZE + ($requiredMemorySize * 2) > $memoryLimit);
+	}
+		
+	
 }
