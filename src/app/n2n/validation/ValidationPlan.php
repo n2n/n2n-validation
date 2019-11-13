@@ -6,10 +6,10 @@ use n2n\util\type\attrs\Attributes;
 use n2n\util\type\attrs\AttributePath;
 
 class ValidationPlan { 
-	private $attributes;
+	private $dataSet;
 	
-	function __construct(Attributes $attributes) {
-		$this->attributes = $attributes;
+	function __construct(Attributes $dataSet) {
+		$this->dataSet = $dataSet;
 	}
 	
 	function prop($path, Validator ...$validators) {

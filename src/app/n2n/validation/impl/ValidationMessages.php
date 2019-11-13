@@ -21,6 +21,34 @@ class ValidationMessages {
 	}
 	
 	/**
+	 * @param string $maxlength
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function maxlength(string $maxlength, string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCodeArg('maxlength_err', ['maxlength' => $maxlength], null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_maxlength_err', ['maxlength' => $maxlength, 'field' => $fieldName], 
+				null, self::NS);
+	}
+	
+	/**
+	 * @param string $maxlength
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function minlength(string $minlength, string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCodeArg('minlength_err', ['minlength' => $minlength], null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_minlength_err', ['minlength' => $minlength, 'field' => $fieldName],
+				null, self::NS);
+	}
+	
+	/**
 	 * @param int $min
 	 * @param string $fieldName
 	 * @return \n2n\l10n\impl\TextCodeMessage
@@ -101,21 +129,21 @@ class ValidationMessages {
 	
 	/**
 	 * @param File $file
-	 * @param array $allowedTypes
+	 * @param array $allowedTypeQualifiers
 	 * @param string $fieldName
 	 * @return \n2n\l10n\Message
 	 */
-	static function fileType(File $file, array $allowedTypes, string $fieldName = null) {
+	static function fileType(File $file, array $allowedTypeQualifiers, string $fieldName = null) {
 		$fileStr = $file->getOriginalName() . ' (' . $file->getFileSource()->getMimeType() . ')';
 		
 		if ($fieldName === null) {
 			return Message::createCodeArg('unsupported_file_type_err',
-					['file' => $fileStr, 'allowedTypes' => implode(', ', $allowedTypes)],
+					['file' => $fileStr, 'allowedTypeQualifiers' => implode(', ', $allowedTypeQualifiers)],
 					null, self::NS);
 		}
 		
 		return Message::createCodeArg('field_unsupported_file_type_err',
-				['file' => $fileStr, 'allowedTypes' => implode(', ', $allowedTypes), 
+				['file' => $fileStr, 'allowedTypeQualifiers' => implode(', ', $allowedTypeQualifiers), 
 						'field' => $fieldName], null, self::NS);
 	}
 	
