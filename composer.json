@@ -1,5 +1,5 @@
 {
-	"name" : "n2n/n2n-bind",
+	"name" : "n2n/n2n-validation",
 	"type" : "library",
 	"description" : "bind/json support for n2n framework",
 	"keywords" : [
