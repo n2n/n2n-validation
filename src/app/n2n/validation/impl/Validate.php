@@ -4,7 +4,7 @@ namespace n2n\validation\impl;
 use n2n\bind\validation\Validator;
 use n2n\util\type\attrs\DataMap;
 
-class ValidationUtils {
+class Validate {
 	/**
 	 * @param mixed|null $value
 	 * @param Validator ...$validators
