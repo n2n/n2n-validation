@@ -1,5 +1,5 @@
 <?php
-namespace n2n\validation\impl;
+namespace n2n\validation\lang;
 
 
 use n2n\l10n\Message;
