@@ -1,5 +1,5 @@
 <?php
-namespace n2n\bind\validation;
+namespace n2n\validation\build;
 
 use rocket\ei\manage\entry\ValidationResult;
 use n2n\validation\plan\Validatable;

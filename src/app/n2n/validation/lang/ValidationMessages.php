@@ -21,6 +21,18 @@ class ValidationMessages {
 	}
 	
 	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function email(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('email_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_email_err', ['field' => $fieldName], null, self::NS);
+	}
+	
+	/**
 	 * @param string $maxlength
 	 * @param string $fieldName
 	 * @return \n2n\l10n\impl\TextCodeMessage
