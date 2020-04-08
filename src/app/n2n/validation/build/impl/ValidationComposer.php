@@ -4,6 +4,8 @@ namespace n2n\bind\validation;
 use n2n\validation\err\UnresolvableValidationException;
 use n2n\validation\plan\ValidationGroup;
 use n2n\validation\plan\ValidationPlan;
+use n2n\validation\plan\ValidatableResolver;
+use n2n\validation\plan\Validator;
 
 class ValidationComposer { 
 	/**
@@ -43,7 +45,7 @@ class ValidationComposer {
 	function props(array $expressions, Validator ...$validators) {
 		$validatables = [];
 		foreach ($expressions as $expression) {
-			array_push($validatables, ...$this->validatableResolver->defineValidatables($expression));
+			array_push($validatables, ...$this->validatableResolver->resolveValidatables($expression));
 		}
 		
 		$this->plan->addGroup(new ValidationGroup($validators, $validatables));

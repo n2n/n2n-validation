@@ -1,8 +1,11 @@
 <?php
 namespace n2n\validation\impl;
 
-use n2n\bind\validation\Validator;
 use n2n\util\type\attrs\DataMap;
+use n2n\util\type\attrs\AttributeReader;
+use n2n\bind\validation\ValidationComposer;
+use n2n\validation\build\impl\attrs\AttrsValidatableSource;
+use n2n\validation\plan\Validator;
 
 
 class Validate {
@@ -16,15 +19,15 @@ class Validate {
 	
 	/**
 	 * @param DataMap $attrs
+	 * @return ValidationComposer
 	 */
-	static function attrs(DataMap $attrs) {
-		
+	static function attrs(AttributeReader $attributeReader) {
+		return new ValidationComposer(new AttrsValidatableSource($attributeReader));
 	}
 	
 	/**
 	 * @param array $data
 	 */
 	static function array($data) {
-		
 	}
 }

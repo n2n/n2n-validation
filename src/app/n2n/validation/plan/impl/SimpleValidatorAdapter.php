@@ -32,7 +32,7 @@ abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	
 	/**
 	 * @param Message $errorMessage
-	 * @return \n2n\validation\plan\impl\MandatoryValidator
+	 * @return SingleValidatorAdapter
 	 */
 	function setErrorMessage(?Message $errorMessage) {
 		$this->errorMessage = $errorMessage;

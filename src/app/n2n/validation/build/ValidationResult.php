@@ -19,44 +19,23 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\plan;
+namespace n2n\validation\build;
 
-use n2n\validation\err\ValidationMismatchException;
+use n2n\util\ex\IllegalStateException;
 
-/**
- * 
- */
-class ValidationPlan {
-	/**
-	 * @var ValidatableResolver
-	 */
-	private $validatableResolver;
-	/**
-	 * @var ValidationGroup[] $validationGroups
-	 */
-	private $validationGroups = [];
+class ValidationResult {
+	private $errorMap;
 	
-	/**
-	 * @param ValidatableResolver $validatableResolver
-	 */
-	function __construct(ValidatableResolver $validatableResolver) {
-		$this->validatableResolver = $validatableResolver;
+	function __construct(ErrorMap $errorMap = null) {
+		$this->errorMap = $errorMap;
 	}
 	
-	/**
-	 * @param ValidationGroup $validationGroup
-	 */
-	function addValidationGroup(ValidationGroup $validationGroup) {
-		$this->validationGroups[] = $validationGroup;
+	function hasErrors() {
+		return $this->errorMap !== null;
 	}
 	
-	/**
-	 * @param ValidatableResolver $pool
-	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
-	 */
-	function exec(ValidatableResolver $validatableResolver) {
-		foreach ($this->validationGroups as $validationGroup) {
-			$validationGroup->exec($validatableResolver);
-		}
+	function getErrorMap() {
+		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
+		return $this->errorMap;
 	}
 }

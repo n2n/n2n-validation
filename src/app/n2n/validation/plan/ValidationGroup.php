@@ -21,9 +21,6 @@
  */
 namespace n2n\validation\plan;
 
-use n2n\util\type\TypeConstraint;
-use n2n\bind\validation\Validator;
-use n2n\bind\validation\ValidatableResolver;
 use n2n\util\type\ArgUtils;
 use n2n\validation\err\ValidationMismatchException;
 use n2n\validation\err\UnresolvableValidationException;
@@ -40,11 +37,10 @@ class ValidationGroup {
 	 * @var Validatable[] $validatables
 	 */
 	private $validatables = [];
-	
 	/**
-	 * @var TypeConstraint|null
+	 * @var ValidatableResolver
 	 */
-	private $typeConstraint;
+	private $validatableResolver;
 	
 	/**
 	 * @param Validator[] $validators
@@ -54,7 +50,7 @@ class ValidationGroup {
 	 * and {@see Validatable} both provide a TypeConstraint (seee {@see Validator::getTypeConstraint()} and 
 	 * {@see Validatable::getTypeConstraint()}.
 	 */
-	function __construct(array $validators, array $validatables) {
+	function __construct(array $validators, array $validatables, ValidatableResolver $validatableResolver) {
 		ArgUtils::valArray($validators, Validator::class);
 		ArgUtils::valArray($validatables, Validatable::class);
 		
@@ -63,6 +59,8 @@ class ValidationGroup {
 		foreach ($validatables as $validatable) {
 			$this->addValidatable($validatable);
 		}
+		
+		$this->validableResolver = $validatableResolver;
 	}
 	
 	/**
@@ -95,9 +93,9 @@ class ValidationGroup {
 	 * @throws UnresolvableValidationException if a {@see Validatable} required by a {@see Validator} could not have
 	 * been resolved through the {@see ValidatableResolver}.
 	 */
-	function exec(ValidatableResolver $validatableResolver) {
+	function exec() {
 		foreach ($this->validators as $validator) {
-			$validator->validate($this->validatables, $validatableResolver);
+			$validator->validate($this->validatables, $this->validatableResolver);
 		}
 	}
 }

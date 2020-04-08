@@ -21,42 +21,19 @@
  */
 namespace n2n\validation\plan;
 
-use n2n\validation\err\ValidationMismatchException;
+use n2n\l10n\Message;
+use n2n\validation\err\UnresolvableValidationException;
 
-/**
- * 
- */
-class ValidationPlan {
+interface ValidatableResolver {
 	/**
-	 * @var ValidatableResolver
+	 * @param string
+	 * @return Validatable[]
+	 * @throws UnresolvableValidationException
 	 */
-	private $validatableResolver;
-	/**
-	 * @var ValidationGroup[] $validationGroups
-	 */
-	private $validationGroups = [];
+	function defineValidatables(string $expression): array;
 	
 	/**
-	 * @param ValidatableResolver $validatableResolver
+	 * @param Message $message
 	 */
-	function __construct(ValidatableResolver $validatableResolver) {
-		$this->validatableResolver = $validatableResolver;
-	}
-	
-	/**
-	 * @param ValidationGroup $validationGroup
-	 */
-	function addValidationGroup(ValidationGroup $validationGroup) {
-		$this->validationGroups[] = $validationGroup;
-	}
-	
-	/**
-	 * @param ValidatableResolver $pool
-	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
-	 */
-	function exec(ValidatableResolver $validatableResolver) {
-		foreach ($this->validationGroups as $validationGroup) {
-			$validationGroup->exec($validatableResolver);
-		}
-	}
+	function addGeneralError(Message $message);
 }
