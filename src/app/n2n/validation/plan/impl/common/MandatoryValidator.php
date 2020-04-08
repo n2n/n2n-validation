@@ -25,8 +25,13 @@ use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
+use n2n\l10n\Message;
 
 class MandatoryValidator extends SimpleValidatorAdapter {
+	
+	function __construct(Message $errorMessage = null) {
+		parent::__construct(null, $errorMessage);
+	}
 	
 	/**
 	 * {@inheritdoc}

@@ -23,6 +23,7 @@ namespace n2n\validation\plan;
 
 use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
+use n2n\l10n\Lstr;
 
 /**
  * Describes unit (e.g. property) that can be validated and added to a {@see ValidationGroup}.
@@ -33,6 +34,11 @@ interface Validatable {
 	 * @return string
 	 */
 	function getName(): string;
+	
+	/**
+	 * @return string|Lstr
+	 */
+	function getLabel();
 	
 	/**
 	 * @return mixed 

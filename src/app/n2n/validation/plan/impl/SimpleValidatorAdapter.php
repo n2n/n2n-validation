@@ -22,11 +22,13 @@
 namespace n2n\validation\plan\impl;
 
 use n2n\l10n\Message;
+use n2n\util\type\TypeConstraint;
 
 abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	private $errorMessage;
 	
-	function __construct(Message $errorMessage = null) {
+	function __construct(?TypeConstraint $typeConstraint, Message $errorMessage = null) {
+		parent::__construct($typeConstraint, $errorMessage);
 		$this->errorMessage = $errorMessage;
 	}
 	
@@ -40,7 +42,7 @@ abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	}
 	
 	/**
-	 * @return \n2n\l10n\Message
+	 * @return \n2n\l10n\Message|null
 	 */
 	function getErrorMessage() {
 		return $this->errorMessage;

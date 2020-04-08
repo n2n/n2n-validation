@@ -5,7 +5,7 @@ use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
 use n2n\util\type\attrs\AttributeReader;
 use n2n\util\type\attrs\AttributePath;
-use n2n\validation\impl\ValidatableAdapter;
+use n2n\validation\build\impl\ValidatableAdapter;
 use n2n\validation\build\ValidatableSource;
 use n2n\validation\build\ValidationResult;
 use n2n\validation\build\ErrorMap;
@@ -20,11 +20,12 @@ class AttrsValidatableSource implements ValidatableSource {
 	}
 	
 	public function resolveValidatables(string $expression): array {
-		if ($this->attrValidatables[$expression]) {
-			return $this->attrValidatables[$expression];
+		if (!isset($this->attrValidatables[$expression])) {
+			$this->attrValidatables[$expression] = new AttrValidatable($expression, 
+					$this->attributeReader->readAttribute(AttributePath::create($expression)));
 		}
 		
-		return $this->attrValidatables[$expression] = $this->attributeReader->readAttribute(AttributePath::create($expression));
+		return [$this->attrValidatables[$expression]];
 	}
 
 	public function createValidationResult(): ValidationResult {
@@ -63,14 +64,7 @@ class AttrValidatable extends ValidatableAdapter {
 		return $this->value;
 	}
 
-	public function getName(): string {
-	}
-
 	public function getTypeConstraint(): ?TypeConstraint {
+		return null;
 	}
-
-	public function isOpenForValidation(): bool {
-	}
-
-	
 }

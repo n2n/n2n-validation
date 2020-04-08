@@ -76,6 +76,20 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		$this->children[] = $errorMap;
 	}
 	
+	function isEmpty() {
+		if (!empty($this->messages)) {
+			return false;
+		}
+		
+		foreach ($this->children as $child) {
+			if (!$child->isEmpty()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	function toArray(MagicContext $magicContext): array {
 		$n2nLocale = $magicContext->lookup(N2nLocale::class, false);
 		

@@ -21,10 +21,10 @@
  */
 namespace n2n\validation\plan\impl;
 
-use n2n\validation\build\ValidatableResolver;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
 use n2n\l10n\Message;
+use n2n\validation\plan\ValidatableResolver;
 
 abstract class SingleValidatorAdapter extends ValidatorAdapter {
 
@@ -55,15 +55,7 @@ abstract class SingleValidatorAdapter extends ValidatorAdapter {
 				continue;
 			}
 			
-			$messages = $this->validateSingle($validatable);
-			ArgUtils::valArrayReturn($messages, $this, 'validateValue', Message::class);
-			if (empty($messages)) {
-				continue;
-			}
-			
-			foreach ($messages as $message) {
-				$validatable->addError($message);
-			}
+			$this->validateSingle($validatable);
 		}
 	}
 	

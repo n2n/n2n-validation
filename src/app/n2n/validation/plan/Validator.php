@@ -23,7 +23,6 @@ namespace n2n\validation\plan;
 
 use n2n\util\type\TypeConstraint;
 use n2n\validation\err\ValidationMismatchException;
-use n2n\validation\build\ValidatableResolver;
 
 interface Validator {
 	

@@ -51,12 +51,11 @@ class ValidationPlan {
 	}
 	
 	/**
-	 * @param ValidatableResolver $pool
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 */
-	function exec(ValidatableResolver $validatableResolver) {
+	function exec() {
 		foreach ($this->validationGroups as $validationGroup) {
-			$validationGroup->exec($validatableResolver);
+			$validationGroup->exec($this->validatableResolver);
 		}
 	}
 }

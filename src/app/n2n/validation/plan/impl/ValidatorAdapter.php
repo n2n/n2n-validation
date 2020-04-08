@@ -35,7 +35,7 @@ abstract class ValidatorAdapter implements Validator {
 	 */
 	private $typeConstraint;
 	
-	function __construct(TypeConstraint $typeConstraint) {
+	function __construct(?TypeConstraint $typeConstraint) {
 		$this->typeConstraint = $typeConstraint;
 	}
 
@@ -53,8 +53,14 @@ abstract class ValidatorAdapter implements Validator {
 	 * @return mixed|null
 	 */
 	protected function readSafeValue(Validatable $validatable) {
+		$value = $validatable->getValue();
+		
+		if ($this->typeConstraint === null) {
+			return $value;
+		}
+		
 		try {
-			return $this->typeConstraint->validate($validatable->getValue());
+			return $this->typeConstraint->validate($value);
 		} catch (\n2n\util\type\ValueIncompatibleWithConstraintsException $e) {
 			throw new ValidationMismatchException('Validatable ' . $validatable->getName() . ' is not compatible with '
 					. get_class($this), 0, $e);

@@ -30,7 +30,7 @@ interface ValidatableResolver {
 	 * @return Validatable[]
 	 * @throws UnresolvableValidationException
 	 */
-	function defineValidatables(string $expression): array;
+	function resolveValidatables(string $expression): array;
 	
 	/**
 	 * @param Message $message

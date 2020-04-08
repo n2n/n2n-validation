@@ -37,10 +37,6 @@ class ValidationGroup {
 	 * @var Validatable[] $validatables
 	 */
 	private $validatables = [];
-	/**
-	 * @var ValidatableResolver
-	 */
-	private $validatableResolver;
 	
 	/**
 	 * @param Validator[] $validators
@@ -50,7 +46,7 @@ class ValidationGroup {
 	 * and {@see Validatable} both provide a TypeConstraint (seee {@see Validator::getTypeConstraint()} and 
 	 * {@see Validatable::getTypeConstraint()}.
 	 */
-	function __construct(array $validators, array $validatables, ValidatableResolver $validatableResolver) {
+	function __construct(array $validators, array $validatables) {
 		ArgUtils::valArray($validators, Validator::class);
 		ArgUtils::valArray($validatables, Validatable::class);
 		
@@ -59,8 +55,6 @@ class ValidationGroup {
 		foreach ($validatables as $validatable) {
 			$this->addValidatable($validatable);
 		}
-		
-		$this->validableResolver = $validatableResolver;
 	}
 	
 	/**
@@ -93,9 +87,9 @@ class ValidationGroup {
 	 * @throws UnresolvableValidationException if a {@see Validatable} required by a {@see Validator} could not have
 	 * been resolved through the {@see ValidatableResolver}.
 	 */
-	function exec() {
+	function exec(ValidatableResolver $validatableResolver) {
 		foreach ($this->validators as $validator) {
-			$validator->validate($this->validatables, $this->validatableResolver);
+			$validator->validate($this->validatables, $validatableResolver);
 		}
 	}
 }

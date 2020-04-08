@@ -1,5 +1,5 @@
 <?php
-namespace n2n\validation\impl;
+namespace n2n\validation\build\impl;
 
 use n2n\l10n\Message;
 use n2n\validation\plan\Validatable;
@@ -11,21 +11,23 @@ abstract class ValidatableAdapter implements Validatable {
 	private $label;
 	private $messages = [];
 
-	function __construct(string $name, $label) {
+	function __construct(string $name, $label = null) {
 		$this->name = $name;
-		ArgUtils::valType($label, [Lstr::class, 'string']);
+		ArgUtils::valType($label, [Lstr::class, 'string'], true);
 		$this->label = $label;
 	}
 	
-	function getName() {
+	function getName(): string {
 		return $this->name;
+	}
+	
+	function getLabel() {
+		return $this->label;
 	}
 	
 	public function addError(Message $message) {
 		array_push($this->messages, $message);
 	}
-
-	
 
 	function isOpenForValidation(): bool {
 		return empty($this->messages);
