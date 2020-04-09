@@ -15,6 +15,12 @@ class ValidateTest extends TestCase {
 				->exec();
 		
 		$this->assertTrue($validationResult->hasErrors());
+		
+		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['firstname']));
+		$this->assertTrue($validationResult->getErrorMap()->getChildren()['firstname']->isEmpty());
+		
+		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['lastname']));
+		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['lastname']->isEmpty());
 	}
 	
 }
