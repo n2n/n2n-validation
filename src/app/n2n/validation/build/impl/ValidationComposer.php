@@ -9,8 +9,9 @@ use n2n\validation\plan\Validator;
 use n2n\validation\build\ValidatableSource;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
+use n2n\validation\build\ValidationJob;
 
-class ValidationComposer { 
+class ValidationComposer implements ValidationJob { 
 	/**
 	 * @var ValidatableSource
 	 */
