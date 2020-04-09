@@ -35,7 +35,6 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		$this->setMessages($messages);
 	}
 	
-	
 	/**
 	 * @return Message[]
 	 */
@@ -105,15 +104,30 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		return [
 			'messages' => $messageStrs,
 			'properties' => array_map(function ($child) use ($magicContext) { return $child->toArray($magicContext); }, 
-					$this->children)
+					$this->getNotEmptyChildren())
 		];
 	}
 	
 	function jsonSerialize() {
-		return [
-			'messages' => array_map(function ($message) { return (string) $message; }, $this->messages),
-			'properties' => $this->children
-		];
+		$arr = [];
+		
+		if (!empty($this->messages)) {
+			$arr['messages'] = array_map(function ($message) { return (string) $message; }, $this->messages);
+		}
+		
+		$children = $this->getNotEmptyChildren();
+		if (!empty($children)) {
+			$arr['properties'] = $children;
+		}
+		
+		return $arr;
+	}
+	
+	/**
+	 * @return ErrorMap[];
+	 */
+	private function getNotEmptyChildren() {
+		return array_filter($this->children, function ($child) { return !$child->isEmpty(); });
 	}
 
 

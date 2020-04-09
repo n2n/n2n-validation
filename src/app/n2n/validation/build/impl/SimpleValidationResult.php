@@ -19,16 +19,25 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\build;
+namespace n2n\validation\build\impl;
 
-use n2n\validation\err\ValidationMismatchException;
-use n2n\validation\err\UnresolvableValidationException;
+use n2n\util\ex\IllegalStateException;
+use n2n\validation\build\ValidationResult;
+use n2n\validation\build\ErrorMap;
 
-interface ValidationJob {
-	/**
-	 * @throws UnresolvableValidationException
-	 * @throws ValidationMismatchException
-	 * @return ValidationResult
-	 */
-	function exec(): ValidationResult;
+class SimpleValidationResult implements ValidationResult {
+	private $errorMap;
+	
+	function __construct(ErrorMap $errorMap = null) {
+		$this->errorMap = $errorMap;
+	}
+	
+	function hasErrors(): bool {
+		return $this->errorMap !== null;
+	}
+	
+	function getErrorMap(): ErrorMap {
+		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
+		return $this->errorMap;
+	}
 }

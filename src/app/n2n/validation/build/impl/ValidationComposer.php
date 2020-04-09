@@ -10,6 +10,7 @@ use n2n\validation\build\ValidatableSource;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
 use n2n\validation\build\ValidationJob;
+use n2n\validation\build\ValidationResult;
 
 class ValidationComposer implements ValidationJob { 
 	/**
@@ -37,7 +38,7 @@ class ValidationComposer implements ValidationJob {
 	 * @throws UnresolvableValidationException
 	 */
 	function prop(string $expression, Validator ...$validators) {
-		return $this->props([$expression], $validators);
+		return $this->props([$expression], ...$validators);
 	}
 	
 	/**
@@ -61,7 +62,7 @@ class ValidationComposer implements ValidationJob {
 	/**
 	 * @return \n2n\validation\build\ValidationResult
 	 */
-	function exec() {
+	function exec(): ValidationResult {
 		$this->validatableSource->onValidationStart();
 		$this->validationPlan->exec();
 		return $this->validatableSource->createValidationResult();

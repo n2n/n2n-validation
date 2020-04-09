@@ -23,19 +23,16 @@ namespace n2n\validation\build;
 
 use n2n\util\ex\IllegalStateException;
 
-class ValidationResult {
-	private $errorMap;
+interface ValidationResult {
 	
-	function __construct(ErrorMap $errorMap = null) {
-		$this->errorMap = $errorMap;
-	}
+	/**
+	 * @return bool Returns false if the validation was successfull and did not cause any errors. 
+	 */
+	function hasErrors(): bool;
 	
-	function hasErrors() {
-		return $this->errorMap !== null;
-	}
-	
-	function getErrorMap() {
-		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
-		return $this->errorMap;
-	}
+	/**
+	 * @return ErrorMap
+	 * @throws IllegalStateException if {@self::hasErrors()} returns true
+	 */
+	function getErrorMap(): ErrorMap;
 }

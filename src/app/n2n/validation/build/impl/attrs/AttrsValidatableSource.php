@@ -9,6 +9,9 @@ use n2n\validation\build\impl\ValidatableAdapter;
 use n2n\validation\build\ValidatableSource;
 use n2n\validation\build\ValidationResult;
 use n2n\validation\build\ErrorMap;
+use n2n\validation\build\impl\SimpleValidationResult;
+use n2n\util\type\attrs\MissingAttributeFieldException;
+use n2n\validation\err\UnresolvableValidationException;
 
 class AttrsValidatableSource implements ValidatableSource {
 	private $attributeReader;
@@ -21,8 +24,12 @@ class AttrsValidatableSource implements ValidatableSource {
 	
 	public function resolveValidatables(string $expression): array {
 		if (!isset($this->attrValidatables[$expression])) {
-			$this->attrValidatables[$expression] = new AttrValidatable($expression, 
-					$this->attributeReader->readAttribute(AttributePath::create($expression)));
+			try {
+				$this->attrValidatables[$expression] = new AttrValidatable($expression, 
+						$this->attributeReader->readAttribute(AttributePath::create($expression)));
+			} catch (MissingAttributeFieldException $e) {
+				throw new UnresolvableValidationException('Could not resolve validatable: ' . $expression, null, $e);
+			}
 		}
 		
 		return [$this->attrValidatables[$expression]];
@@ -35,7 +42,7 @@ class AttrsValidatableSource implements ValidatableSource {
 			$errorMap->putChild($key, new ErrorMap($attrValidatable->getMessages()));
 		}
 		
-		return new ValidationResult($errorMap->isEmpty() ? null : $errorMap);
+		return new SimpleValidationResult($errorMap->isEmpty() ? null : $errorMap);
 	}
 
 	public function onValidationStart() {

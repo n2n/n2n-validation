@@ -49,7 +49,7 @@ class ValidationUtils {
 	}
 	
 	static function isNotEmpty(?string $str) {
-		return $str !== null && StringUtils::isEmpty($str);
+		return $str !== null && !StringUtils::isEmpty($str);
 	}
 	
 	static function isFileTypeSupported(File $file, ?array $allowedMimeTypes, array $allowedExtensions = null) {
