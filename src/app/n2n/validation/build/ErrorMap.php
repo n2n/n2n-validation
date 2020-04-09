@@ -72,8 +72,8 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	/**
 	 * @param ErrorMap $errorMap
 	 */
-	function addChild(ErrorMap $errorMap) {
-		$this->children[] = $errorMap;
+	function putChild(string $key, ErrorMap $errorMap) {
+		$this->children[$key] = $errorMap;
 	}
 	
 	function isEmpty() {

@@ -31,8 +31,8 @@ class AttrsValidatableSource implements ValidatableSource {
 	public function createValidationResult(): ValidationResult {
 		$errorMap = new ErrorMap($this->generalMessages);
 		
-		foreach ($this->attrValidatables as $attrValidatable) {
-			$errorMap->addChild(new ErrorMap($attrValidatable->getMessages()));
+		foreach ($this->attrValidatables as $key => $attrValidatable) {
+			$errorMap->putChild($key, new ErrorMap($attrValidatable->getMessages()));
 		}
 		
 		return new ValidationResult($errorMap->isEmpty() ? null : $errorMap);
