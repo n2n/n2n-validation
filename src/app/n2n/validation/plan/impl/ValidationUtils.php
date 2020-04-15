@@ -1,5 +1,5 @@
 <?php
-namespace n2n\validation\impl;
+namespace n2n\validation\plan\impl;
 
 use n2n\util\uri\Url;
 use n2n\util\StringUtils;
@@ -44,12 +44,16 @@ class ValidationUtils {
 		return false;
 	}
 	
-	public static function isNotLongerThen(string $str, int $maxlength) {
+	static function minlength(string $str, int $minlength) {
+		return mb_strlen($str) <= $minlength;
+	}
+	
+	static function isNotLongerThen(string $str, int $maxlength) {
 		return mb_strlen($str) <= $maxlength;
 	}
 	
 	static function isNotEmpty(?string $str) {
-		return $str !== null && StringUtils::isEmpty($str);
+		return $str !== null && !StringUtils::isEmpty($str);
 	}
 	
 	static function isFileTypeSupported(File $file, ?array $allowedMimeTypes, array $allowedExtensions = null) {
@@ -69,6 +73,4 @@ class ValidationUtils {
 
 		return !(self::RESERVATED_MEMORY_SIZE + ($requiredMemorySize * 2) > $memoryLimit);
 	}
-		
-	
 }

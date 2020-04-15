@@ -1,5 +1,5 @@
 <?php
-namespace n2n\validation\impl;
+namespace n2n\validation\lang;
 
 
 use n2n\l10n\Message;
@@ -18,6 +18,18 @@ class ValidationMessages {
 		}
 		
 		return Message::createCodeArg('field_mandatory_err', ['field' => $fieldName], null, self::NS);
+	}
+	
+	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function email(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('email_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_email_err', ['field' => $fieldName], null, self::NS);
 	}
 	
 	/**
