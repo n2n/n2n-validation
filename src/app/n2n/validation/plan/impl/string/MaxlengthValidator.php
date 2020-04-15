@@ -27,10 +27,12 @@ use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
 use n2n\util\type\TypeConstraints;
 
-class EmailValidator extends SimpleValidatorAdapter {
+class MaxlengthValidator extends SimpleValidatorAdapter {
+	private $maxlength;
 	
-	function __construct(Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::string(true), $errorMessage);
+	function __construct(int $maxlength, Message $errorMessage = null) {
+		parent::__construct(TypeConstraints::string(), $errorMessage);
+		$this->maxlength = $maxlength;
 	}
 	
 	/**
@@ -39,8 +41,8 @@ class EmailValidator extends SimpleValidatorAdapter {
 	protected function validateSingle(Validatable $validatable) {
 		$value = $this->readSafeValue($validatable);
 		
-		if ($value !== null && !ValidationUtils::isEmail($value)) {
-			$validatable->addError(ValidationMessages::email($this->readLabel($validatable)));
+		if ($value !== null && !ValidationUtils::isNotLongerThen($value, $this->maxlength)) {
+			$validatable->addError(ValidationMessages::maxlength($this->maxlength, $this->readLabel($validatable)));
 		}
 	}
 }
