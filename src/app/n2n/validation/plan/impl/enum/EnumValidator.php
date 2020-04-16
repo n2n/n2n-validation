@@ -19,23 +19,21 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\plan\impl\reflection;
+namespace n2n\validation\plan\impl\string;
 
 use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
-use n2n\l10n\Message;
-use n2n\util\type\TypeConstraint;
-use n2n\util\type\TypeUtils;
+use n2n\util\type\TypeConstraints;
+use n2n\util\col\ArrayUtils;
 
-class TypeValidator extends SimpleValidatorAdapter {
-	private $typeConstraint;
+class EnumValidator extends SimpleValidatorAdapter {
+	private $allowedValues;
 	
-	function __construct(TypeConstraint $typeConstraint, Message $errorMessage = null) {
+	function __construct(array $allowedValues, Message $errorMessage = null) {
+		$this->allowedValues = $allowedValues;
 		parent::__construct(null, $errorMessage);
-		
-		$this->typeConstraint = $typeConstraint;
 	}
 	
 	/**
@@ -44,9 +42,8 @@ class TypeValidator extends SimpleValidatorAdapter {
 	protected function validateSingle(Validatable $validatable) {
 		$value = $this->readSafeValue($validatable);
 		
-		if (!$this->typeConstraint->isValueValid($value)) {
-			$validatable->addError(Message::create('Invalid type: ' . TypeUtils::getTypeInfo($value)
-					. '. Required type: ' . $this->typeConstraint));
+		if ($value !== null && !ArrayUtils::inArrayLike($mapValue, $this->allowedValues)) {
+			$validatable->addError(ValidationMessages::enum($this->allowedValues, $this->readLabel($validatable)));
 		}
 	}
 }

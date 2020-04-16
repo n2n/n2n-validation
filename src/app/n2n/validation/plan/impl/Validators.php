@@ -11,6 +11,11 @@ use n2n\validation\plan\impl\reflection\TypeValidator;
 
 class Validators {
 	
+	/**
+	 * @param TypeConstraint $typeConstraint
+	 * @param Message|string|null $errorMessage
+	 * @return \n2n\validation\plan\impl\reflection\TypeValidator
+	 */
 	static function type(TypeConstraint $typeConstraint, $errorMessage = null) {
 		return new TypeValidator($typeConstraint, $errorMessage);
 	}
@@ -47,5 +52,12 @@ class Validators {
 		return new EmailValidator(Message::build($errorMessage));
 	}
 	
+	/**
+	 * @param Message|null $errorMessage
+	 * @return \n2n\validation\plan\impl\common\MandatoryValidator
+	 */
+	static function enum(array $values, $errorMessage = null) {
+		return new MandatoryValidator(Message::build($errorMessage));
+	}
 	
 }

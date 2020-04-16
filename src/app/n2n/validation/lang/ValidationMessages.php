@@ -114,6 +114,21 @@ class ValidationMessages {
 				['fileName' => $fileName, 'field' => $fieldName], null, self::NS);
 	}
 	
+	/**
+	 * @param array $allowedValues
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function enum(array $allowedValues, string $fieldName = null) {
+		$allowedValuesStr = implode(', ', $allowedValues);
+		
+		if ($fieldName === null) {
+			return Message::createCodeArg('enum_err', ['allowedValues' => $allowedValuesStr], null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_enum_err', ['allowedValues' => $allowedValuesStr, 'field' => $fieldName], 
+				null, self::NS);
+	}
 
 // 	static function extension(string $fileName, array $allowedFileExtensions, string $fieldName = null) {
 // 		if ($fieldName === null) {
