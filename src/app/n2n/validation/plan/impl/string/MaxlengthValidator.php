@@ -31,7 +31,7 @@ class MaxlengthValidator extends SimpleValidatorAdapter {
 	private $maxlength;
 	
 	function __construct(int $maxlength, Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::string(), $errorMessage);
+		parent::__construct(TypeConstraints::string(true), $errorMessage);
 		$this->maxlength = $maxlength;
 	}
 	
