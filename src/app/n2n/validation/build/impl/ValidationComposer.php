@@ -50,9 +50,9 @@ class ValidationComposer implements ValidationJob {
 	function props(array $expressions, Validator ...$validators) {
 		$validatables = [];
 		foreach ($expressions as $expression) {
-			$validatables = $this->validatableSource->resolveValidatables($expression);
-			ArgUtils::valArrayReturn($validatables, $this->validatableSource, 'resolveValidatables', Validatable::class);
-			array_push($validatables, ...$validatables);
+			$resolvedValidatables = $this->validatableSource->resolveValidatables($expression);
+			ArgUtils::valArrayReturn($resolvedValidatables, $this->validatableSource, 'resolveValidatables', Validatable::class);
+			array_push($validatables, ...$resolvedValidatables);
 		}
 		
 		$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));

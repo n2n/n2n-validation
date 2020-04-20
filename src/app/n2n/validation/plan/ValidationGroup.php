@@ -79,6 +79,8 @@ class ValidationGroup {
 					. (new \ReflectionClass($validator))->getShortName() . '. TypeConstraint missmatch: ' . $typeConstraint . ' / ' 
 					. $validatorTypeConstraint);
 		}
+		
+		array_push($this->validatables, $validatable);
 	}
 	
 	/**
