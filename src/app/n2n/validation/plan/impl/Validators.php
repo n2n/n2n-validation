@@ -8,6 +8,7 @@ use n2n\util\type\TypeConstraint;
 use n2n\validation\plan\impl\string\MinlengthValidator;
 use n2n\validation\plan\impl\string\MaxlengthValidator;
 use n2n\validation\plan\impl\reflection\TypeValidator;
+use n2n\validation\plan\impl\string\EnumValidator;
 
 class Validators {
 	
@@ -57,7 +58,7 @@ class Validators {
 	 * @return \n2n\validation\plan\impl\common\MandatoryValidator
 	 */
 	static function enum(array $values, $errorMessage = null) {
-		return new MandatoryValidator(Message::build($errorMessage));
+		return new EnumValidator($values, Message::build($errorMessage));
 	}
 	
 }
