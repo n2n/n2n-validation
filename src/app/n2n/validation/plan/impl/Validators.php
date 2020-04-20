@@ -8,7 +8,7 @@ use n2n\util\type\TypeConstraint;
 use n2n\validation\plan\impl\string\MinlengthValidator;
 use n2n\validation\plan\impl\string\MaxlengthValidator;
 use n2n\validation\plan\impl\reflection\TypeValidator;
-use n2n\validation\plan\impl\string\EnumValidator;
+use n2n\validation\plan\impl\enum\EnumValidator;
 
 class Validators {
 	

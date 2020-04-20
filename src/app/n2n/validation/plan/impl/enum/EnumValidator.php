@@ -19,7 +19,7 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\plan\impl\string;
+namespace n2n\validation\plan\impl\enum;
 
 use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
