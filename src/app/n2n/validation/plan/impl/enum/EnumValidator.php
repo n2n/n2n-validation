@@ -42,7 +42,7 @@ class EnumValidator extends SimpleValidatorAdapter {
 	protected function validateSingle(Validatable $validatable) {
 		$value = $this->readSafeValue($validatable);
 		
-		if ($value !== null && !ArrayUtils::inArrayLike($mapValue, $this->allowedValues)) {
+		if ($value !== null && !ArrayUtils::inArrayLike($value, $this->allowedValues)) {
 			$validatable->addError(ValidationMessages::enum($this->allowedValues, $this->readLabel($validatable)));
 		}
 	}
