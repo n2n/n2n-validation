@@ -19,31 +19,33 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\plan\impl\string;
+namespace n2n\validation\plan\impl\common;
 
 use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
-use n2n\util\type\TypeConstraints;
+use n2n\l10n\Message;
+use n2n\validation\plan\impl\ValidatorAdapter;
+use n2n\validation\plan\ValidatableResolver;
 use n2n\util\magic\MagicContext;
 
-class MinlengthValidator extends SimpleValidatorAdapter {
-	private $minlength;
+class ExistsValidator extends ValidatorAdapter {
 	
-	function __construct(int $minlength, Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::string(true), $errorMessage);
-		$this->minlength = $minlength;
+	function __construct(Message $errorMessage = null) {
+		parent::__construct(null, $errorMessage);
 	}
 	
 	/**
-	 * {@inheritdoc}
+	 * @param ValidatableResolver $validatableResolver
+	 * @param Validatable[] $validatbles
 	 */
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
-		$value = $this->readSafeValue($validatable);
-		
-		if ($value !== null && !ValidationUtils::minlength($value, $this->minlength)) {
-			$validatable->addError(ValidationMessages::minlength($this->minlength, $this->readLabel($validatable)));
+	function validate(array $validatbles, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
+		foreach ($validatbles as $validatable) {
+			if (!$validatable->doesExist()) {
+				$validatable->addError(ValidationMessages::required($this->readLabel($validatable)));
+			}
 		}
+		
 	}
 }

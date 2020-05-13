@@ -26,6 +26,7 @@ use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
 use n2n\util\type\TypeConstraints;
+use n2n\util\magic\MagicContext;
 
 class EmailValidator extends SimpleValidatorAdapter {
 	
@@ -36,7 +37,7 @@ class EmailValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable) {
+	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
 		$value = $this->readSafeValue($validatable);
 		
 		if ($value !== null && !ValidationUtils::isEmail($value)) {

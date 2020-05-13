@@ -23,16 +23,18 @@ namespace n2n\validation\plan;
 
 use n2n\util\type\TypeConstraint;
 use n2n\validation\err\ValidationMismatchException;
+use n2n\util\magic\MagicContext;
 
 interface Validator {
 	
 	/**
 	 * @param Validatable[] $validatables Validatables that were explicitly assigned to this validator 
 	 * @param ValidatableResolver $validatableResolver
+	 * @param MagicContext $magicContext
 	 * @throws ValidationMismatchException if the validator are not compatible with the validatables in the 
 	 * {@see ValidationGroup}
 	 */
-	function validate(array $validatbles, ValidatableResolver $validatableResolver);
+	function validate(array $validatbles, ValidatableResolver $validatableResolver, MagicContext $magicContext);
 	
 	/**
 	 * @return TypeConstraint|NULL

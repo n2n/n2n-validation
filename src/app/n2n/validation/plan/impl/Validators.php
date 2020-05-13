@@ -9,6 +9,8 @@ use n2n\validation\plan\impl\string\MinlengthValidator;
 use n2n\validation\plan\impl\string\MaxlengthValidator;
 use n2n\validation\plan\impl\reflection\TypeValidator;
 use n2n\validation\plan\impl\enum\EnumValidator;
+use n2n\web\dispatch\map\val\ClosureValidator;
+use n2n\validation\plan\impl\closure\ValueClosureValidator;
 
 class Validators {
 	
@@ -19,6 +21,14 @@ class Validators {
 	 */
 	static function type(TypeConstraint $typeConstraint, $errorMessage = null) {
 		return new TypeValidator($typeConstraint, $errorMessage);
+	}
+
+	/**
+	 * @param Message|null $errorMessage
+	 * @return \n2n\validation\plan\impl\ExistsValidator
+	 */
+	static function exists($errorMessage = null) {
+		return new ExistsValidator(Message::build($errorMessage));
 	}
 	
 	/**
@@ -61,4 +71,19 @@ class Validators {
 		return new EnumValidator($values, Message::build($errorMessage));
 	}
 	
+	/**
+	 * @param \Closure $closure
+	 * @return \n2n\web\dispatch\map\val\ClosureValidator
+	 */
+	static function closure(\Closure $closure) {
+		return new ClosureValidator($closure);
+	}
+	
+	/**
+	 * @param \Closure $closure
+	 * @return \n2n\validation\plan\impl\string\ValueClosureValidator
+	 */
+	static function valueClosure(\Closure $closure) {
+		return new ValueClosureValidator($closure);
+	}
 }

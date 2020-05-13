@@ -28,6 +28,7 @@ use n2n\validation\plan\impl\ValidationUtils;
 use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
 use n2n\util\type\TypeUtils;
+use n2n\util\magic\MagicContext;
 
 class TypeValidator extends SimpleValidatorAdapter {
 	private $typeConstraint;
@@ -41,7 +42,7 @@ class TypeValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable) {
+	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
 		$value = $this->readSafeValue($validatable);
 		
 		if (!$this->typeConstraint->isValueValid($value)) {

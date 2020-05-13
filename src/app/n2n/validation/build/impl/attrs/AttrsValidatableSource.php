@@ -22,17 +22,32 @@ class AttrsValidatableSource implements ValidatableSource {
 		$this->attributeReader = $attributeReader;
 	}
 	
-	public function resolveValidatables(string $expression): array {
-		if (!isset($this->attrValidatables[$expression])) {
-			try {
-				$this->attrValidatables[$expression] = new AttrValidatable($expression, 
-						$this->attributeReader->readAttribute(AttributePath::create($expression)));
-			} catch (MissingAttributeFieldException $e) {
-				throw new UnresolvableValidationException('Could not resolve validatable: ' . $expression, null, $e);
+	public function resolveValidatables(string $expression, bool $mustExist): array {
+		$attrValidatable = null;
+		if (isset($this->attrValidatables[$expression])) {
+			$attrValidatable = $this->attrValidatables[$expression];
+			
+			if (!$mustExist || $attrValidatable->doesExist()) {
+				return [$attrValidatable];
 			}
 		}
 		
-		return [$this->attrValidatables[$expression]];
+		try {
+			$value = $this->attributeReader->readAttribute(AttributePath::create($expression));
+			if ($attrValidatable === null) {
+				return [$this->attrValidatables[$expression] = new AttrValidatable($expression, $value, true)];
+			}
+			
+			$attrValidatable->setValue($value);
+			$attrValidatable->setDoesExist(true);
+			return $attrValidatable;
+		} catch (AttributesException $e) {
+			if ($mustExist) {
+				throw new UnresolvableValidationException('Could not resolve validatable: ' . $expression, null, $e);
+			}
+			
+			return [$this->attrValidatables[$expression] = new AttrValidatable($expression, null, false)];
+		}
 	}
 
 	public function createValidationResult(): ValidationResult {
@@ -60,15 +75,25 @@ class AttrsValidatableSource implements ValidatableSource {
 class AttrValidatable extends ValidatableAdapter {
 	private $name;
 	private $value;
+	private $doesExist;
 	
-	function __construct(string $name, $value) {
+	function __construct(string $name, $value, bool $doesExist) {
 		parent::__construct($name);
 		$this->name = $name;
 		$this->value = $value;
+		$this->doesExist = $doesExist;
 	}
 	
 	function getValue() {
 		return $this->value;
+	}
+	
+	function doesExist(): bool {
+		return $this->doesExist; 
+	}
+		
+	function setDoesExist(bool $doesExists) {
+		return $this->doesExist = $doesExists;
 	}
 
 	public function getTypeConstraint(): ?TypeConstraint {

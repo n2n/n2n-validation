@@ -24,6 +24,7 @@ namespace n2n\validation\plan\impl;
 use n2n\validation\build\ValidatableResolver;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
+use n2n\util\magic\MagicContext;
 
 abstract class MultiValidatorAdapter extends ValidatorAdapter {
 
@@ -32,7 +33,7 @@ abstract class MultiValidatorAdapter extends ValidatorAdapter {
 	 * @param array $validatables
 	 * @param ValidatableResolver $validatableResolver
 	 */
-	final function validate(array $validatables, ValidatableResolver $validatableResolver) {
+	final function validate(array $validatables, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
 		ArgUtils::valArray($validatables, Validatable::class);
 		
 		foreach ($validatables as $validatable) {
@@ -44,6 +45,6 @@ abstract class MultiValidatorAdapter extends ValidatorAdapter {
 		$this->validateMulti($validatables);
 	}
 	
-	protected abstract function validateMulti(array $validatables): void;
+	protected abstract function validateMulti(array $validatables, MagicContext $magicContext): void;
 	
 }

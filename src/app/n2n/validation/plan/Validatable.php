@@ -24,6 +24,7 @@ namespace n2n\validation\plan;
 use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
 use n2n\l10n\Lstr;
+use n2n\util\ex\IllegalStateException;
 
 /**
  * Describes unit (e.g. property) that can be validated and added to a {@see ValidationGroup}.
@@ -41,7 +42,13 @@ interface Validatable {
 	function getLabel();
 	
 	/**
-	 * @return mixed 
+	 * @return bool
+	 */
+	function doesExist(): bool;
+	
+	/**
+	 * @return mixed
+	 * @throws IllegalStateException if {@see Validatable::doesExist()} returns false 
 	 */
 	function getValue();
 	

@@ -22,6 +22,7 @@
 namespace n2n\validation\plan;
 
 use n2n\validation\err\ValidationMismatchException;
+use n2n\util\magic\MagicContext;
 
 /**
  * 
@@ -51,11 +52,12 @@ class ValidationPlan {
 	}
 	
 	/**
+	 * @param MagicContext $magicContext
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 */
-	function exec() {
+	function exec(MagicContext $magicContext) {
 		foreach ($this->validationGroups as $validationGroup) {
-			$validationGroup->exec($this->validatableResolver);
+			$validationGroup->exec($this->validatableResolver, $magicContext);
 		}
 	}
 }

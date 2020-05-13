@@ -25,6 +25,7 @@ use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
 use n2n\l10n\Message;
 use n2n\validation\plan\ValidatableResolver;
+use n2n\util\magic\MagicContext;
 
 abstract class SingleValidatorAdapter extends ValidatorAdapter {
 
@@ -47,18 +48,18 @@ abstract class SingleValidatorAdapter extends ValidatorAdapter {
 		
 // 	}
 	
-	final function validate(array $validatables, ValidatableResolver $validatableResolver) {
+	final function validate(array $validatables, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
 		ArgUtils::valArray($validatables, Validatable::class);
 		
 		foreach ($validatables as $validatable) {
-			if (!$validatable->isOpenForValidation()) {
+			if (!$validatable->doesExist() || !$validatable->isOpenForValidation()) {
 				continue;
 			}
 			
-			$this->validateSingle($validatable);
+			$this->validateSingle($validatable, $magicContext);
 		}
 	}
 	
-	protected abstract function validateSingle(Validatable $validatable);
+	protected abstract function validateSingle(Validatable $validatable, MagicContext $magicContext);
 	
 }

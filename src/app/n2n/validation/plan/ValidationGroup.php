@@ -24,6 +24,7 @@ namespace n2n\validation\plan;
 use n2n\util\type\ArgUtils;
 use n2n\validation\err\ValidationMismatchException;
 use n2n\validation\err\UnresolvableValidationException;
+use n2n\util\magic\MagicContext;
 
 /**
  * 
@@ -85,13 +86,14 @@ class ValidationGroup {
 	
 	/**
 	 * @param ValidatableResolver $pool
+	 * @param MagicContext $magicContext
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 * @throws UnresolvableValidationException if a {@see Validatable} required by a {@see Validator} could not have
 	 * been resolved through the {@see ValidatableResolver}.
 	 */
-	function exec(ValidatableResolver $validatableResolver) {
+	function exec(ValidatableResolver $validatableResolver, MagicContext $magicContext) {
 		foreach ($this->validators as $validator) {
-			$validator->validate($this->validatables, $validatableResolver);
+			$validator->validate($this->validatables, $validatableResolver, $magicContext);
 		}
 	}
 }

@@ -26,11 +26,12 @@ use n2n\validation\err\UnresolvableValidationException;
 
 interface ValidatableResolver {
 	/**
-	 * @param string
+	 * @param string $expression
+	 * @param bool $mustExist
 	 * @return Validatable[]
 	 * @throws UnresolvableValidationException
 	 */
-	function resolveValidatables(string $expression): array;
+	function resolveValidatables(string $expression, bool $mustExist): array;
 	
 	/**
 	 * @param Message $message

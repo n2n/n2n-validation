@@ -12,6 +12,30 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return \n2n\l10n\impl\TextCodeMessage
 	 */
+	static function invalid(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('invalid_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_invalid_err', ['field' => $fieldName], null, self::NS);
+	}
+	
+	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function required(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('required_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_required_err', ['field' => $fieldName], null, self::NS);
+	}
+	
+	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
 	static function mandatory(string $fieldName = null) {
 		if ($fieldName === null) {
 			return Message::createCode('mandatory_err', null, self::NS);

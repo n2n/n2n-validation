@@ -26,6 +26,7 @@ use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
 use n2n\util\type\TypeConstraints;
+use n2n\util\magic\MagicContext;
 
 class MaxlengthValidator extends SimpleValidatorAdapter {
 	private $maxlength;
@@ -38,7 +39,7 @@ class MaxlengthValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable) {
+	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
 		$value = $this->readSafeValue($validatable);
 		
 		if ($value !== null && !ValidationUtils::isNotLongerThen($value, $this->maxlength)) {
