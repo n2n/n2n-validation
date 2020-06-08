@@ -12,6 +12,7 @@ use n2n\validation\build\ErrorMap;
 use n2n\validation\build\impl\SimpleValidationResult;
 use n2n\util\type\attrs\MissingAttributeFieldException;
 use n2n\validation\err\UnresolvableValidationException;
+use n2n\util\type\attrs\AttributesException;
 
 class AttrsValidatableSource implements ValidatableSource {
 	private $attributeReader;
