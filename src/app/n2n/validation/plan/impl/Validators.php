@@ -11,6 +11,7 @@ use n2n\validation\plan\impl\reflection\TypeValidator;
 use n2n\validation\plan\impl\enum\EnumValidator;
 use n2n\web\dispatch\map\val\ClosureValidator;
 use n2n\validation\plan\impl\closure\ValueClosureValidator;
+use n2n\validation\plan\impl\common\ExistsValidator;
 
 class Validators {
 	

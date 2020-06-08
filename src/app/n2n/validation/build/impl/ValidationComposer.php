@@ -12,6 +12,7 @@ use n2n\validation\plan\Validatable;
 use n2n\validation\build\ValidationJob;
 use n2n\validation\build\ValidationResult;
 use n2n\util\magic\MagicContext;
+use n2n\validation\err\ValidationMismatchException;
 
 class ValidationComposer implements ValidationJob { 
 	/**
@@ -22,6 +23,10 @@ class ValidationComposer implements ValidationJob {
 	 * @var ValidationPlan
 	 */
 	private $validationPlan;
+	/**
+	 * @var \Closure
+	 */
+	private $assembleClosures = [];
 	
 	/**
 	 * @param ValidatableResolver $validatableResolver
@@ -36,7 +41,6 @@ class ValidationComposer implements ValidationJob {
 	 * @param string $expression
 	 * @param Validator ...$validators
 	 * @return ValidationComposer
-	 * @throws UnresolvableValidationException
 	 */
 	function prop(string $expression, Validator ...$validators) {
 		return $this->props([$expression], ...$validators);
@@ -46,7 +50,6 @@ class ValidationComposer implements ValidationJob {
 	 * @param string[] $expressions
 	 * @param Validator ...$validators
 	 * @return ValidationComposer
-	 * @throws UnresolvableValidationException
 	 */
 	function props(array $expressions, Validator ...$validators) {
 		$this->assembleValidationGroup($expressions, $validators, true);
@@ -58,17 +61,15 @@ class ValidationComposer implements ValidationJob {
 	 * @param string $expression
 	 * @param Validator ...$validators
 	 * @return ValidationComposer
-	 * @throws UnresolvableValidationException
 	 */
 	function optProp(string $expression, Validator ...$validators) {
-		return $this->optProps([$expression], ...$validators);
+		return $this->optProps([$expression], ...$validators); 
 	}
 	
 	/**
 	 * @param string[] $expressions
 	 * @param Validator ...$validators
 	 * @return ValidationComposer
-	 * @throws UnresolvableValidationException
 	 */
 	function optProps(array $expressions, Validator ...$validators) {
 		$this->assembleValidationGroup($expressions, $validators, false);
@@ -76,21 +77,30 @@ class ValidationComposer implements ValidationJob {
 	}
 	
 	private function assembleValidationGroup(array $expressions, array $validators, bool $mustExist) {
-		$validatables = [];
-		foreach ($expressions as $expression) {
-			ArgUtils::assertTrue(is_string($expression), 'Property expressions must be of type string.');
-			$resolvedValidatables = $this->validatableSource->resolveValidatables($expression, $mustExist);
-			ArgUtils::valArrayReturn($resolvedValidatables, $this->validatableSource, 'resolveValidatables', Validatable::class);
-			array_push($validatables, ...$resolvedValidatables);
-		}
+		ArgUtils::valArray($expressions, 'string', false, 'expressions');
 		
-		$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
+		array_push($this->assembleClosures, function () use ($expressions, $validators, $mustExist) {
+			$validatables = [];
+			foreach ($expressions as $expression) {
+				$resolvedValidatables = $this->validatableSource->resolveValidatables($expression, $mustExist);
+				ArgUtils::valArrayReturn($resolvedValidatables, $this->validatableSource, 'resolveValidatables', Validatable::class);
+				array_push($validatables, ...$resolvedValidatables);
+			}
+			
+			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
+		});
 	}
 	
 	/**
+	 * @throws UnresolvableValidationException
+	 * @throws ValidationMismatchException
 	 * @return \n2n\validation\build\ValidationResult
 	 */
 	function exec(MagicContext $magicContext): ValidationResult {
+		while (null !== ($closure = array_shift($this->assembleClosures))) {
+			$closure();
+		}
+		
 		$this->validatableSource->onValidationStart();
 		$this->validationPlan->exec($magicContext);
 		return $this->validatableSource->createValidationResult();
