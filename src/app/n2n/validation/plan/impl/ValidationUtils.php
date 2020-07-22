@@ -44,6 +44,26 @@ class ValidationUtils {
 		return false;
 	}
 	
+	static function matchesUrlSchema($value) {
+		if ($value === null) return;
+		
+		if (!self::isUrl($value, !$this->relativeAllowed)) {
+			$this->failed($this->errorMessage, self::DEFAULT_ERROR_TEXT_CODE_INVALID, array(), 'n2n\impl\web\dispatch');
+			return;
+		}
+		
+		if ($this->allowedSchemes === null) return;
+		
+		$matches = null;
+		if (preg_match('#^([^:]+):#', $value, $matches)
+				&& in_array($matches[1], $this->allowedSchemes)) {
+			return;
+		}
+				
+		$this->failed($this->errorMessage, self::DEFAULT_ERROR_TEXT_CODE_INVALID_SCHEME,
+				array('allowed_schemes' => implode(', ', $this->allowedSchemes)), 'n2n\impl\web\dispatch');
+	}
+	
 	static function minlength(string $str, int $minlength) {
 		return mb_strlen($str) <= $minlength;
 	}
