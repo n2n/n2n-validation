@@ -4,6 +4,7 @@ namespace n2n\validation\lang;
 
 use n2n\l10n\Message;
 use n2n\io\managed\File;
+use n2n\util\type\ArgUtils;
 
 class ValidationMessages {
 	const NS = 'n2n\validation';
@@ -153,6 +154,8 @@ class ValidationMessages {
 		return Message::createCodeArg('field_enum_err', ['allowedValues' => $allowedValuesStr, 'field' => $fieldName], 
 				null, self::NS);
 	}
+	
+	
 
 // 	static function extension(string $fileName, array $allowedFileExtensions, string $fieldName = null) {
 // 		if ($fieldName === null) {
@@ -204,5 +207,35 @@ class ValidationMessages {
 		}
 		
 		return Message::createCodeArg('field_image_resolution_err', ['image' => $imageName, 'fieldName' => $fieldName], null, self::NS);
+	}
+	
+	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function url(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('url_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_url_err', ['field' => $fieldName], null, self::NS);
+	}
+	
+	/**
+	 * @param string[] $allowedSchemes
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function urlScheme(array $allowedSchemes, string $fieldName = null) {
+		ArgUtils::valArray($allowedSchemes, 'string');
+		$allowedSchemesStr = implode(', ', $allowedSchemes);
+		
+		if ($fieldName === null) {
+			return Message::createCodeArg('url_scheme_err', ['allowedSchemes' => $allowedSchemesStr], null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_url_scheme_err', 
+				['allowedSchemes' => $allowedSchemesStr, 'field' => $fieldName],
+				null, self::NS);
 	}
 }
