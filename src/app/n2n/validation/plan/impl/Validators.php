@@ -26,7 +26,7 @@ class Validators {
 
 	/**
 	 * @param Message|null $errorMessage
-	 * @return \n2n\validation\plan\impl\ExistsValidator
+	 * @return ExistsValidator
 	 */
 	static function exists($errorMessage = null) {
 		return new ExistsValidator(Message::build($errorMessage));
@@ -82,7 +82,7 @@ class Validators {
 	
 	/**
 	 * @param \Closure $closure
-	 * @return \n2n\validation\plan\impl\string\ValueClosureValidator
+	 * @return ValueClosureValidator
 	 */
 	static function valueClosure(\Closure $closure) {
 		return new ValueClosureValidator($closure);

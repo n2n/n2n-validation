@@ -23,32 +23,30 @@ namespace n2n\validation\plan\impl;
 
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
-use n2n\l10n\Message;
-use n2n\validation\plan\ValidatableResolver;
+use n2n\validation\plan\ValidationContext;
 use n2n\util\magic\MagicContext;
 
 abstract class SingleValidatorAdapter extends ValidatorAdapter {
 
-	
-// 	/**
-// 	 * @param string|\n2n\l10n\Lstr $label
-// 	 * @return \n2n\validation\plan\impl\SingleValidatorAdapter
-// 	 */
-// 	function setLabel($label) {
-// 		ArgUtils::valType($label, ['string', Lstr::class]);
-// 		$this->label = $label;
-// 		return $this;
-// 	}
-	
-// 	function getLabel() {
-// 		return $this->label;
-// 	}
-	
-// 	protected function determineLabel() {
+	final function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
+		ArgUtils::valArray($validatables, Validatable::class);
 		
-// 	}
+		foreach ($validatables as $validatable) {
+			if (!$validatable->doesExist()) {
+				continue;
+			}
+			
+			if (!$this->testSingle($validatable, $magicContext)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
-	final function validate(array $validatables, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
+	protected abstract function testSingle(Validatable $validatable, MagicContext $magicContext): bool;
+	
+	final function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext) {
 		ArgUtils::valArray($validatables, Validatable::class);
 		
 		foreach ($validatables as $validatable) {

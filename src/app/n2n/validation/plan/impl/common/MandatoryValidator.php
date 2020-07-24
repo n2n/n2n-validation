@@ -29,9 +29,17 @@ use n2n\l10n\Message;
 use n2n\util\magic\MagicContext;
 
 class MandatoryValidator extends SimpleValidatorAdapter {
-	
 	function __construct(Message $errorMessage = null) {
 		parent::__construct(null, $errorMessage);
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+		$value = $this->readSafeValue($validatable);
+		
+		return ValidationUtils::isNotEmpty($value);
 	}
 	
 	/**

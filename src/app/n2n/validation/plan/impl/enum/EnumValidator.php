@@ -24,10 +24,9 @@ namespace n2n\validation\plan\impl\enum;
 use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
-use n2n\validation\plan\impl\ValidationUtils;
-use n2n\util\type\TypeConstraints;
 use n2n\util\col\ArrayUtils;
 use n2n\util\magic\MagicContext;
+use n2n\l10n\Message;
 
 class EnumValidator extends SimpleValidatorAdapter {
 	private $allowedValues;
@@ -40,10 +39,17 @@ class EnumValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
+	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable);
 		
-		if ($value !== null && !ArrayUtils::inArrayLike($value, $this->allowedValues)) {
+		return $value === null || ArrayUtils::inArrayLike($value, $this->allowedValues);
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
+		if (!$this->testSingle($validatable, $magicContext)) {
 			$validatable->addError(ValidationMessages::enum($this->allowedValues, $this->readLabel($validatable)));
 		}
 	}

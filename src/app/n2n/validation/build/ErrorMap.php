@@ -38,6 +38,17 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	/**
 	 * @return Message[]
 	 */
+	function getAllMessages() {
+		$messages = $this->messages;
+		foreach ($this->children as $child) {
+			array_push(...$child->getAllMessages());
+		}
+		return $messages;
+	}
+	
+	/**
+	 * @return Message[]
+	 */
 	function getMessages() {
 		return $this->messages;
 	}

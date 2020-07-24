@@ -4,19 +4,19 @@ namespace n2n\validation\build\impl;
 use n2n\validation\err\UnresolvableValidationException;
 use n2n\validation\plan\ValidationGroup;
 use n2n\validation\plan\ValidationPlan;
-use n2n\validation\plan\ValidatableResolver;
+use n2n\validation\plan\ValidationContext;
 use n2n\validation\plan\Validator;
-use n2n\validation\build\ValidatableSource;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
 use n2n\validation\build\ValidationJob;
 use n2n\validation\build\ValidationResult;
 use n2n\util\magic\MagicContext;
 use n2n\validation\err\ValidationMismatchException;
+use n2n\validation\build\impl\source\prop\PropValidatableSource;
 
-class ValidationComposer implements ValidationJob { 
+class PropValidationComposer implements ValidationJob { 
 	/**
-	 * @var ValidatableSource
+	 * @var PropValidatableSource
 	 */
 	private $validatableSource;
 	/**
@@ -24,14 +24,14 @@ class ValidationComposer implements ValidationJob {
 	 */
 	private $validationPlan;
 	/**
-	 * @var \Closure
+	 * @var \Closure[]
 	 */
 	private $assembleClosures = [];
 	
 	/**
-	 * @param ValidatableResolver $validatableResolver
+	 * @param ValidationContext $validationContext
 	 */
-	function __construct(ValidatableSource $validatableSource) {
+	function __construct(PropValidatableSource $validatableSource) {
 		$this->validatableSource = $validatableSource;
 		$this->validationPlan = new ValidationPlan($validatableSource);
 	}
@@ -40,7 +40,7 @@ class ValidationComposer implements ValidationJob {
 	 * 
 	 * @param string $expression
 	 * @param Validator ...$validators
-	 * @return ValidationComposer
+	 * @return PropValidationComposer
 	 */
 	function prop(string $expression, Validator ...$validators) {
 		return $this->props([$expression], ...$validators);
@@ -49,7 +49,7 @@ class ValidationComposer implements ValidationJob {
 	/**
 	 * @param string[] $expressions
 	 * @param Validator ...$validators
-	 * @return ValidationComposer
+	 * @return PropValidationComposer
 	 */
 	function props(array $expressions, Validator ...$validators) {
 		$this->assembleValidationGroup($expressions, $validators, true);
@@ -60,7 +60,7 @@ class ValidationComposer implements ValidationJob {
 	 *
 	 * @param string $expression
 	 * @param Validator ...$validators
-	 * @return ValidationComposer
+	 * @return PropValidationComposer
 	 */
 	function optProp(string $expression, Validator ...$validators) {
 		return $this->optProps([$expression], ...$validators); 
@@ -69,7 +69,7 @@ class ValidationComposer implements ValidationJob {
 	/**
 	 * @param string[] $expressions
 	 * @param Validator ...$validators
-	 * @return ValidationComposer
+	 * @return PropValidationComposer
 	 */
 	function optProps(array $expressions, Validator ...$validators) {
 		$this->assembleValidationGroup($expressions, $validators, false);
@@ -91,15 +91,29 @@ class ValidationComposer implements ValidationJob {
 		});
 	}
 	
+	private function prepareJob() {
+		while (null !== ($closure = array_shift($this->assembleClosures))) {
+			$closure();
+		}
+	}
+	
+	/**
+	 * @param MagicContext $magicContext
+	 * @return bool
+	 */
+	function test(MagicContext $magicContext): bool {
+		$this->prepareJob();
+		
+		return $this->validationPlan->test($magicContext);
+	}
+	
 	/**
 	 * @throws UnresolvableValidationException
 	 * @throws ValidationMismatchException
 	 * @return \n2n\validation\build\ValidationResult
 	 */
 	function exec(MagicContext $magicContext): ValidationResult {
-		while (null !== ($closure = array_shift($this->assembleClosures))) {
-			$closure();
-		}
+		$this->prepareJob();
 		
 		$this->validatableSource->onValidationStart();
 		$this->validationPlan->exec($magicContext);

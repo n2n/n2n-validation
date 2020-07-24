@@ -37,7 +37,7 @@ interface Validatable {
 	function getName(): string;
 	
 	/**
-	 * @return string|Lstr
+	 * @return string|Lstr|null
 	 */
 	function getLabel();
 	
@@ -67,6 +67,11 @@ interface Validatable {
 	 * @param Message $message
 	 */
 	function addError(Message $message);
+	
+	/**
+	 * 
+	 */
+	function clearErrors(): void;
 	
 	/**
 	 * @return TypeConstraint|NULL

@@ -85,15 +85,21 @@ class ValidationGroup {
 	}
 	
 	/**
-	 * @param ValidatableResolver $pool
+	 * @param ValidationContext $pool
 	 * @param MagicContext $magicContext
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 * @throws UnresolvableValidationException if a {@see Validatable} required by a {@see Validator} could not have
-	 * been resolved through the {@see ValidatableResolver}.
+	 * been resolved through the {@see ValidationContext}.
 	 */
-	function exec(ValidatableResolver $validatableResolver, MagicContext $magicContext) {
+	function exec(ValidationContext $validationContext, MagicContext $magicContext) {
 		foreach ($this->validators as $validator) {
-			$validator->validate($this->validatables, $validatableResolver, $magicContext);
+			$validator->validate($this->validatables, $validationContext, $magicContext);
+		}
+	}
+	
+	function test(ValidationContext $validationContext, MagicContext $magicContext) {
+		foreach ($this->validators as $validator) {
+			$validator->validate($this->validatables, $validationContext, $magicContext);
 		}
 	}
 }

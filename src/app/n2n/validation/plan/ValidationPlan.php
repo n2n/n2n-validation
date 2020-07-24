@@ -29,19 +29,19 @@ use n2n\util\magic\MagicContext;
  */
 class ValidationPlan {
 	/**
-	 * @var ValidatableResolver
+	 * @var ValidationContext
 	 */
-	private $validatableResolver;
+	private $validationContext;
 	/**
 	 * @var ValidationGroup[] $validationGroups
 	 */
 	private $validationGroups = [];
 	
 	/**
-	 * @param ValidatableResolver $validatableResolver
+	 * @param ValidationContext $validationContext
 	 */
-	function __construct(ValidatableResolver $validatableResolver) {
-		$this->validatableResolver = $validatableResolver;
+	function __construct(ValidationContext $validationContext) {
+		$this->validationContext = $validationContext;
 	}
 	
 	/**
@@ -57,7 +57,17 @@ class ValidationPlan {
 	 */
 	function exec(MagicContext $magicContext) {
 		foreach ($this->validationGroups as $validationGroup) {
-			$validationGroup->exec($this->validatableResolver, $magicContext);
+			$validationGroup->exec($this->validationContext, $magicContext);
 		}
+	}
+	
+	function test(MagicContext $magicContext) {
+		foreach ($this->validationGroups as $validationGroup) {
+			if (!$validationGroup->test($this->validationContext, $magicContext)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

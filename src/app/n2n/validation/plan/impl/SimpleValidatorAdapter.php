@@ -23,6 +23,9 @@ namespace n2n\validation\plan\impl;
 
 use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
+use n2n\validation\plan\Validatable;
+use n2n\util\magic\MagicContext;
+use n2n\validation\lang\ValidationMessages;
 
 abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	private $errorMessage;
@@ -46,5 +49,17 @@ abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	 */
 	function getErrorMessage() {
 		return $this->errorMessage;
+	}
+	
+	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
+		if ($this->testSingle($validatable, $magicContext)) {
+			return false;
+		}
+		
+		$validatable->addError($this->createErrorMessage());
+	}
+	
+	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		return ValidationMessages::invalid($validatable->getLabel());
 	}
 }

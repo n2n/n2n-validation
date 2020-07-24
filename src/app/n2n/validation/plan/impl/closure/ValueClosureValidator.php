@@ -23,11 +23,10 @@ namespace n2n\validation\plan\impl\closure;
 
 use n2n\validation\plan\Validatable;
 use n2n\validation\plan\impl\ValidatorAdapter;
-use n2n\validation\plan\ValidatableResolver;
+use n2n\validation\plan\ValidationContext;
 use n2n\util\StringUtils;
 use n2n\reflection\magic\MagicMethodInvoker;
 use n2n\util\magic\MagicContext;
-use n2n\util\type\TypeConstraints;
 use n2n\util\type\ArgUtils;
 use n2n\l10n\Message;
 use n2n\validation\lang\ValidationMessages;
@@ -41,10 +40,10 @@ class ValueClosureValidator extends ValidatorAdapter {
 		$this->closure = $closure;
 	}
 	
-	function validate(array $validatables, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
+	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext) {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
-		$invoker->setClassParamObject(ValidatableResolver::class, $validatableResolver);
+		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
 		
 		foreach ($validatables as $validatable) {
 			if (!$validatable->doesExist()) {

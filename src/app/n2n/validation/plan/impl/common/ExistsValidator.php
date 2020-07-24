@@ -21,13 +21,10 @@
  */
 namespace n2n\validation\plan\impl\common;
 
-use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
-use n2n\validation\plan\impl\SimpleValidatorAdapter;
-use n2n\validation\plan\impl\ValidationUtils;
 use n2n\l10n\Message;
 use n2n\validation\plan\impl\ValidatorAdapter;
-use n2n\validation\plan\ValidatableResolver;
+use n2n\validation\plan\ValidationContext;
 use n2n\util\magic\MagicContext;
 
 class ExistsValidator extends ValidatorAdapter {
@@ -37,15 +34,28 @@ class ExistsValidator extends ValidatorAdapter {
 	}
 	
 	/**
-	 * @param ValidatableResolver $validatableResolver
-	 * @param Validatable[] $validatbles
+	 * {@inheritDoc}
+	 * @see \n2n\validation\plan\Validator::test()
 	 */
-	function validate(array $validatbles, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
+	function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
+		foreach ($validatbles as $validatable) {
+			if (!$validatable->doesExist()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * @see \n2n\validation\plan\Validator::validate()
+	 */
+	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
 		foreach ($validatbles as $validatable) {
 			if (!$validatable->doesExist()) {
 				$validatable->addError(ValidationMessages::required($this->readLabel($validatable)));
 			}
 		}
-		
 	}
 }

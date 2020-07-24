@@ -28,13 +28,23 @@ use n2n\util\magic\MagicContext;
 interface Validator {
 	
 	/**
+	 * @param Validatable[] $validatables Validatables that were explicitly assigned to this validator
+	 * @param ValidationContext $validationContext
+	 * @param MagicContext $magicContext
+	 * @return bool
+	 * @throws ValidationMismatchException if the validator are not compatible with the validatables in the
+	 * {@see ValidationGroup}
+	 */
+	function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool;
+	
+	/**
 	 * @param Validatable[] $validatables Validatables that were explicitly assigned to this validator 
-	 * @param ValidatableResolver $validatableResolver
+	 * @param ValidationContext $validationContext
 	 * @param MagicContext $magicContext
 	 * @throws ValidationMismatchException if the validator are not compatible with the validatables in the 
 	 * {@see ValidationGroup}
 	 */
-	function validate(array $validatbles, ValidatableResolver $validatableResolver, MagicContext $magicContext);
+	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext);
 	
 	/**
 	 * @return TypeConstraint|NULL

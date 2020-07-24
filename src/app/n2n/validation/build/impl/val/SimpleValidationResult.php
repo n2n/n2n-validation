@@ -19,20 +19,25 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\build;
+namespace n2n\validation\build\impl;
 
-use n2n\validation\plan\ValidatableResolver;
+use n2n\util\ex\IllegalStateException;
+use n2n\validation\build\ValidationResult;
+use n2n\validation\build\ErrorMap;
 
-interface ValidatableSource extends ValidatableResolver {
-
-
-	/**
-	 * A new validation cycle begins. All errors of defined validatables should be removed
-	 */
-	function onValidationStart();
+class SimpleValidationResult implements ValidationResult {
+	private $errorMap;
 	
-	/**
-	 * @return ValidationResult
-	 */
-	function createValidationResult(): ValidationResult;
+	function __construct(ErrorMap $errorMap = null) {
+		$this->errorMap = $errorMap;
+	}
+	
+	function hasErrors(): bool {
+		return $this->errorMap !== null;
+	}
+	
+	function getErrorMap(): ErrorMap {
+		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
+		return $this->errorMap;
+	}
 }

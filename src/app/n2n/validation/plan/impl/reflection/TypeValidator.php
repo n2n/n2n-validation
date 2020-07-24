@@ -22,9 +22,7 @@
 namespace n2n\validation\plan\impl\reflection;
 
 use n2n\validation\plan\Validatable;
-use n2n\validation\lang\ValidationMessages;
 use n2n\validation\plan\impl\SimpleValidatorAdapter;
-use n2n\validation\plan\impl\ValidationUtils;
 use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
 use n2n\util\type\TypeUtils;
@@ -42,12 +40,12 @@ class TypeValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
-		$value = $this->readSafeValue($validatable);
-		
-		if (!$this->typeConstraint->isValueValid($value)) {
-			$validatable->addError(Message::create('Invalid type: ' . TypeUtils::getTypeInfo($value)
-					. '. Required type: ' . $this->typeConstraint));
-		}
+	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+		return $this->typeConstraint->isValueValid($this->readSafeValue($validatable));
+	}
+	
+	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		return Message::create('Invalid type: ' . TypeUtils::getTypeInfo($this->readSafeValue($validatable))
+				. '. Required type: ' . $this->typeConstraint);
 	}
 }

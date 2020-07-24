@@ -27,6 +27,7 @@ use n2n\validation\plan\impl\SimpleValidatorAdapter;
 use n2n\validation\plan\impl\ValidationUtils;
 use n2n\util\type\TypeConstraints;
 use n2n\util\magic\MagicContext;
+use n2n\l10n\Message;
 
 class MinlengthValidator extends SimpleValidatorAdapter {
 	private $minlength;
@@ -39,11 +40,14 @@ class MinlengthValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
+	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable);
 		
-		if ($value !== null && !ValidationUtils::minlength($value, $this->minlength)) {
-			$validatable->addError(ValidationMessages::minlength($this->minlength, $this->readLabel($validatable)));
-		}
+		return $value === null || ValidationUtils::minlength($value, $this->minlength);
+	}
+	
+	
+	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		return ValidationMessages::minlength($this->minlength, $this->readLabel($validatable));
 	}
 }

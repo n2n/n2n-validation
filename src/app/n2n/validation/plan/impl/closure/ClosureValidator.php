@@ -23,11 +23,10 @@ namespace n2n\validation\plan\impl\closure;
 
 use n2n\validation\plan\Validatable;
 use n2n\validation\plan\impl\ValidatorAdapter;
-use n2n\validation\plan\ValidatableResolver;
+use n2n\validation\plan\ValidationContext;
 use n2n\util\StringUtils;
 use n2n\reflection\magic\MagicMethodInvoker;
 use n2n\util\magic\MagicContext;
-use n2n\util\type\TypeConstraints;
 use n2n\util\type\ArgUtils;
 use n2n\l10n\Message;
 use n2n\validation\lang\ValidationMessages;
@@ -41,17 +40,13 @@ class ClosureValidator extends ValidatorAdapter {
 		$this->closure = $closure;
 	}
 	
-	function validate(array $validatbles, ValidatableResolver $validatableResolver, MagicContext $magicContext) {
-		
-		$bindingErrors = $mappingResult->getBindingErrors();
-		$dispatchModel = $mappingResult->getDispatchModel();
-		
+	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
-		$invoker->setClassParamObject(ValidatableResolver::class, $validatableResolver);
+		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
 		
 		foreach ($validatbles as $validatable) {
-			$invoker->setParamValue(StringUtils::camelCased($validatble->getName()), 
+			$invoker->setParamValue(StringUtils::camelCased($validatable->getName()), 
 					($validatable->doesExist() ? $this->readSafeValue($validatable) : null));
 		}
 		
@@ -59,7 +54,7 @@ class ClosureValidator extends ValidatorAdapter {
 	}
 	
 	/**
-	 * @param unknown $value
+	 * @param mixed|null $value
 	 * @param Validatable[] $validatables
 	 */
 	private function handleReturn($value, $validatables) {

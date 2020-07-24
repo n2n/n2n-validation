@@ -19,15 +19,20 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\plan;
+namespace n2n\validation\build\impl\source;
 
-use n2n\l10n\Message;
+use n2n\validation\plan\ValidationContext;
+use n2n\validation\build\ValidationResult;
 
-interface ValidationContext {
-	
+interface ValidatableSource extends ValidationContext {
+
+	/**
+	 * A new validation cycle begins. All errors of defined validatables should be removed
+	 */
+	function onValidationStart();
 	
 	/**
-	 * @param Message $message
+	 * @return ValidationResult
 	 */
-	function addGeneralError(Message $message);
+	function createValidationResult(): ValidationResult;
 }
