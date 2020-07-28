@@ -222,6 +222,18 @@ class ValidationMessages {
 	}
 	
 	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function urlSchemeRequired(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('url_scheme_required_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_url_scheme_required_err', ['field' => $fieldName], null, self::NS);
+	}
+	
+	/**
 	 * @param string[] $allowedSchemes
 	 * @param string $fieldName
 	 * @return \n2n\l10n\impl\TextCodeMessage

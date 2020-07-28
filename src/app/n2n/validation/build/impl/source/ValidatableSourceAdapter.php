@@ -6,7 +6,7 @@ use n2n\validation\build\ValidationResult;
 use n2n\validation\plan\Validatable;
 use n2n\validation\build\ErrorMap;
 use n2n\util\type\ArgUtils;
-use n2n\validation\build\impl\SimpleValidationResult;
+use n2n\validation\build\impl\val\SimpleValidationResult;
 
 abstract class ValidatableSourceAdapter implements ValidatableSource {
 	/**

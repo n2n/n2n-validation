@@ -1,7 +1,6 @@
 <?php
-namespace n2n\validation\build\impl\attrs;
+namespace n2n\validation\build\impl\val;
 
-use n2n\validation\build\impl\ValidatableAdapter;
 use n2n\util\type\TypeConstraint;
 
 class ValueValidatable extends ValidatableAdapter {

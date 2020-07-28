@@ -19,7 +19,7 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\build\impl;
+namespace n2n\validation\build\impl\val;
 
 use n2n\util\ex\IllegalStateException;
 use n2n\validation\build\ValidationResult;

@@ -1,5 +1,5 @@
 <?php
-namespace n2n\validation\build\impl;
+namespace n2n\validation\build\impl\val;
 
 use n2n\l10n\Message;
 use n2n\validation\plan\Validatable;
@@ -43,7 +43,7 @@ abstract class ValidatableAdapter implements Validatable {
 	/**
 	 * 
 	 */
-	function clearErrors() {
+	function clearErrors(): void {
 		$this->messages = [];
 	}
 	

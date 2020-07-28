@@ -31,6 +31,7 @@ use n2n\util\type\ArgUtils;
 use n2n\l10n\Message;
 use n2n\validation\lang\ValidationMessages;
 use n2n\l10n\Lstr;
+use n2n\util\ex\NotYetImplementedException;
 
 class ClosureValidator extends ValidatorAdapter {
 	
@@ -82,4 +83,9 @@ class ClosureValidator extends ValidatorAdapter {
 			$validatable->addError(ValidationMessages::invalid($validatable->getLabel()));
 		}
 	}
+	
+	public function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
+		throw new NotYetImplementedException();
+	}
+
 }

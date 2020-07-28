@@ -17,7 +17,7 @@ class StaticValidatableSource extends ValidatableSourceAdapter implements UnionV
 	 * {@inheritDoc}
 	 * @see \n2n\validation\build\impl\compose\union\UnionValidatableSource::getValidatables()
 	 */
-	function getValidatables() {
+	function getValidatables(): array {
 		return $this->validatables;
 	}	
 }

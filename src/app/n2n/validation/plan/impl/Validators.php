@@ -12,6 +12,7 @@ use n2n\validation\plan\impl\enum\EnumValidator;
 use n2n\web\dispatch\map\val\ClosureValidator;
 use n2n\validation\plan\impl\closure\ValueClosureValidator;
 use n2n\validation\plan\impl\common\ExistsValidator;
+use n2n\impl\web\dispatch\map\val\UrlValidator;
 
 class Validators {
 	
@@ -62,6 +63,10 @@ class Validators {
 	 */
 	static function email($errorMessage = null) {
 		return new EmailValidator(Message::build($errorMessage));
+	}
+	
+	static function url(bool $schemeRequired = false, array $allowedSchemes = null) {
+		return new UrlValidator($schemeRequired, $allowedSchemes);
 	}
 	
 	/**

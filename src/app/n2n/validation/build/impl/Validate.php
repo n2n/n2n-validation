@@ -3,10 +3,10 @@ namespace n2n\validation\build\impl;
 
 use n2n\util\type\attrs\DataMap;
 use n2n\util\type\attrs\AttributeReader;
-use n2n\validation\build\impl\attrs\ValueValidatable;
 use n2n\validation\build\impl\source\StaticValidatableSource;
 use n2n\validation\build\impl\compose\union\UnionValidationComposer;
 use n2n\validation\build\impl\source\LazyAttrsValidatableSource;
+use n2n\validation\build\impl\val\ValueValidatable;
 
 class Validate {
 	/**
