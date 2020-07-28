@@ -19,7 +19,7 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\impl\web\dispatch\map\val;
+namespace n2n\validation\plan\impl\string;
 
 use n2n\util\uri\Url;
 use n2n\validation\plan\impl\SingleValidatorAdapter;
