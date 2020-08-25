@@ -47,7 +47,7 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 	 */
 	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
 		$value = $this->readSafeValue($validatable);
-		
+
 		if (!ValidationUtils::isNotEmpty($value)) {
 			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));
 		}

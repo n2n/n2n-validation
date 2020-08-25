@@ -3,7 +3,7 @@
 	"prefer-stable" : true,
 	"require" : {
 		"n2n/n2n-util" : "master-dev",
-		"n2n/n2n-l10n": "dev-master"
+		"n2n/n2n-l10n" : "dev-master"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "^8.0"

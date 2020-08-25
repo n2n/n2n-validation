@@ -7,6 +7,7 @@ use n2n\validation\build\impl\source\StaticValidatableSource;
 use n2n\validation\build\impl\compose\union\UnionValidationComposer;
 use n2n\validation\build\impl\source\LazyAttrsValidatableSource;
 use n2n\validation\build\impl\val\ValueValidatable;
+use n2n\validation\build\impl\compose\prop\PropValidationComposer;
 
 class Validate {
 	/**

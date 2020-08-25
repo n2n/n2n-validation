@@ -1,5 +1,5 @@
 <?php
-namespace n2n\validation\build\impl;
+namespace n2n\validation\build\impl\compose\prop;
 
 use n2n\validation\err\UnresolvableValidationException;
 use n2n\validation\plan\ValidationGroup;
@@ -12,7 +12,6 @@ use n2n\validation\build\ValidationJob;
 use n2n\validation\build\ValidationResult;
 use n2n\util\magic\MagicContext;
 use n2n\validation\err\ValidationMismatchException;
-use n2n\validation\build\impl\source\prop\PropValidatableSource;
 
 class PropValidationComposer implements ValidationJob { 
 	/**
@@ -86,7 +85,7 @@ class PropValidationComposer implements ValidationJob {
 				ArgUtils::valArrayReturn($resolvedValidatables, $this->validatableSource, 'resolveValidatables', Validatable::class);
 				array_push($validatables, ...$resolvedValidatables);
 			}
-			
+
 			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
 		});
 	}
