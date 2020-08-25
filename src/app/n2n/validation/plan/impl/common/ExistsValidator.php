@@ -37,7 +37,7 @@ class ExistsValidator extends ValidatorAdapter {
 	 * {@inheritDoc}
 	 * @see \n2n\validation\plan\Validator::test()
 	 */
-	function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
+	function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		foreach ($validatbles as $validatable) {
 			if (!$validatable->doesExist()) {
 				return false;
