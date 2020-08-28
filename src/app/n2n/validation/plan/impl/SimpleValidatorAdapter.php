@@ -56,7 +56,7 @@ abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 			return false;
 		}
 		
-		$validatable->addError($this->createErrorMessage());
+		$validatable->addError($this->createErrorMessage($validatable, $magicContext));
 	}
 	
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
