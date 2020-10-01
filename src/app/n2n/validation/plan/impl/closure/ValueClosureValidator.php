@@ -55,8 +55,7 @@ class ValueClosureValidator extends ValidatorAdapter {
 			
 			$value = $this->readSafeValue($validatable);
 			$invoker->setParamValue(StringUtils::camelCased($validatable->getName()), $value);
-			$invoker->setParamValue('value', $value);
-			$this->handleReturn($invoker->invoke(), $validatable);
+			$this->handleReturn($invoker->invoke(null, null, [$value]), $validatable);
 		}
 	}
 	

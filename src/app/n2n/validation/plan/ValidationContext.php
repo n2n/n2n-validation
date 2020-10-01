@@ -25,7 +25,6 @@ use n2n\l10n\Message;
 
 interface ValidationContext {
 	
-	
 	/**
 	 * @param Message $message
 	 */
