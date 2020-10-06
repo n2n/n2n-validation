@@ -44,8 +44,16 @@ class ValidationUtils {
 		return false;
 	}
 	
+	static function minlength(string $str, int $minlength) {
+		return mb_strlen($str) <= $minlength;
+	}
+	
 	static function isNotShorterThan(string $str, int $minlength) {
 		return mb_strlen($str) <= $minlength;
+	}
+	
+	static function maxlength(string $str, int $maxlength) {
+		return mb_strlen($str) <= $maxlength;
 	}
 	
 	static function isNotLongerThen(string $str, int $maxlength) {

@@ -46,12 +46,12 @@ class ClosureValidator extends ValidatorAdapter {
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
 		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
 		
+		$args = [];
 		foreach ($validatbles as $validatable) {
-			$invoker->setParamValue(StringUtils::camelCased($validatable->getName()), 
-					($validatable->doesExist() ? $this->readSafeValue($validatable) : null));
+			$args[] = ($validatable->doesExist() ? $this->readSafeValue($validatable) : null);
 		}
 		
-		$this->handleReturn($invoker->invoke());
+		$this->handleReturn($invoker->invoke(null, null, $args), $validatbles);
 	}
 	
 	/**

@@ -9,10 +9,10 @@ use n2n\validation\plan\impl\string\MinlengthValidator;
 use n2n\validation\plan\impl\string\MaxlengthValidator;
 use n2n\validation\plan\impl\reflection\TypeValidator;
 use n2n\validation\plan\impl\enum\EnumValidator;
-use n2n\web\dispatch\map\val\ClosureValidator;
 use n2n\validation\plan\impl\closure\ValueClosureValidator;
 use n2n\validation\plan\impl\common\ExistsValidator;
 use n2n\validation\plan\impl\string\UrlValidator;
+use n2n\validation\plan\impl\closure\ClosureValidator;
 
 class Validators {
 	
