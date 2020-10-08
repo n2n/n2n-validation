@@ -70,6 +70,8 @@ class ClosureValidator extends ValidatorAdapter {
 			$message = $value;
 		} else if (is_string($value)) {
 			$message = Message::create($value);
+		} else if ($this->handleIndiviualErrors($value, $validatables)) {
+			return;
 		}
 		
 		if ($message !== null) {
@@ -82,6 +84,34 @@ class ClosureValidator extends ValidatorAdapter {
 		foreach ($validatables as $validatable) {
 			$validatable->addError(ValidationMessages::invalid($validatable->getLabel()));
 		}
+	}
+	
+	/**
+	 * @param mixed $returnValue
+	 * @param Validatable[] $validatables
+	 */
+	private function handleIndiviualErrors($returnValue, $validatables) {
+		if (!is_array($returnValue)) {
+			return false;
+		}
+		
+		$handled = false;
+		foreach ($validatables as $validatable) {
+			$name = $validatable->getName();
+			if (!isset($returnValue[$name])) {
+				continue;
+			}
+			
+			if (is_string($returnValue[$name]) || $returnValue[$name] instanceof Message) {
+				$validatable->addError(Message::create($returnValue[$name]));
+			} else {
+				$validatable->addError(ValidationMessages::invalid($validatable->getLabel()));
+			}
+			
+			$handled = true;
+		}
+		
+		return $handled;
 	}
 	
 	public function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
