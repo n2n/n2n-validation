@@ -92,10 +92,10 @@ class ValidationMessages {
 	 */
 	static function minElements(int $min, string $fieldName = null) {
 		if ($fieldName === null) {
-			return Message::createCode('min_elements_err', null, self::NS, $min);
+			return Message::createCode('min_elements_err', ['min' => $min], self::NS, $min);
 		}
 		
-		return Message::createCodeArg('field_min_elements_err', ['field' => $fieldName], null, self::NS, $min);
+		return Message::createCodeArg('field_min_elements_err', ['field' => $fieldName, 'min' => $min], null, self::NS, $min);
 	}
 	
 	/**
@@ -105,10 +105,10 @@ class ValidationMessages {
 	 */
 	static function maxElements(int $max, string $fieldName = null) {
 		if ($fieldName === null) {
-			return Message::createCode('max_elements_err', null, self::NS, $max);
+			return Message::createCode('max_elements_err', ['max' => $max], self::NS, $max);
 		}
 		
-		return Message::createCodeArg('field_max_elements_err', ['field' => $fieldName], null, self::NS, $max);
+		return Message::createCodeArg('field_max_elements_err', ['field' => $fieldName, 'max' => $max], null, self::NS, $max);
 	}
 	
 	/**
