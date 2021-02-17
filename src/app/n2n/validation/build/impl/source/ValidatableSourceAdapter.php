@@ -17,7 +17,7 @@ abstract class ValidatableSourceAdapter implements ValidatableSource {
 
 	function __construct(array $validatables) {
 		ArgUtils::valArray($validatables, Validatable::class);
-		$this->validatbles = $validatables;
+		$this->validatables = $validatables;
 	}
 	
 	public function addGeneralError(Message $message) {

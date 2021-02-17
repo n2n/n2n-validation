@@ -41,7 +41,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	function getAllMessages() {
 		$messages = $this->messages;
 		foreach ($this->children as $child) {
-			array_push(...$child->getAllMessages());
+			array_push($messages, ...$child->getAllMessages());
 		}
 		return $messages;
 	}
