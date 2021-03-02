@@ -250,4 +250,17 @@ class ValidationMessages {
 				['allowedSchemes' => $allowedSchemesStr, 'field' => $fieldName],
 				null, self::NS);
 	}
+	
+
+	/**
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function alreadyTaken(string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCode('already_taken_err', null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_already_taken_err', ['field' => $fieldName], null, self::NS);
+	}
 }
