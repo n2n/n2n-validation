@@ -39,7 +39,7 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable);
 		
-		return ValidationUtils::isNotEmpty($value);
+		return $this->isValid($value);
 	}
 	
 	/**
@@ -48,8 +48,12 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 	protected function validateSingle(Validatable $validatable, MagicContext $magicContext) {
 		$value = $this->readSafeValue($validatable);
 		
-		if (!ValidationUtils::isNotEmpty($value)) {
+		if (!$this->isValid($value)) {
 			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));
 		}
+	}
+	
+	private function isValid($value) {
+		return null !== $value && (!is_scalar($value) || ValidationUtils::isNotEmpty($value));
 	}
 }
