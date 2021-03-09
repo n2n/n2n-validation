@@ -13,6 +13,8 @@ use n2n\validation\plan\impl\closure\ValueClosureValidator;
 use n2n\validation\plan\impl\common\ExistsValidator;
 use n2n\validation\plan\impl\string\UrlValidator;
 use n2n\validation\plan\impl\closure\ClosureValidator;
+use n2n\validation\plan\impl\number\MinValidator;
+use n2n\validation\plan\impl\number\MaxValidator;
 
 class Validators {
 	
@@ -43,7 +45,7 @@ class Validators {
 	
 	/**
 	 * @param Message|null $errorMessage
-	 * @return \n2n\validation\plan\impl\common\MandatoryValidator
+	 * @return MinlengthValidator
 	 */
 	static function minlength(int $minlength, $errorMessage = null) {
 		return new MinlengthValidator($minlength, Message::build($errorMessage));
@@ -51,10 +53,26 @@ class Validators {
 	
 	/**
 	 * @param Message|null $errorMessage
-	 * @return \n2n\validation\plan\impl\common\MandatoryValidator
+	 * @return MaxlengthValidator
 	 */
 	static function maxlength(int $maxlength, $errorMessage = null) {
 		return new MaxlengthValidator($maxlength, Message::build($errorMessage));
+	}
+	
+	/**
+	 * @param Message|null $errorMessage
+	 * @return MinValidator
+	 */
+	static function min(float $min, $errorMessage = null) {
+		return new MinValidator($min, Message::build($errorMessage));
+	}
+	
+	/**
+	 * @param Message|null $errorMessage
+	 * @return MaxValidator
+	 */
+	static function max(float $max, $errorMessage = null) {
+		return new MaxValidator($max, Message::build($errorMessage));
 	}
 	
 	/**

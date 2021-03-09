@@ -86,6 +86,34 @@ class ValidationMessages {
 	}
 	
 	/**
+	 * @param string $maxlength
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function min(float $min, string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCodeArg('min_err', ['min' => $min], null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_min_err', ['min' => $min, 'field' => $fieldName],
+				null, self::NS);
+	}
+	
+	/**
+	 * @param string $max
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function max(float $max, string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCodeArg('max_err', ['max' => $max], null, self::NS);
+		}
+		
+		return Message::createCodeArg('field_max_err', ['max' => $max, 'field' => $fieldName],
+				null, self::NS);
+	}
+	
+	/**
 	 * @param int $min
 	 * @param string $fieldName
 	 * @return \n2n\l10n\impl\TextCodeMessage
