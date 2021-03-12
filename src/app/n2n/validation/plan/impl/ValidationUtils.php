@@ -32,7 +32,7 @@ class ValidationUtils {
 		}
 		
 		if ($schemeRequired) {
-			if (false !== filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+			if (false !== filter_var($url, FILTER_VALIDATE_URL)) {
 				return true;
 			}
 		} else {

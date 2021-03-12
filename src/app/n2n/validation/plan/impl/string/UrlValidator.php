@@ -79,7 +79,7 @@ class UrlValidator extends SingleValidatorAdapter {
 			return;
 		}
 		
-		if (!self::isUrl($value)) {
+		if (!ValidationUtils::isUrl($value)) {
 			$validatable->addError($this->errorMessage ?? ValidationMessages::url($this->readLabel($validatable)));
 			return;
 		}
