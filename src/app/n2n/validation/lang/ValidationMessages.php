@@ -271,11 +271,11 @@ class ValidationMessages {
 		$allowedSchemesStr = implode(', ', $allowedSchemes);
 		
 		if ($fieldName === null) {
-			return Message::createCodeArg('url_scheme_err', ['allowedSchemes' => $allowedSchemesStr], null, self::NS);
+			return Message::createCodeArg('url_scheme_err', ['allowed_schemes' => $allowedSchemesStr], null, self::NS);
 		}
 		
 		return Message::createCodeArg('field_url_scheme_err', 
-				['allowedSchemes' => $allowedSchemesStr, 'field' => $fieldName],
+				['allowed_schemes' => $allowedSchemesStr, 'field' => $fieldName],
 				null, self::NS);
 	}
 	
