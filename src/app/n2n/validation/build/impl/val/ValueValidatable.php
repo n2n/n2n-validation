@@ -8,8 +8,8 @@ class ValueValidatable extends ValidatableAdapter {
 	private $value;
 	private $doesExist;
 	
-	function __construct(string $name, $value, bool $doesExist) {
-		parent::__construct($name);
+	function __construct(string $name, $value, bool $doesExist, string $label = null) {
+		parent::__construct($name, $label);
 		$this->name = $name;
 		$this->value = $value;
 		$this->doesExist = $doesExist;
