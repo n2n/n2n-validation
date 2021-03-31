@@ -75,6 +75,28 @@ class PropValidationComposer implements ValidationJob {
 		return $this;
 	}
 	
+	/**
+	 *
+	 * @param string $expression
+	 * @param bool $mustExist
+	 * @param Validator ...$validators
+	 * @return PropValidationComposer
+	 */
+	function dynProp(string $expression, bool $mustExist, Validator ...$validators) {
+		return $this->dynProp([$expression], ...$validators);
+	}
+	
+	/**
+	 * @param string[] $expressions
+	 * @param bool $mustExist
+	 * @param Validator ...$validators
+	 * @return PropValidationComposer
+	 */
+	function dynProps(array $expressions,  bool $mustExist, Validator ...$validators) {
+		$this->assembleValidationGroup($expressions, $validators, $mustExist);
+		return $this;
+	}
+	
 	private function assembleValidationGroup(array $expressions, array $validators, bool $mustExist) {
 		ArgUtils::valArray($expressions, 'string', false, 'expressions');
 		
