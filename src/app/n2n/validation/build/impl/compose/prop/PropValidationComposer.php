@@ -83,7 +83,7 @@ class PropValidationComposer implements ValidationJob {
 	 * @return PropValidationComposer
 	 */
 	function dynProp(string $expression, bool $mustExist, Validator ...$validators) {
-		return $this->dynProps([$expression], ...$validators);
+		return $this->dynProps([$expression], $mustExist, ...$validators);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ class PropValidationComposer implements ValidationJob {
 	 * @param Validator ...$validators
 	 * @return PropValidationComposer
 	 */
-	function dynProps(array $expressions,  bool $mustExist, Validator ...$validators) {
+	function dynProps(array $expressions, bool $mustExist, Validator ...$validators) {
 		$this->assembleValidationGroup($expressions, $validators, $mustExist);
 		return $this;
 	}
