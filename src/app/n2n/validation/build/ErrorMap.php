@@ -59,10 +59,32 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	function setMessages(array $messages) {
 		ArgUtils::valArray($messages, Message::class);
 		$this->messages = $messages;
+		return $this;
 	}
 	
+	/**
+	 * @param Message $message
+	 * @return \n2n\validation\build\ErrorMap
+	 */
 	function addMessage(Message $message) {
 		$this->messages[] = $message;
+		return $this;
+	}
+	
+	/**
+	 * @param array $keys
+	 * @param Message $message
+	 * @return \n2n\validation\build\ErrorMap
+	 */
+	function addDecendantMessage(array $keys, Message $message) {
+		if (empty($keys)) {
+			$this->addMessage($message);
+			return $this;
+		}
+		
+		$this->getOrCreateChild(array_shift($keys))->addDecendantMessage($keys, $message);
+		
+		return $this;
 	}
 	
 	/**
@@ -73,10 +95,13 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	}
 	
 	/**
-	 * @param ErrorMap $children
+	 * @param ErrorMap[] $children
+	 * @return \n2n\validation\build\ErrorMap
 	 */
 	function setChildren(array $children) {
+		ArgUtils::valArray($children, ErrorMap::class);
 		$this->children = $children;
+		return $this;
 	}
 	
 	/**
@@ -84,6 +109,49 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 */
 	function putChild(string $key, ErrorMap $errorMap) {
 		$this->children[$key] = $errorMap;
+		
+		return $this;
+	}
+	
+	/**
+	 * @param string $key
+	 * @return ErrorMap|null
+	 */
+	function getChild(string $key) {
+		return $this->children[$key] ?? null;
+	}
+	
+	/**
+	 * @param string $key
+	 * @return ErrorMap|null
+	 */
+	function getOrCreateChild(string $key) {
+		if (!isset($this->children[$key])) {
+			$this->children[$key] = new ErrorMap(); 
+		}
+		
+		return $this->children[$key];
+	}
+	
+	/**
+	 * @param array $keys
+	 * @param ErrorMap $errorMap
+	 * @throws \InvalidArgumentException
+	 * @return \n2n\validation\build\ErrorMap
+	 */
+	function putDecendant(array $keys, ErrorMap $errorMap) {
+		if (empty($keys)) {
+			throw new \InvalidArgumentException('No keys passed.');
+		}
+		
+		$key = array_shift($keys);
+		if (empty($keys)) {
+			$this->putChild($key, $errorMap);
+		}
+		
+		$this->getOrCreateChild($key)->putDecendant($keys, $errorMap);
+		
+		return $this;
 	}
 	
 	function isEmpty() {
