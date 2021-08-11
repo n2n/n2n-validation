@@ -147,6 +147,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		$key = array_shift($keys);
 		if (empty($keys)) {
 			$this->putChild($key, $errorMap);
+			return;
 		}
 		
 		$this->getOrCreateChild($key)->putDecendant($keys, $errorMap);
