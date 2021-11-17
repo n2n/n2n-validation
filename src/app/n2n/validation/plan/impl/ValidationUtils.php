@@ -4,7 +4,7 @@ namespace n2n\validation\plan\impl;
 use n2n\util\uri\Url;
 use n2n\util\StringUtils;
 use n2n\io\managed\File;
-use n2n\io\IoUtils;
+use n2n\util\io\IoUtils;
 use n2n\io\managed\img\ImageFile;
 
 class ValidationUtils {
