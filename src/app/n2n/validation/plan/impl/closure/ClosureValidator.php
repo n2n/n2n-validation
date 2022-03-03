@@ -37,7 +37,7 @@ class ClosureValidator extends ValidatorAdapter {
 	
 	private $closure;
 	
-	function __construct(\Closure $closure) {
+	function __construct(\Closure $closure, private ?bool $everyValidatableMustExist) {
 		$this->closure = $closure;
 	}
 	
@@ -45,13 +45,23 @@ class ClosureValidator extends ValidatorAdapter {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
 		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
-		
+
+		$existNum = 0;
 		$args = [];
 		foreach ($validatbles as $validatable) {
-			$args[] = ($validatable->doesExist() ? $this->readSafeValue($validatable) : null);
+			if (!$validatable->doesExist()) {
+				$args[] = null;
+			} else {
+				$args[] = $this->readSafeValue($validatable);
+				$existNum++;
+			}
 		}
-		
-		$this->handleReturn($invoker->invoke(null, null, $args), $validatbles);
+
+		if ($this->everyValidatableMustExist === null
+				|| ($this->everyValidatableMustExist === true && (count($validatbles) === $existNum))
+				|| ($this->everyValidatableMustExist === false && $existNum > 0)) {
+			$this->handleReturn($invoker->invoke(null, null, $args), $validatbles);
+		}
 	}
 	
 	/**
