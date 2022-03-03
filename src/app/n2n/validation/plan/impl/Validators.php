@@ -96,14 +96,38 @@ class Validators {
 	}
 	
 	/**
+	 * Closure gets called once for all values, even if the values do not exist.
+	 *
 	 * @param \Closure $closure
 	 * @return \n2n\web\dispatch\map\val\ClosureValidator
 	 */
 	static function closure(\Closure $closure) {
-		return new ClosureValidator($closure);
+		return new ClosureValidator($closure, null);
 	}
-	
+
 	/**
+	 * Closure gets called once for all values, if at least one value exists.
+	 *
+	 * @param \Closure $closure
+	 * @return \n2n\web\dispatch\map\val\ClosureValidator
+	 */
+	static function closureAny(\Closure $closure) {
+		return new ClosureValidator($closure, false);
+	}
+
+	/**
+	 * Closure gets called once for all values, if all values exists.
+	 *
+	 * @param \Closure $closure
+	 * @return \n2n\web\dispatch\map\val\ClosureValidator
+	 */
+	static function closureEvery(\Closure $closure) {
+		return new ClosureValidator($closure, true);
+	}
+
+	/**
+	 * Closure gets called for every value and only if it exists.
+	 *
 	 * @param \Closure $closure
 	 * @return ValueClosureValidator
 	 */
