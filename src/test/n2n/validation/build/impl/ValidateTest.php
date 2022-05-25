@@ -10,12 +10,12 @@ use n2n\util\ex\UnsupportedOperationException;
 class ValidateTest extends TestCase {
 	
 	function testAuthBindable() {
-		$dataMap = new DataMap(['firstname' => 'Huii', 'lastname' => null, 'data' => [ 'huii' => null ]]);
+		$dataMap = new DataMap(['firstname' => 'Huii', 'lastname' => null, 'data' => [ 'huii' => null, 'huii2' => 'hoi' ]]);
 		
 		$validationResult = Validate::attrs($dataMap)
-				->props(['firstname', 'lastname', 'data/huii'], Validators::mandatory(),
-						Validators::closure(function ($firstname, $lastname, $huii) {
-							return ['data/huii' => 'wrong!'];
+				->props(['firstname', 'lastname', 'data/huii', 'data/huii2'], Validators::mandatory(),
+						Validators::closure(function ($firstname, $lastname, $huii, $huii2) {
+							return ['data/huii2' => 'wrong: ' . $huii2];
 						}))
 				->exec(new EmptyMagicContext());
 		
@@ -27,8 +27,11 @@ class ValidateTest extends TestCase {
 		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['lastname']));
 		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['lastname']->isEmpty());
 
-		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['data']->getChildren()['huii']));
-		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['data']->getChildren()['huii']->isEmpty());
+		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['data']));
+
+		$dataErrorMap = $validationResult->getErrorMap()->getChildren()['data'];
+		$this->assertTrue(!$dataErrorMap->getChildren()['huii']->isEmpty());
+		$this->assertEquals('wrong: hoi', $dataErrorMap->getChildren()['huii2']->getMessages()[0]->__toString());
 	}
 
 
