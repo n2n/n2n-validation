@@ -13,7 +13,10 @@ class ValidateTest extends TestCase {
 		$dataMap = new DataMap(['firstname' => 'Huii', 'lastname' => null, 'data' => [ 'huii' => null ]]);
 		
 		$validationResult = Validate::attrs($dataMap)
-				->props(['firstname', 'lastname', 'data/huii'], Validators::mandatory())
+				->props(['firstname', 'lastname', 'data/huii'], Validators::mandatory(),
+						Validators::closure(function ($firstname, $lastname, $huii) {
+							return ['data/huii' => 'wrong!'];
+						}))
 				->exec(new EmptyMagicContext());
 		
 		$this->assertTrue($validationResult->hasErrors());
@@ -27,7 +30,8 @@ class ValidateTest extends TestCase {
 		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['data']->getChildren()['huii']));
 		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['data']->getChildren()['huii']->isEmpty());
 	}
-	
+
+
 }
 
 class EmptyMagicContext implements MagicContext {

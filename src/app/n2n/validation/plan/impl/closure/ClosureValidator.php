@@ -107,7 +107,7 @@ class ClosureValidator extends ValidatorAdapter {
 		
 		$handled = false;
 		foreach ($validatables as $validatable) {
-			$name = $validatable->getName();
+			$name = (string) $validatable->getName();
 			if (!isset($returnValue[$name])) {
 				continue;
 			}
