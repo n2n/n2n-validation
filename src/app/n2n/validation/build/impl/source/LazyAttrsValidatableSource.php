@@ -8,12 +8,12 @@ use n2n\util\type\attrs\AttributesException;
 use n2n\util\type\ArgUtils;
 use n2n\validation\build\impl\val\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidatableSource;
+use n2n\validation\plan\ValidatableName;
 
 class LazyAttrsValidatableSource extends ValidatableSourceAdapter implements PropValidatableSource {
-	private $attributeReader;
-	
-	function __construct(AttributeReader $attributeReader) {
-		$this->attributeReader = $attributeReader;
+
+	function __construct(private AttributeReader $attributeReader) {
+		parent::__construct([]);
 	}
 	
 	public function resolveValidatables(string $expression, bool $mustExist): array {
@@ -27,11 +27,14 @@ class LazyAttrsValidatableSource extends ValidatableSourceAdapter implements Pro
 				return [$attrValidatable];
 			}
 		}
-		
+
+		$attributePath = AttributePath::create($expression);
+		$validatableName = new ValidatableName($attributePath->toArray());
+
 		try {
-			$value = $this->attributeReader->readAttribute(AttributePath::create($expression));
+			$value = $this->attributeReader->readAttribute($attributePath);
 			if ($attrValidatable === null) {
-				return [$this->validatables[$expression] = new ValueValidatable($expression, $value, true)];
+				return [$this->validatables[$expression] = new ValueValidatable($validatableName, $value, true)];
 			}
 
 			$attrValidatable->setValue($value);
@@ -42,7 +45,7 @@ class LazyAttrsValidatableSource extends ValidatableSourceAdapter implements Pro
 				throw new UnresolvableValidationException('Could not resolve validatable: ' . $expression, null, $e);
 			}
 
-			return [$this->validatables[$expression] = new ValueValidatable($expression, null, false)];
+			return [$this->validatables[$expression] = new ValueValidatable($validatableName, null, false)];
 		}
 	}	
 }

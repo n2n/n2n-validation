@@ -8,6 +8,7 @@ use n2n\validation\build\impl\compose\union\UnionValidationComposer;
 use n2n\validation\build\impl\source\LazyAttrsValidatableSource;
 use n2n\validation\build\impl\val\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidationComposer;
+use n2n\validation\plan\ValidatableName;
 
 class Validate {
 	/**
@@ -17,14 +18,14 @@ class Validate {
 	static function value(...$values) {
 		$validatables = [];
 		foreach ($values as $name => $value) {
-			$validatables[] = new ValueValidatable($name, $value, true);
+			$validatables[] = new ValueValidatable(new ValidatableName([$name]), $value, true);
 		}
 		
 		return new UnionValidationComposer(new StaticValidatableSource($validatables));
 	}
 	
 	/**
-	 * @param DataMap $attrs
+	 * @param AttributeReader $attributeReader
 	 * @return PropValidationComposer
 	 */
 	static function attrs(AttributeReader $attributeReader) {

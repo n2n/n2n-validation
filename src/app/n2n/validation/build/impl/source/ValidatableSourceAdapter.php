@@ -12,7 +12,7 @@ abstract class ValidatableSourceAdapter implements ValidatableSource {
 	/**
 	 * @var Validatable[]
 	 */
-	protected $validatables = [];
+	protected array $validatables = [];
 	private $generalMessages = [];
 
 	function __construct(array $validatables) {
@@ -27,8 +27,8 @@ abstract class ValidatableSourceAdapter implements ValidatableSource {
 	function createValidationResult(): ValidationResult {
 		$errorMap = new ErrorMap($this->generalMessages);
 		
-		foreach ($this->validatables as $key => $attrValidatable) {
-			$errorMap->putChild($key, new ErrorMap($attrValidatable->getMessages()));
+		foreach ($this->validatables as $attrValidatable) {
+			$errorMap->putDecendant($attrValidatable->getName()->toArray(), new ErrorMap($attrValidatable->getMessages()));
 		}
 		
 		return new SimpleValidationResult($errorMap->isEmpty() ? null : $errorMap);

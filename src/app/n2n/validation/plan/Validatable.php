@@ -32,14 +32,14 @@ use n2n\util\ex\IllegalStateException;
 interface Validatable {
 	
 	/**
-	 * @return string
+	 * @return ValidatableName
 	 */
-	function getName(): string;
+	function getName(): ValidatableName;
 	
 	/**
 	 * @return string|Lstr|null
 	 */
-	function getLabel();
+	function getLabel(): string|Lstr|null;
 	
 	/**
 	 * @return bool

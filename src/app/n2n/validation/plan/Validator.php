@@ -35,7 +35,7 @@ interface Validator {
 	 * @throws ValidationMismatchException if the validator are not compatible with the validatables in the
 	 * {@see ValidationGroup}
 	 */
-	function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool;
+	function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool;
 	
 	/**
 	 * @param Validatable[] $validatables Validatables that were explicitly assigned to this validator 
@@ -44,7 +44,7 @@ interface Validator {
 	 * @throws ValidationMismatchException if the validator are not compatible with the validatables in the 
 	 * {@see ValidationGroup}
 	 */
-	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext);
+	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext);
 	
 	/**
 	 * @return TypeConstraint|NULL

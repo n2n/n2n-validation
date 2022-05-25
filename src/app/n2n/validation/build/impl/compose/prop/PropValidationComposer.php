@@ -100,7 +100,7 @@ class PropValidationComposer implements ValidationJob {
 	private function assembleValidationGroup(array $expressions, array $validators, bool $mustExist) {
 		ArgUtils::valArray($expressions, 'string', false, 'expressions');
 		
-		array_push($this->assembleClosures, function () use ($expressions, $validators, $mustExist) {
+		$this->assembleClosures[] = function() use ($expressions, $validators, $mustExist) {
 			$validatables = [];
 			foreach ($expressions as $expression) {
 				$resolvedValidatables = $this->validatableSource->resolveValidatables($expression, $mustExist);
@@ -109,7 +109,7 @@ class PropValidationComposer implements ValidationJob {
 			}
 
 			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
-		});
+		};
 	}
 	
 	private function prepareJob() {

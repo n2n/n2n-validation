@@ -61,11 +61,11 @@ class ValidationGroup {
 	/**
 	 * @param Validatable $validatable
 	 */
-	private function addValidatable($validatable) {
+	private function addValidatable(Validatable $validatable) {
 		$typeConstraint = $validatable->getTypeConstraint();
 		
 		if ($typeConstraint === null) {
-			array_push($this->validatables, $validatable);
+			$this->validatables[] = $validatable;
 			return;
 		}
 		
@@ -81,11 +81,11 @@ class ValidationGroup {
 					. $validatorTypeConstraint);
 		}
 		
-		array_push($this->validatables, $validatable);
+		$this->validatables[] = $validatable;
 	}
 	
 	/**
-	 * @param ValidationContext $pool
+	 * @param ValidationContext $validationContext
 	 * @param MagicContext $magicContext
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 * @throws UnresolvableValidationException if a {@see Validatable} required by a {@see Validator} could not have
@@ -99,7 +99,11 @@ class ValidationGroup {
 	
 	function test(ValidationContext $validationContext, MagicContext $magicContext) {
 		foreach ($this->validators as $validator) {
-			$validator->validate($this->validatables, $validationContext, $magicContext);
+			if (!$validator->test($this->validatables, $validationContext, $magicContext)) {
+				return false;
+			}
 		}
+
+		return true;
 	}
 }

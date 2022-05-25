@@ -10,10 +10,10 @@ use n2n\util\ex\UnsupportedOperationException;
 class ValidateTest extends TestCase {
 	
 	function testAuthBindable() {
-		$dataMap = new DataMap(['firstname' => 'Huii', 'lastname' => null]);
+		$dataMap = new DataMap(['firstname' => 'Huii', 'lastname' => null, 'data' => [ 'huii' => null ]]);
 		
 		$validationResult = Validate::attrs($dataMap)
-				->props(['firstname', 'lastname'], Validators::mandatory())
+				->props(['firstname', 'lastname', 'data/huii'], Validators::mandatory())
 				->exec(new EmptyMagicContext());
 		
 		$this->assertTrue($validationResult->hasErrors());
@@ -23,6 +23,9 @@ class ValidateTest extends TestCase {
 		
 		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['lastname']));
 		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['lastname']->isEmpty());
+
+		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['data']->getChildren()['huii']));
+		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['data']->getChildren()['huii']->isEmpty());
 	}
 	
 }

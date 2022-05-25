@@ -2,17 +2,12 @@
 namespace n2n\validation\build\impl\val;
 
 use n2n\util\type\TypeConstraint;
+use n2n\validation\plan\ValidatableName;
 
 class ValueValidatable extends ValidatableAdapter {
-	private $name;
-	private $value;
-	private $doesExist;
-	
-	function __construct(string $name, $value, bool $doesExist, string $label = null) {
+
+	function __construct(ValidatableName $name, private mixed $value, private bool $doesExist, string $label = null) {
 		parent::__construct($name, $label);
-		$this->name = $name;
-		$this->value = $value;
-		$this->doesExist = $doesExist;
 	}
 	
 	function getValue() {
@@ -24,7 +19,7 @@ class ValueValidatable extends ValidatableAdapter {
 	}
 	
 	function setDoesExist(bool $doesExists) {
-		return $this->doesExist = $doesExists;
+		$this->doesExist = $doesExists;
 	}
 	
 	public function getTypeConstraint(): ?TypeConstraint {

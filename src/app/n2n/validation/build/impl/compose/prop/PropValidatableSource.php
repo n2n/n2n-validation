@@ -11,7 +11,7 @@ interface PropValidatableSource extends ValidatableSource {
 	 * @param string $expression
 	 * @param bool $mustExist
 	 * @return Validatable[]
-	 * @throws UnresolvableValidationException
+	 * @throws UnresolvableValidationException only if $mustExist is true
 	 */
 	function resolveValidatables(string $expression, bool $mustExist): array;
 }

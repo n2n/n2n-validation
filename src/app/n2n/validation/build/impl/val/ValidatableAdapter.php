@@ -5,28 +5,28 @@ use n2n\l10n\Message;
 use n2n\validation\plan\Validatable;
 use n2n\util\type\ArgUtils;
 use n2n\l10n\Lstr;
+use n2n\validation\plan\ValidatableName;
 
 abstract class ValidatableAdapter implements Validatable {
-	private $name;
-	private $label;
-	private $messages = [];
+	private ValidatableName $name;
+	private Lstr|string|null $label;
+	private array $messages = [];
 
-	function __construct(string $name, $label = null) {
+	function __construct(ValidatableName $name, string|Lstr $label = null) {
 		$this->name = $name;
-		ArgUtils::valType($label, [Lstr::class, 'string'], true);
 		$this->label = $label;
 	}
 	
-	function getName(): string {
+	function getName(): ValidatableName {
 		return $this->name;
 	}
 	
-	function getLabel() {
+	function getLabel(): string|Lstr|null {
 		return $this->label;
 	}
 	
 	public function addError(Message $message) {
-		array_push($this->messages, $message);
+		$this->messages[] = $message;
 	}
 
 	function isOpenForValidation(): bool {
