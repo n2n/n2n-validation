@@ -34,6 +34,15 @@ class ValidateTest extends TestCase {
 		$this->assertEquals('wrong: hoi', $dataErrorMap->getChildren()['huii2']->getMessages()[0]->__toString());
 	}
 
+	function testValidateValues() {
+		$validationResult = Validate::value('huii', null)->val(Validators::mandatory())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+
+
+		$this->assertTrue($validationResult->hasErrors());
+		$this->assertArrayHasKey(1, $validationResult->getErrorMap()->getChildren());
+	}
+
 
 }
 

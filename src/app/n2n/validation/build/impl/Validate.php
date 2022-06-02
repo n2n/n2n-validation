@@ -18,7 +18,7 @@ class Validate {
 	static function value(...$values) {
 		$validatables = [];
 		foreach ($values as $name => $value) {
-			$validatables[] = new ValueValidatable(new ValidatableName([$name]), $value, true);
+			$validatables[] = new ValueValidatable(new ValidatableName([(string) $name]), $value, true);
 		}
 		
 		return new UnionValidationComposer(new StaticValidatableSource($validatables));
