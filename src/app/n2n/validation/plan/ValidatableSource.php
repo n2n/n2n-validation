@@ -23,7 +23,7 @@ namespace n2n\validation\plan;
 
 use n2n\validation\build\ValidationResult;
 
-interface ValidatableSource extends ValidationContext {
+interface ValidatableSource {
 
 	/**
 	 * A new validation cycle begins. All errors of defined validatables should be removed

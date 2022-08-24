@@ -8,8 +8,9 @@ use n2n\validation\build\ErrorMap;
 use n2n\util\type\ArgUtils;
 use n2n\validation\build\impl\val\SimpleValidationResult;
 use n2n\validation\plan\ValidatableSource;
+use n2n\validation\plan\ValidationContext;
 
-abstract class ValidatableSourceAdapter implements ValidatableSource {
+abstract class ValidatableSourceAdapter implements ValidatableSource, ValidationContext {
 	/**
 	 * @var Validatable[]
 	 */
