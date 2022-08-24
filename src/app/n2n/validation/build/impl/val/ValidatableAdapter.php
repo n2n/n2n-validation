@@ -29,7 +29,7 @@ abstract class ValidatableAdapter implements Validatable {
 		$this->messages[] = $message;
 	}
 
-	function isOpenForValidation(): bool {
+	function isValid(): bool {
 		return empty($this->messages);
 	}
 	

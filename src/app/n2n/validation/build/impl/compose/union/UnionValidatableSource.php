@@ -2,7 +2,7 @@
 namespace n2n\validation\build\impl\compose\union;
 
 use n2n\validation\plan\Validatable;
-use n2n\validation\build\impl\source\ValidatableSource;
+use n2n\validation\plan\ValidatableSource;
 
 interface UnionValidatableSource extends ValidatableSource {
 	

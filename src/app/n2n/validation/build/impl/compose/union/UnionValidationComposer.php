@@ -37,13 +37,14 @@ class UnionValidationComposer implements ValidationJob {
 	 * @return UnionValidationComposer
 	 */
 	function val(Validator ...$validators) {
-		array_push($this->assembleClosures, function () use ($validators) {
+		$this->assembleClosures[] = function() use ($validators) {
 			$validatables = $this->validatableSource->getValidatables();
-			ArgUtils::valArrayReturn($validatables, $this->validatableSource, 'getValidatables', 
+			ArgUtils::valArrayReturn($validatables, $this->validatableSource, 'getValidatables',
 					Validatable::class);
-			
-			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
-		});
+
+			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables,
+					$this->validatableSource));
+		};
 		
 		return $this;
 	}
@@ -66,9 +67,7 @@ class UnionValidationComposer implements ValidationJob {
 	 */
 	function exec(MagicContext $magicContext): ValidationResult {
 		$this->prepareJob();
-		
-		$this->validatableSource->onValidationStart();
-		$this->validationPlan->exec($magicContext);
-		return $this->validatableSource->createValidationResult();
+
+		return $this->validationPlan->exec($magicContext);
 	}	
 }

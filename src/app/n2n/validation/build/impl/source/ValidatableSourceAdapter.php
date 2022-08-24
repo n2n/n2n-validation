@@ -7,6 +7,7 @@ use n2n\validation\plan\Validatable;
 use n2n\validation\build\ErrorMap;
 use n2n\util\type\ArgUtils;
 use n2n\validation\build\impl\val\SimpleValidationResult;
+use n2n\validation\plan\ValidatableSource;
 
 abstract class ValidatableSourceAdapter implements ValidatableSource {
 	/**
@@ -34,7 +35,7 @@ abstract class ValidatableSourceAdapter implements ValidatableSource {
 		return new SimpleValidationResult($errorMap->isEmpty() ? null : $errorMap);
 	}
 	
-	function onValidationStart() {
+	function reset() {
 		$this->generalMessages = [];
 		foreach ($this->validatables as $validatable) {
 			$validatable->clearErrors();

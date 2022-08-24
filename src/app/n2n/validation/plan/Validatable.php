@@ -61,7 +61,7 @@ interface Validatable {
 	 * 
 	 * @return bool
 	 */
-	function isOpenForValidation(): bool;
+	function isValid(): bool;
 	
 	/**
 	 * @param Message $message
@@ -73,8 +73,8 @@ interface Validatable {
 	 */
 	function clearErrors(): void;
 	
-	/**
-	 * @return TypeConstraint|NULL
-	 */
-	function getTypeConstraint(): ?TypeConstraint;
+//	/**
+//	 * @return TypeConstraint|NULL
+//	 */
+//	function getTypeConstraint(): ?TypeConstraint;
 }

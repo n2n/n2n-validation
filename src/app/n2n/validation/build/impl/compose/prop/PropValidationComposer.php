@@ -108,7 +108,8 @@ class PropValidationComposer implements ValidationJob {
 				array_push($validatables, ...$resolvedValidatables);
 			}
 
-			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
+			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables,
+					$this->validatableSource));
 		};
 	}
 	
@@ -135,9 +136,7 @@ class PropValidationComposer implements ValidationJob {
 	 */
 	function exec(MagicContext $magicContext): ValidationResult {
 		$this->prepareJob();
-		
-		$this->validatableSource->onValidationStart();
-		$this->validationPlan->exec($magicContext);
-		return $this->validatableSource->createValidationResult();
+
+		return $this->validationPlan->exec($magicContext);
 	}
 }

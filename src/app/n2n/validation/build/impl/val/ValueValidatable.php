@@ -22,7 +22,7 @@ class ValueValidatable extends ValidatableAdapter {
 		$this->doesExist = $doesExists;
 	}
 	
-	public function getTypeConstraint(): ?TypeConstraint {
-		return null;
-	}
+//	public function getTypeConstraint(): ?TypeConstraint {
+//		return null;
+//	}
 }

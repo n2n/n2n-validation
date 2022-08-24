@@ -45,9 +45,9 @@ interface Validator {
 	 * {@see ValidationGroup}
 	 */
 	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext);
-	
-	/**
-	 * @return TypeConstraint|NULL
-	 */
-	function getTypeConstraint(): ?TypeConstraint;
+//
+//	/**
+//	 * @return TypeConstraint|NULL
+//	 */
+//	function getTypeConstraint(): ?TypeConstraint;
 }
