@@ -25,6 +25,7 @@ use n2n\util\type\ArgUtils;
 use n2n\validation\err\ValidationMismatchException;
 use n2n\validation\err\UnresolvableValidationException;
 use n2n\util\magic\MagicContext;
+use n2n\validation\validator\Validator;
 
 /**
  * 

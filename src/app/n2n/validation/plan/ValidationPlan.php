@@ -23,7 +23,6 @@ namespace n2n\validation\plan;
 
 use n2n\validation\err\ValidationMismatchException;
 use n2n\util\magic\MagicContext;
-use n2n\validation\build\ValidationResult;
 
 /**
  * 
@@ -38,7 +37,6 @@ class ValidationPlan {
 	 * @param ValidatableSource $validatableSource
 	 */
 	function __construct(private ValidatableSource $validatableSource) {
-
 	}
 	
 	/**
@@ -47,21 +45,27 @@ class ValidationPlan {
 	function addValidationGroup(ValidationGroup $validationGroup): void {
 		$this->validationGroups[] = $validationGroup;
 	}
-	
+
 	/**
 	 * @param MagicContext $magicContext
+	 * @return TaskResult
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 */
-	function exec(MagicContext $magicContext): ValidationResult {
+	function exec(MagicContext $magicContext): TaskResult {
 		$this->validatableSource->reset();
 
 		foreach ($this->validationGroups as $validationGroup) {
 			$validationGroup->exec($magicContext);
 		}
 
-		return $this->validatableSource->createValidationResult();
+		$errorMap = $this->validatableSource->createErrorMap();
+		return new TaskResult($errorMap->isEmpty() ? null : $errorMap);
 	}
-	
+
+	/**
+	 * @param MagicContext $magicContext
+	 * @return bool
+	 */
 	function test(MagicContext $magicContext) {
 		foreach ($this->validationGroups as $validationGroup) {
 			if (!$validationGroup->test($magicContext)) {

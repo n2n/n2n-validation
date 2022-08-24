@@ -2,15 +2,15 @@
 namespace n2n\validation\build\impl\compose\union;
 
 use n2n\util\magic\MagicContext;
-use n2n\validation\build\ValidationJob;
-use n2n\validation\build\ValidationResult;
+use n2n\validation\plan\ValidationTask;
 use n2n\validation\plan\ValidationPlan;
 use n2n\validation\plan\Validatable;
-use n2n\validation\plan\Validator;
+use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\ValidationGroup;
+use n2n\validation\plan\TaskResult;
 
-class UnionValidationComposer implements ValidationJob {
+class UnionValidationComposer implements ValidationTask {
 	/**
 	 * @var UnionValidatableSource
 	 */
@@ -63,9 +63,9 @@ class UnionValidationComposer implements ValidationJob {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \n2n\validation\build\ValidationJob::exec()
+	 * @see \n2n\validation\plan\ValidationTask::exec()
 	 */
-	function exec(MagicContext $magicContext): ValidationResult {
+	function exec(MagicContext $magicContext): TaskResult {
 		$this->prepareJob();
 
 		return $this->validationPlan->exec($magicContext);

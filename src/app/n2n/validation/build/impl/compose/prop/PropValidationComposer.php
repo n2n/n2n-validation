@@ -5,15 +5,16 @@ use n2n\validation\err\UnresolvableValidationException;
 use n2n\validation\plan\ValidationGroup;
 use n2n\validation\plan\ValidationPlan;
 use n2n\validation\plan\ValidationContext;
-use n2n\validation\plan\Validator;
+use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
-use n2n\validation\build\ValidationJob;
-use n2n\validation\build\ValidationResult;
+use n2n\validation\plan\ValidationTask;
 use n2n\util\magic\MagicContext;
 use n2n\validation\err\ValidationMismatchException;
+use n2n\validation\plan\TaskResult;
+use n2n\validation\err\ValidationException;
 
-class PropValidationComposer implements ValidationJob { 
+class PropValidationComposer implements ValidationTask {
 	/**
 	 * @var PropValidatableSource
 	 */
@@ -128,13 +129,13 @@ class PropValidationComposer implements ValidationJob {
 		
 		return $this->validationPlan->test($magicContext);
 	}
-	
+
 	/**
-	 * @throws UnresolvableValidationException
-	 * @throws ValidationMismatchException
-	 * @return \n2n\validation\build\ValidationResult
+	 * @param MagicContext $magicContext
+	 * @return TaskResult
+	 * @throws ValidationException
 	 */
-	function exec(MagicContext $magicContext): ValidationResult {
+	function exec(MagicContext $magicContext): TaskResult {
 		$this->prepareJob();
 
 		return $this->validationPlan->exec($magicContext);

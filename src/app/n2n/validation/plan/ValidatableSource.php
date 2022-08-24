@@ -21,8 +21,6 @@
  */
 namespace n2n\validation\plan;
 
-use n2n\validation\build\ValidationResult;
-
 interface ValidatableSource {
 
 	/**
@@ -31,7 +29,7 @@ interface ValidatableSource {
 	function reset();
 	
 	/**
-	 * @return ValidationResult
+	 * @return ErrorMap
 	 */
-	function createValidationResult(): ValidationResult;
+	function createErrorMap(): ErrorMap;
 }

@@ -2,11 +2,9 @@
 namespace n2n\validation\build\impl\source;
 
 use n2n\l10n\Message;
-use n2n\validation\build\ValidationResult;
 use n2n\validation\plan\Validatable;
-use n2n\validation\build\ErrorMap;
+use n2n\validation\plan\ErrorMap;
 use n2n\util\type\ArgUtils;
-use n2n\validation\build\impl\val\SimpleValidationResult;
 use n2n\validation\plan\ValidatableSource;
 use n2n\validation\plan\ValidationContext;
 
@@ -26,14 +24,14 @@ abstract class ValidatableSourceAdapter implements ValidatableSource, Validation
 		$this->generalMessages[] = $message;
 	}
 	
-	function createValidationResult(): ValidationResult {
+	function createErrorMap(): ErrorMap {
 		$errorMap = new ErrorMap($this->generalMessages);
 		
 		foreach ($this->validatables as $attrValidatable) {
 			$errorMap->putDecendant($attrValidatable->getName()->toArray(), new ErrorMap($attrValidatable->getMessages()));
 		}
 		
-		return new SimpleValidationResult($errorMap->isEmpty() ? null : $errorMap);
+		return $errorMap;
 	}
 	
 	function reset() {

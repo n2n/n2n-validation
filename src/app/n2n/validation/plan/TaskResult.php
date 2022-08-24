@@ -19,9 +19,22 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\err;
+namespace n2n\validation\plan;
 
-use n2n\util\magic\MagicTaskExecutionException;
+use n2n\util\ex\IllegalStateException;
+use n2n\util\magic\ErrorResult;
 
-class ValidationException extends  \RuntimeException implements MagicTaskExecutionException {
+class TaskResult implements ErrorResult {
+
+	function __construct(private ?ErrorMap $errorMap = null) {
+	}
+
+	function hasErrors(): bool {
+		return $this->errorMap !== null;
+	}
+
+	function getErrorMap(): ErrorMap {
+		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
+		return $this->errorMap;
+	}
 }

@@ -19,9 +19,19 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\err;
+namespace n2n\validation\plan;
 
-use n2n\util\magic\MagicTaskExecutionException;
+use n2n\validation\err\ValidationMismatchException;
+use n2n\validation\err\UnresolvableValidationException;
+use n2n\util\magic\MagicContext;
+use n2n\util\magic\MagicTask;
 
-class ValidationException extends  \RuntimeException implements MagicTaskExecutionException {
+interface ValidationTask extends MagicTask {
+	/**
+	 * @param MagicContext $magicContext
+	 * @return TaskResult
+	 * @throws UnresolvableValidationException
+	 * @throws ValidationMismatchException
+	 */
+	function exec(MagicContext $magicContext): TaskResult;
 }

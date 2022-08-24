@@ -6,9 +6,9 @@ use n2n\util\type\attrs\AttributePath;
 use n2n\validation\err\UnresolvableValidationException;
 use n2n\util\type\attrs\AttributesException;
 use n2n\util\type\ArgUtils;
-use n2n\validation\build\impl\val\ValueValidatable;
+use n2n\validation\plan\impl\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidatableSource;
-use n2n\validation\plan\ValidatableName;
+use n2n\validation\plan\DetailedName;
 
 class LazyAttrsValidatableSource extends ValidatableSourceAdapter implements PropValidatableSource {
 
@@ -29,7 +29,7 @@ class LazyAttrsValidatableSource extends ValidatableSourceAdapter implements Pro
 		}
 
 		$attributePath = AttributePath::create($expression);
-		$validatableName = new ValidatableName($attributePath->toArray());
+		$validatableName = new DetailedName($attributePath->toArray());
 
 		try {
 			$value = $this->attributeReader->readAttribute($attributePath);

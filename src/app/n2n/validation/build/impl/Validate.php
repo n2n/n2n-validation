@@ -6,9 +6,9 @@ use n2n\util\type\attrs\AttributeReader;
 use n2n\validation\build\impl\source\StaticValidatableSource;
 use n2n\validation\build\impl\compose\union\UnionValidationComposer;
 use n2n\validation\build\impl\source\LazyAttrsValidatableSource;
-use n2n\validation\build\impl\val\ValueValidatable;
+use n2n\validation\plan\impl\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidationComposer;
-use n2n\validation\plan\ValidatableName;
+use n2n\validation\plan\DetailedName;
 
 class Validate {
 	/**
@@ -18,7 +18,7 @@ class Validate {
 	static function value(...$values) {
 		$validatables = [];
 		foreach ($values as $name => $value) {
-			$validatables[] = new ValueValidatable(new ValidatableName([(string) $name]), $value, true);
+			$validatables[] = new ValueValidatable(new DetailedName([(string) $name]), $value, true);
 		}
 		
 		return new UnionValidationComposer(new StaticValidatableSource($validatables));
