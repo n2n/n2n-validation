@@ -32,7 +32,7 @@ class MinValidator extends SimpleValidatorAdapter {
 	private $min;
 	
 	function __construct(float $min, Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::float(true)->setConvertable(true), $errorMessage);
+		parent::__construct($errorMessage);
 		$this->min = $min;
 	}
 	
@@ -40,7 +40,7 @@ class MinValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable, TypeConstraints::float(true));
+		$value = $this->readSafeValue($validatable, TypeConstraints::float(true)->setConvertable(true));
 		
 		return $value === null || $value >= $this->min;
 	}

@@ -32,7 +32,7 @@ class MaxValidator extends SimpleValidatorAdapter {
 	private $max;
 	
 	function __construct(float $max, Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::float(true)->setConvertable(true), $errorMessage);
+		parent::__construct($errorMessage);
 		$this->max = $max;
 	}
 	
@@ -40,7 +40,7 @@ class MaxValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable, TypeConstraints::float(true));
+		$value = $this->readSafeValue($validatable, TypeConstraints::float(true)->setConvertable(true));
 		
 		return $value === null || $value <= $this->max;
 	}
