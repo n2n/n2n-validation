@@ -71,7 +71,7 @@ interface Validatable {
 	/**
 	 * 
 	 */
-	function clearErrors(): void;
+	function reset(): void;
 	
 //	/**
 //	 * @return TypeConstraint|NULL

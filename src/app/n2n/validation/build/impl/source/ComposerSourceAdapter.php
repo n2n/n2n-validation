@@ -69,7 +69,7 @@ abstract class ComposerSourceAdapter implements ValidatableSource, ValidationCon
 	function reset() {
 		$this->generalMessages = [];
 		foreach ($this->getValidatables() as $validatable) {
-			$validatable->clearErrors();
+			$validatable->reset();
 		}
 	}
 

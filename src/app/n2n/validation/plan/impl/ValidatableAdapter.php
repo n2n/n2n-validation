@@ -42,7 +42,7 @@ abstract class ValidatableAdapter implements Validatable {
 	/**
 	 * 
 	 */
-	function clearErrors(): void {
+	function reset(): void {
 		$this->messages = [];
 	}
 	
