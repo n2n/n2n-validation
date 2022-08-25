@@ -32,7 +32,7 @@ class TypeValidator extends SimpleValidatorAdapter {
 	private $typeConstraint;
 	
 	function __construct(TypeConstraint $typeConstraint, Message $errorMessage = null) {
-		parent::__construct(null, $errorMessage);
+		parent::__construct($errorMessage);
 		
 		$this->typeConstraint = $typeConstraint;
 	}
@@ -41,11 +41,12 @@ class TypeValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		return $this->typeConstraint->isValueValid($this->readSafeValue($validatable));
+		return $this->typeConstraint->isValueValid($this->readSafeValue($validatable, $this->typeConstraint));
 	}
 	
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
-		return Message::create('Invalid type: ' . TypeUtils::getTypeInfo($this->readSafeValue($validatable))
+		return Message::create('Invalid type: '
+				. TypeUtils::getTypeInfo($this->readSafeValue($validatable, $this->typeConstraint))
 				. '. Required type: ' . $this->typeConstraint);
 	}
 }

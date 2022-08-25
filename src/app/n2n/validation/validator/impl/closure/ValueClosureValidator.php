@@ -38,8 +38,6 @@ class ValueClosureValidator extends ValidatorAdapter {
 	private $closure;
 	
 	function __construct(\Closure $closure) {
-		parent::__construct(null);
-
 		$this->closure = $closure;
 	}
 	
@@ -55,7 +53,7 @@ class ValueClosureValidator extends ValidatorAdapter {
 			
 			$invoker->setClassParamObject(Validatable::class, $validatable);
 			
-			$value = $this->readSafeValue($validatable);
+			$value = $validatable->getValue();
 			$invoker->setParamValue(StringUtils::camelCased($validatable->getName()), $value);
 			$this->handleReturn($invoker->invoke(null, null, [$value]), $validatable);
 		}

@@ -32,14 +32,14 @@ use n2n\l10n\Message;
 class EmailValidator extends SimpleValidatorAdapter {
 	
 	function __construct(Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::string(true), $errorMessage);
+		parent::__construct($errorMessage);
 	}
 	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		
 		return $value === null || ValidationUtils::isEmail($value);
 	}

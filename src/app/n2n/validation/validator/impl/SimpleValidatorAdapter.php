@@ -30,8 +30,7 @@ use n2n\validation\lang\ValidationMessages;
 abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	private $errorMessage;
 	
-	function __construct(?TypeConstraint $typeConstraint, Message $errorMessage = null) {
-		parent::__construct($typeConstraint, $errorMessage);
+	function __construct(Message $errorMessage = null) {
 		$this->errorMessage = $errorMessage;
 	}
 	

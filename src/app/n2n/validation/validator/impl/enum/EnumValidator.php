@@ -40,7 +40,7 @@ class EnumValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $validatable->getValue();
 		
 		return $value === null || ArrayUtils::inArrayLike($value, $this->allowedValues);
 	}

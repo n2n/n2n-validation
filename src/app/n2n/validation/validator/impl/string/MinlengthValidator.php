@@ -33,7 +33,7 @@ class MinlengthValidator extends SimpleValidatorAdapter {
 	private $minlength;
 	
 	function __construct(int $minlength, Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::string(true), $errorMessage);
+		parent::__construct($errorMessage);
 		$this->minlength = $minlength;
 	}
 	
@@ -41,7 +41,7 @@ class MinlengthValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		
 		return $value === null || ValidationUtils::minlength($value, $this->minlength);
 	}

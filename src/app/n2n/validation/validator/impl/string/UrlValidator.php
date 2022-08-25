@@ -37,13 +37,12 @@ class UrlValidator extends SingleValidatorAdapter {
 	public function __construct(private bool $schemeRequired = false, private ?array $allowedSchemes = null,
 			private ?Message $errorMessage = null, private ?Message $schemeRequiredErrorMessage = null,
 			private ?Message $schemeErrorMessage = null) {
-		parent::__construct(TypeConstraints::string(true));
 
 		ArgUtils::valArray($allowedSchemes, 'string', true, 'allowedSchemes');
 	}
 	
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		
 		if ($value === null) {
 			return true;
@@ -67,7 +66,7 @@ class UrlValidator extends SingleValidatorAdapter {
 	}
 	
 	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		$value = $this->readSafeValue($validatable);
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		
 		if ($value === null)  {
 			return;

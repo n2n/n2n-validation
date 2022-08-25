@@ -40,7 +40,7 @@ class MinValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $this->readSafeValue($validatable, TypeConstraints::float(true));
 		
 		return $value === null || $value >= $this->min;
 	}

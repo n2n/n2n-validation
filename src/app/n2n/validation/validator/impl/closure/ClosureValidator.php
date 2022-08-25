@@ -33,13 +33,8 @@ use n2n\l10n\Lstr;
 use n2n\util\ex\NotYetImplementedException;
 
 class ClosureValidator extends ValidatorAdapter {
-	
-	private $closure;
-	
-	function __construct(\Closure $closure, private ?bool $everyValidatableMustExist) {
-		parent::__construct(null);
 
-		$this->closure = $closure;
+	function __construct(private \Closure $closure, private ?bool $everyValidatableMustExist) {
 	}
 	
 	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
@@ -53,7 +48,7 @@ class ClosureValidator extends ValidatorAdapter {
 			if (!$validatable->doesExist()) {
 				$args[] = null;
 			} else {
-				$args[] = $this->readSafeValue($validatable);
+				$args[] = $validatable->getValue();
 				$existNum++;
 			}
 		}

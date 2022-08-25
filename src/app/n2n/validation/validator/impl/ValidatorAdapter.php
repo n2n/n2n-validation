@@ -28,35 +28,21 @@ use n2n\validation\err\ValidationMismatchException;
 use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\l10n\Lstr;
+use n2n\util\type\ValueIncompatibleWithConstraintsException;
 
 abstract class ValidatorAdapter implements Validator {
 
-	function __construct(private ?TypeConstraint $typeConstraint) {
-	}
-
-//	function getTypeConstraint(): ?TypeConstraint {
-//		if ($this->typeConstraint !== null) {
-//			return $this->typeConstraint;
-//		}
-//
-//		throw new IllegalStateException(get_class($this) . ' did not provide a TypeConstraint (missing parent constructor call).');
-//	}
-	
 	/**
 	 * @param Validatable $validatable
-	 * @throws ValidationMismatchException
-	 * @return mixed|null
+	 * @param TypeConstraint $typeConstraint
+	 * @return mixed
 	 */
-	protected function readSafeValue(Validatable $validatable) {
+	protected function readSafeValue(Validatable $validatable, TypeConstraint $typeConstraint) {
 		$value = $validatable->getValue();
-		
-		if ($this->typeConstraint === null) {
-			return $value;
-		}
-		
+
 		try {
-			return $this->typeConstraint->validate($value);
-		} catch (\n2n\util\type\ValueIncompatibleWithConstraintsException $e) {
+			return $typeConstraint->validate($value);
+		} catch (ValueIncompatibleWithConstraintsException $e) {
 			throw new ValidationMismatchException('Validatable ' . $validatable->getName() . ' is not compatible with '
 					. get_class($this), 0, $e);
 		}

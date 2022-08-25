@@ -37,7 +37,7 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $validatable->getValue();
 		
 		return $this->isValid($value);
 	}
@@ -46,7 +46,7 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 	 * {@inheritdoc}
 	 */
 	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		$value = $this->readSafeValue($validatable);
+		$value = $validatable->getValue();
 		
 		if (!$this->isValid($value)) {
 			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));

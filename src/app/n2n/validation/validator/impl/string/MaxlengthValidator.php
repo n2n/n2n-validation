@@ -30,18 +30,16 @@ use n2n\util\magic\MagicContext;
 use n2n\l10n\Message;
 
 class MaxlengthValidator extends SimpleValidatorAdapter {
-	private $maxlength;
-	
-	function __construct(int $maxlength, Message $errorMessage = null) {
-		parent::__construct(TypeConstraints::string(true), $errorMessage);
-		$this->maxlength = $maxlength;
+
+	function __construct(private int $maxlength, Message $errorMessage = null) {
+		parent::__construct($errorMessage);
 	}
 	
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable);
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		
 		return $value === null || ValidationUtils::isNotLongerThen($value, $this->maxlength);
 	}
