@@ -15,7 +15,7 @@ use n2n\validation\plan\ValidationResult;
 
 class PropValidationComposer implements ValidationTask {
 	/**
-	 * @var PropValidatableSource
+	 * @var PropValidationComposerSource
 	 */
 	private $validatableSource;
 	/**
@@ -30,7 +30,7 @@ class PropValidationComposer implements ValidationTask {
 	/**
 	 * @param ValidationContext $validationContext
 	 */
-	function __construct(PropValidatableSource $validatableSource) {
+	function __construct(PropValidationComposerSource $validatableSource) {
 		$this->validatableSource = $validatableSource;
 		$this->validationPlan = new ValidationPlan($validatableSource);
 	}

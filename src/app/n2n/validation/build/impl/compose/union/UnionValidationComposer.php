@@ -8,14 +8,9 @@ use n2n\validation\plan\Validatable;
 use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\ValidationGroup;
-use n2n\validation\plan\impl\SimpleValidationResult;
 use n2n\validation\plan\ValidationResult;
 
 class UnionValidationComposer implements ValidationTask {
-	/**
-	 * @var UnionValidatableSource
-	 */
-	private $validatableSource;
 	/**
 	 * @var ValidationPlan
 	 */
@@ -26,11 +21,10 @@ class UnionValidationComposer implements ValidationTask {
 	private $assembleClosures = [];
 	
 	/**
-	 * @param UnionValidatableSource $validatableSource
+	 * @param UnionValidationComposerSource $source
 	 */
-	function __construct(UnionValidatableSource $validatableSource) {
-		$this->validatableSource = $validatableSource;
-		$this->validationPlan = new ValidationPlan($this->validatableSource);
+	function __construct(private UnionValidationComposerSource $source) {
+		$this->validationPlan = new ValidationPlan($this->source);
 	}
 	
 	/**
@@ -39,12 +33,12 @@ class UnionValidationComposer implements ValidationTask {
 	 */
 	function val(Validator ...$validators) {
 		$this->assembleClosures[] = function() use ($validators) {
-			$validatables = $this->validatableSource->getValidatables();
-			ArgUtils::valArrayReturn($validatables, $this->validatableSource, 'getValidatables',
+			$validatables = $this->source->getValidatables();
+			ArgUtils::valArrayReturn($validatables, $this->source, 'getValidatables',
 					Validatable::class);
 
 			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables,
-					$this->validatableSource));
+					$this->source));
 		};
 		
 		return $this;
