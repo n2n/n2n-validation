@@ -21,20 +21,8 @@
  */
 namespace n2n\validation\plan;
 
-use n2n\util\ex\IllegalStateException;
-use n2n\util\magic\ErrorResult;
+use n2n\util\magic\TaskResult;
 
-class TaskResult implements ErrorResult {
+interface ValidationResult extends TaskResult {
 
-	function __construct(private ?ErrorMap $errorMap = null) {
-	}
-
-	function hasErrors(): bool {
-		return $this->errorMap !== null;
-	}
-
-	function getErrorMap(): ErrorMap {
-		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
-		return $this->errorMap;
-	}
 }

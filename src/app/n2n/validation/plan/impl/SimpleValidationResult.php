@@ -19,19 +19,23 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\plan;
+namespace n2n\validation\plan\impl;
 
-use n2n\validation\err\ValidationMismatchException;
-use n2n\validation\err\UnresolvableValidationException;
-use n2n\util\magic\MagicContext;
-use n2n\util\magic\MagicTask;
+use n2n\validation\plan\ErrorMap;
+use n2n\util\ex\IllegalStateException;
+use n2n\validation\plan\ValidationResult;
 
-interface ValidationTask extends MagicTask {
-	/**
-	 * @param MagicContext $magicContext
-	 * @return ValidationResult
-	 * @throws UnresolvableValidationException
-	 * @throws ValidationMismatchException
-	 */
-	function exec(MagicContext $magicContext): ValidationResult;
+class SimpleValidationResult implements ValidationResult {
+
+	function __construct(private ?ErrorMap $errorMap = null) {
+	}
+
+	function hasErrors(): bool {
+		return $this->errorMap !== null;
+	}
+
+	function getErrorMap(): ErrorMap {
+		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
+		return $this->errorMap;
+	}
 }

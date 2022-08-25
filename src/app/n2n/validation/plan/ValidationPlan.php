@@ -23,6 +23,7 @@ namespace n2n\validation\plan;
 
 use n2n\validation\err\ValidationMismatchException;
 use n2n\util\magic\MagicContext;
+use n2n\validation\plan\impl\SimpleValidationResult;
 
 /**
  * 
@@ -48,10 +49,10 @@ class ValidationPlan {
 
 	/**
 	 * @param MagicContext $magicContext
-	 * @return TaskResult
+	 * @return ValidationResult
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 */
-	function exec(MagicContext $magicContext): TaskResult {
+	function exec(MagicContext $magicContext): ValidationResult {
 		$this->validatableSource->reset();
 
 		foreach ($this->validationGroups as $validationGroup) {
@@ -59,7 +60,7 @@ class ValidationPlan {
 		}
 
 		$errorMap = $this->validatableSource->createErrorMap();
-		return new TaskResult($errorMap->isEmpty() ? null : $errorMap);
+		return new SimpleValidationResult($errorMap->isEmpty() ? null : $errorMap);
 	}
 
 	/**

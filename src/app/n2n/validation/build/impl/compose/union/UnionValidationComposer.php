@@ -8,7 +8,8 @@ use n2n\validation\plan\Validatable;
 use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\ValidationGroup;
-use n2n\validation\plan\TaskResult;
+use n2n\validation\plan\impl\SimpleValidationResult;
+use n2n\validation\plan\ValidationResult;
 
 class UnionValidationComposer implements ValidationTask {
 	/**
@@ -65,7 +66,7 @@ class UnionValidationComposer implements ValidationTask {
 	 * {@inheritDoc}
 	 * @see \n2n\validation\plan\ValidationTask::exec()
 	 */
-	function exec(MagicContext $magicContext): TaskResult {
+	function exec(MagicContext $magicContext): ValidationResult {
 		$this->prepareJob();
 
 		return $this->validationPlan->exec($magicContext);

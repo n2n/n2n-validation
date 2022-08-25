@@ -1,7 +1,6 @@
 <?php
 namespace n2n\validation\build\impl\compose\prop;
 
-use n2n\validation\err\UnresolvableValidationException;
 use n2n\validation\plan\ValidationGroup;
 use n2n\validation\plan\ValidationPlan;
 use n2n\validation\plan\ValidationContext;
@@ -10,9 +9,9 @@ use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
 use n2n\validation\plan\ValidationTask;
 use n2n\util\magic\MagicContext;
-use n2n\validation\err\ValidationMismatchException;
-use n2n\validation\plan\TaskResult;
+use n2n\validation\plan\impl\SimpleValidationResult;
 use n2n\validation\err\ValidationException;
+use n2n\validation\plan\ValidationResult;
 
 class PropValidationComposer implements ValidationTask {
 	/**
@@ -132,10 +131,10 @@ class PropValidationComposer implements ValidationTask {
 
 	/**
 	 * @param MagicContext $magicContext
-	 * @return TaskResult
+	 * @return ValidationResult
 	 * @throws ValidationException
 	 */
-	function exec(MagicContext $magicContext): TaskResult {
+	function exec(MagicContext $magicContext): ValidationResult {
 		$this->prepareJob();
 
 		return $this->validationPlan->exec($magicContext);
