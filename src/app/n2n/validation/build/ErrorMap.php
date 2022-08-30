@@ -188,7 +188,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		];
 	}
 	
-	function jsonSerialize() {
+	function jsonSerialize(): mixed {
 		$arr = [];
 		
 		if (!empty($this->messages)) {
