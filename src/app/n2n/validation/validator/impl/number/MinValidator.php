@@ -19,9 +19,34 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\err;
+namespace n2n\validation\validator\impl\number;
 
-use n2n\util\magic\MagicTaskExecutionException;
+use n2n\validation\plan\Validatable;
+use n2n\validation\lang\ValidationMessages;
+use n2n\validation\validator\impl\SimpleValidatorAdapter;
+use n2n\util\type\TypeConstraints;
+use n2n\util\magic\MagicContext;
+use n2n\l10n\Message;
 
-class ValidationException extends  \RuntimeException implements MagicTaskExecutionException {
+class MinValidator extends SimpleValidatorAdapter {
+	private $min;
+	
+	function __construct(float $min, Message $errorMessage = null) {
+		parent::__construct($errorMessage);
+		$this->min = $min;
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+		$value = $this->readSafeValue($validatable, TypeConstraints::float(true)->setConvertable(true));
+		
+		return $value === null || $value >= $this->min;
+	}
+	
+	
+	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		return ValidationMessages::min($this->min, $this->readLabel($validatable));
+	}
 }

@@ -1,21 +1,21 @@
 <?php
 namespace n2n\validation\build\impl\compose\prop;
 
-use n2n\validation\err\UnresolvableValidationException;
 use n2n\validation\plan\ValidationGroup;
 use n2n\validation\plan\ValidationPlan;
 use n2n\validation\plan\ValidationContext;
-use n2n\validation\plan\Validator;
+use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\Validatable;
-use n2n\validation\build\ValidationJob;
-use n2n\validation\build\ValidationResult;
+use n2n\validation\plan\ValidationTask;
 use n2n\util\magic\MagicContext;
-use n2n\validation\err\ValidationMismatchException;
+use n2n\validation\plan\impl\SimpleValidationResult;
+use n2n\validation\err\ValidationException;
+use n2n\validation\plan\ValidationResult;
 
-class PropValidationComposer implements ValidationJob { 
+class PropValidationComposer implements ValidationTask {
 	/**
-	 * @var PropValidatableSource
+	 * @var PropValidationComposerSource
 	 */
 	private $validatableSource;
 	/**
@@ -30,7 +30,7 @@ class PropValidationComposer implements ValidationJob {
 	/**
 	 * @param ValidationContext $validationContext
 	 */
-	function __construct(PropValidatableSource $validatableSource) {
+	function __construct(PropValidationComposerSource $validatableSource) {
 		$this->validatableSource = $validatableSource;
 		$this->validationPlan = new ValidationPlan($validatableSource);
 	}
@@ -108,7 +108,8 @@ class PropValidationComposer implements ValidationJob {
 				array_push($validatables, ...$resolvedValidatables);
 			}
 
-			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
+			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables,
+					$this->validatableSource));
 		};
 	}
 	
@@ -127,17 +128,15 @@ class PropValidationComposer implements ValidationJob {
 		
 		return $this->validationPlan->test($magicContext);
 	}
-	
+
 	/**
-	 * @throws UnresolvableValidationException
-	 * @throws ValidationMismatchException
-	 * @return \n2n\validation\build\ValidationResult
+	 * @param MagicContext $magicContext
+	 * @return ValidationResult
+	 * @throws ValidationException
 	 */
 	function exec(MagicContext $magicContext): ValidationResult {
 		$this->prepareJob();
-		
-		$this->validatableSource->onValidationStart();
-		$this->validationPlan->exec($magicContext);
-		return $this->validatableSource->createValidationResult();
+
+		return $this->validationPlan->exec($magicContext);
 	}
 }

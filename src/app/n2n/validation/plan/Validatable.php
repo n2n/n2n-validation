@@ -22,9 +22,9 @@
 namespace n2n\validation\plan;
 
 use n2n\l10n\Message;
-use n2n\util\type\TypeConstraint;
 use n2n\l10n\Lstr;
 use n2n\util\ex\IllegalStateException;
+use n2n\validation\validator\Validator;
 
 /**
  * Describes unit (e.g. property) that can be validated and added to a {@see ValidationGroup}.
@@ -32,9 +32,9 @@ use n2n\util\ex\IllegalStateException;
 interface Validatable {
 	
 	/**
-	 * @return ValidatableName
+	 * @return DetailedName
 	 */
-	function getName(): ValidatableName;
+	function getName(): DetailedName;
 	
 	/**
 	 * @return string|Lstr|null
@@ -61,7 +61,7 @@ interface Validatable {
 	 * 
 	 * @return bool
 	 */
-	function isOpenForValidation(): bool;
+	function isValid(): bool;
 	
 	/**
 	 * @param Message $message
@@ -71,10 +71,10 @@ interface Validatable {
 	/**
 	 * 
 	 */
-	function clearErrors(): void;
+	function reset(): void;
 	
-	/**
-	 * @return TypeConstraint|NULL
-	 */
-	function getTypeConstraint(): ?TypeConstraint;
+//	/**
+//	 * @return TypeConstraint|NULL
+//	 */
+//	function getTypeConstraint(): ?TypeConstraint;
 }

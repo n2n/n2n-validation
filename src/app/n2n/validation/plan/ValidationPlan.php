@@ -23,47 +23,53 @@ namespace n2n\validation\plan;
 
 use n2n\validation\err\ValidationMismatchException;
 use n2n\util\magic\MagicContext;
+use n2n\validation\plan\impl\SimpleValidationResult;
 
 /**
  * 
  */
 class ValidationPlan {
 	/**
-	 * @var ValidationContext
-	 */
-	private $validationContext;
-	/**
 	 * @var ValidationGroup[] $validationGroups
 	 */
 	private $validationGroups = [];
-	
+
 	/**
-	 * @param ValidationContext $validationContext
+	 * @param ValidatableSource $validatableSource
 	 */
-	function __construct(ValidationContext $validationContext) {
-		$this->validationContext = $validationContext;
+	function __construct(private ValidatableSource $validatableSource) {
 	}
 	
 	/**
 	 * @param ValidationGroup $validationGroup
 	 */
-	function addValidationGroup(ValidationGroup $validationGroup) {
+	function addValidationGroup(ValidationGroup $validationGroup): void {
 		$this->validationGroups[] = $validationGroup;
 	}
-	
+
 	/**
 	 * @param MagicContext $magicContext
+	 * @return ValidationResult
 	 * @throws ValidationMismatchException if the validators are not compatible with the validatables
 	 */
-	function exec(MagicContext $magicContext) {
+	function exec(MagicContext $magicContext): ValidationResult {
+		$this->validatableSource->reset();
+
 		foreach ($this->validationGroups as $validationGroup) {
-			$validationGroup->exec($this->validationContext, $magicContext);
+			$validationGroup->exec($magicContext);
 		}
+
+		$errorMap = $this->validatableSource->createErrorMap();
+		return new SimpleValidationResult($errorMap->isEmpty() ? null : $errorMap);
 	}
-	
+
+	/**
+	 * @param MagicContext $magicContext
+	 * @return bool
+	 */
 	function test(MagicContext $magicContext) {
 		foreach ($this->validationGroups as $validationGroup) {
-			if (!$validationGroup->test($this->validationContext, $magicContext)) {
+			if (!$validationGroup->test($magicContext)) {
 				return false;
 			}
 		}

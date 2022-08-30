@@ -19,9 +19,10 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\err;
+namespace n2n\validation\plan;
 
-use n2n\util\magic\MagicTaskExecutionException;
+use n2n\util\magic\TaskResult;
 
-class ValidationException extends  \RuntimeException implements MagicTaskExecutionException {
+interface ValidationResult extends TaskResult {
+
 }

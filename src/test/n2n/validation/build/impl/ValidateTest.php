@@ -3,7 +3,7 @@ namespace n2n\validation\build\impl;
 
 use PHPUnit\Framework\TestCase;
 use n2n\util\type\attrs\DataMap;
-use n2n\validation\plan\impl\Validators;
+use n2n\validation\validator\impl\Validators;
 use n2n\util\magic\MagicContext;
 use n2n\util\ex\UnsupportedOperationException;
 

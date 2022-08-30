@@ -2,19 +2,15 @@
 namespace n2n\validation\build\impl\compose\union;
 
 use n2n\util\magic\MagicContext;
-use n2n\validation\build\ValidationJob;
-use n2n\validation\build\ValidationResult;
+use n2n\validation\plan\ValidationTask;
 use n2n\validation\plan\ValidationPlan;
 use n2n\validation\plan\Validatable;
-use n2n\validation\plan\Validator;
+use n2n\validation\validator\Validator;
 use n2n\util\type\ArgUtils;
 use n2n\validation\plan\ValidationGroup;
+use n2n\validation\plan\ValidationResult;
 
-class UnionValidationComposer implements ValidationJob {
-	/**
-	 * @var UnionValidatableSource
-	 */
-	private $validatableSource;
+class UnionValidationComposer implements ValidationTask {
 	/**
 	 * @var ValidationPlan
 	 */
@@ -25,11 +21,10 @@ class UnionValidationComposer implements ValidationJob {
 	private $assembleClosures = [];
 	
 	/**
-	 * @param UnionValidatableSource $validatableSource
+	 * @param UnionValidationComposerSource $source
 	 */
-	function __construct(UnionValidatableSource $validatableSource) {
-		$this->validatableSource = $validatableSource;
-		$this->validationPlan = new ValidationPlan($this->validatableSource);
+	function __construct(private UnionValidationComposerSource $source) {
+		$this->validationPlan = new ValidationPlan($this->source);
 	}
 	
 	/**
@@ -37,13 +32,14 @@ class UnionValidationComposer implements ValidationJob {
 	 * @return UnionValidationComposer
 	 */
 	function val(Validator ...$validators) {
-		array_push($this->assembleClosures, function () use ($validators) {
-			$validatables = $this->validatableSource->getValidatables();
-			ArgUtils::valArrayReturn($validatables, $this->validatableSource, 'getValidatables', 
+		$this->assembleClosures[] = function() use ($validators) {
+			$validatables = $this->source->getValidatables();
+			ArgUtils::valArrayReturn($validatables, $this->source, 'getValidatables',
 					Validatable::class);
-			
-			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables));
-		});
+
+			$this->validationPlan->addValidationGroup(new ValidationGroup($validators, $validatables,
+					$this->source));
+		};
 		
 		return $this;
 	}
@@ -62,13 +58,11 @@ class UnionValidationComposer implements ValidationJob {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \n2n\validation\build\ValidationJob::exec()
+	 * @see \n2n\validation\plan\ValidationTask::exec()
 	 */
 	function exec(MagicContext $magicContext): ValidationResult {
 		$this->prepareJob();
-		
-		$this->validatableSource->onValidationStart();
-		$this->validationPlan->exec($magicContext);
-		return $this->validatableSource->createValidationResult();
+
+		return $this->validationPlan->exec($magicContext);
 	}	
 }
