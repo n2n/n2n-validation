@@ -1,7 +1,6 @@
 <?php
 namespace n2n\validation\lang;
 
-
 use n2n\l10n\Message;
 use n2n\io\managed\File;
 use n2n\util\type\ArgUtils;

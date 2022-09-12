@@ -42,7 +42,7 @@ class UrlValidator extends SingleValidatorAdapter {
 	}
 	
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
+		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', Url::class, 'null']));
 		
 		if ($value === null) {
 			return true;
@@ -66,7 +66,7 @@ class UrlValidator extends SingleValidatorAdapter {
 	}
 	
 	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
+		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', Url::class, 'null']));
 		
 		if ($value === null)  {
 			return;
