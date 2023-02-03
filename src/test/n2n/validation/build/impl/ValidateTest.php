@@ -44,11 +44,24 @@ class ValidateTest extends TestCase {
 		$this->assertArrayHasKey(1, $validationResult->getErrorMap()->getChildren());
 	}
 
+	function testSpecialChars() {
+		$validationResult = Validate::value('asdf', null)->val(Validators::specialChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		$validationResult = Validate::value('@asdf', null)->val(Validators::specialChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+
+		$validationResult = Validate::value('asdf/', null)->val(Validators::specialChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+	}
 
 }
 
 class EmptyMagicContext implements MagicContext {
-	function lookup(string|ReflectionClass $id, bool $required = true): mixed {
+	function lookup(string|ReflectionClass $id, bool $required = true, string $contextNamespace = null): mixed {
 		throw new UnsupportedOperationException();
 	}
 

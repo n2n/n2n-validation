@@ -16,6 +16,7 @@ use n2n\validation\validator\impl\closure\ClosureValidator;
 use n2n\validation\validator\impl\number\MinValidator;
 use n2n\validation\validator\impl\number\MaxValidator;
 use Closure;
+use n2n\validation\validator\impl\string\SpecialCharsValidator;
 
 class Validators {
 	
@@ -139,5 +140,9 @@ class Validators {
 	 */
 	static function valueClosure(Closure $closure) {
 		return new ValueClosureValidator($closure);
+	}
+
+	static function specialChars(Message $errorMessage = null) {
+		return new SpecialCharsValidator($errorMessage);
 	}
 }
