@@ -15,7 +15,7 @@ class SpecialCharsValidator extends SimpleValidatorAdapter {
 	}
 
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', 'null']));
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 
 		if ($value === null || !IoUtils::hasSpecialChars($value)) {
 			return true;
@@ -25,7 +25,7 @@ class SpecialCharsValidator extends SimpleValidatorAdapter {
 	}
 
 	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', 'null']));
+		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 
 		if ($value === null || !IoUtils::hasSpecialChars($value))  {
 			return;
