@@ -291,7 +291,7 @@ class ValidationMessages {
 		return Message::createCodeArg('field_already_taken_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function specialChars(string $fieldName = null) {
+	static function containsSpecialCharsErr(string $fieldName = null) {
 		if ($fieldName === null) {
 			return Message::createCode('special_chars_err', null, self::NS);
 		}

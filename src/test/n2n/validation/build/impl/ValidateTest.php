@@ -45,15 +45,15 @@ class ValidateTest extends TestCase {
 	}
 
 	function testSpecialChars() {
-		$validationResult = Validate::value('asdf', null)->val(Validators::specialChars())
+		$validationResult = Validate::value('asdf', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
 
-		$validationResult = Validate::value('@asdf', null)->val(Validators::specialChars())
+		$validationResult = Validate::value('@asdf', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
 
-		$validationResult = Validate::value('asdf/', null)->val(Validators::specialChars())
+		$validationResult = Validate::value('asdf/', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
 	}

@@ -9,7 +9,7 @@ use n2n\util\magic\MagicContext;
 use n2n\validation\validator\impl\SimpleValidatorAdapter;
 use n2n\util\io\IoUtils;
 
-class SpecialCharsValidator extends SimpleValidatorAdapter {
+class NoSpecialCharsValidator extends SimpleValidatorAdapter {
 	public function __construct(Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
@@ -32,6 +32,6 @@ class SpecialCharsValidator extends SimpleValidatorAdapter {
 		}
 
 		$validatable->addError($this->getErrorMessage()
-				?? ValidationMessages::specialChars($this->readLabel($validatable)));
+				?? ValidationMessages::containsSpecialCharsErr($this->readLabel($validatable)));
 	}
 }
