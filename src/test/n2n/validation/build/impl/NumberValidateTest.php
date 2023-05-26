@@ -23,8 +23,18 @@ class NumberValidateTest extends TestCase {
 		$this->assertCount(1, $messages);
 		$this->assertEquals('custom number error', (string) $messages[0]);
 	}
+    function testMin() {
+		$validationResult = Validate::value(2, 3, null)->val(Validators::min(2))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
 
-	function testStep() {
+		$validationResult = Validate::value(1, null)->val(Validators::min(2, 'custom number error'))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
 
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(1, $messages);
+		$this->assertEquals('custom number error', (string) $messages[0]);
 	}
+
 }

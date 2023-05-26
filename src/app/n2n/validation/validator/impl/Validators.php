@@ -3,6 +3,7 @@ namespace n2n\validation\validator\impl;
 
 use n2n\validation\validator\impl\common\MandatoryValidator;
 use n2n\l10n\Message;
+use n2n\validation\validator\impl\number\StepValidator;
 use n2n\validation\validator\impl\string\EmailValidator;
 use n2n\util\type\TypeConstraint;
 use n2n\validation\validator\impl\string\MinlengthValidator;
@@ -75,6 +76,14 @@ class Validators {
 	 */
 	static function max(float $max, $errorMessage = null) {
 		return new MaxValidator($max, Message::build($errorMessage));
+	}
+
+	/**
+	 * @param Message|null $errorMessage
+	 * @return StepValidator
+	 */
+	static function step(float $step, $errorMessage = null) {
+		return new StepValidator($step, Message::build($errorMessage));
 	}
 	
 	/**

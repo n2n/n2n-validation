@@ -111,6 +111,20 @@ class ValidationMessages {
 		return Message::createCodeArg('field_max_err', ['max' => $max, 'field' => $fieldName],
 				null, self::NS);
 	}
+
+	/**
+	 * @param string $step
+	 * @param string $fieldName
+	 * @return \n2n\l10n\impl\TextCodeMessage
+	 */
+	static function step(float $step, string $fieldName = null) {
+		if ($fieldName === null) {
+			return Message::createCodeArg('step_err', ['step' => $step], null, self::NS);
+		}
+
+		return Message::createCodeArg('field_step_err', ['step' => $step, 'field' => $fieldName],
+				null, self::NS);
+	}
 	
 	/**
 	 * @param int $min
@@ -119,7 +133,7 @@ class ValidationMessages {
 	 */
 	static function minElements(int $min, string $fieldName = null) {
 		if ($fieldName === null) {
-			return Message::createCode('min_elements_err', ['min' => $min], self::NS, $min);
+			return Message::createCodeArg('min_elements_err', ['min' => $min], self::NS, $min);
 		}
 		
 		return Message::createCodeArg('field_min_elements_err', ['field' => $fieldName, 'min' => $min], null, self::NS, $min);
@@ -132,7 +146,7 @@ class ValidationMessages {
 	 */
 	static function maxElements(int $max, string $fieldName = null) {
 		if ($fieldName === null) {
-			return Message::createCode('max_elements_err', ['max' => $max], self::NS, $max);
+			return Message::createCodeArg('max_elements_err', ['max' => $max], self::NS, $max);
 		}
 		
 		return Message::createCodeArg('field_max_elements_err', ['field' => $fieldName, 'max' => $max], null, self::NS, $max);
