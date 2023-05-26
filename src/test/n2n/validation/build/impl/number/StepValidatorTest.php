@@ -7,6 +7,7 @@ use n2n\validation\validator\impl\Validators;
 use n2n\util\magic\MagicContext;
 use n2n\validation\build\impl\Validate;
 use n2n\validation\err\ValidationMismatchException;
+use TypeError;
 
 class StepValidatorTest extends TestCase {
 
@@ -98,24 +99,32 @@ class StepValidatorTest extends TestCase {
 
 	}
 
-	function testStepInvalidArgumentStep() {
+	function testInvalidArgumentValue() {
+		//to precise Value: max 8 digits after decimal separator allowed
+		$validationResult = Validate::value(0.987654321)->val(Validators::step(9.87654321))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+	}
+
+	function testInvalidArgumentStep() {
 		//to precise Step: max 8 digits after decimal separator allowed
 		$this->expectException(\InvalidArgumentException::class);
 		$validationResult = Validate::value(987654321)->val(Validators::step(0.987654321))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 	}
 
-	function testStepInvalidArgumentValue() {
-		//to precise Value: max 8 digits after decimal separator allowed
-		$this->expectException(\InvalidArgumentException::class);
-		$validationResult = Validate::value(0.987654321)->val(Validators::step(9.87654321))
-				->exec($this->getMockBuilder(MagicContext::class)->getMock());
-	}
-
-	function testTypeMismatch(): void {
+	function testTypeMismatchValue(): void {
+		//input is not a number
 		$this->expectException(ValidationMismatchException::class);
 
 		$validationResult = Validate::value('huiiii')->val(Validators::step(3))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+	}
+
+	function testTypeMismatchStep(): void {
+		//input is not a number
+		$this->expectException(TypeError::class);
+		$validationResult = Validate::value(1000)->val(Validators::step('aaa'))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 	}
 }

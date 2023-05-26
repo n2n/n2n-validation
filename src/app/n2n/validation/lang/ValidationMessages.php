@@ -13,7 +13,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function invalid(string $fieldName = null) {
+	static function invalid(string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('invalid_err', null, self::NS);
 		}
@@ -25,7 +25,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function required(string $fieldName = null) {
+	static function required(string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('required_err', null, self::NS);
 		}
@@ -37,7 +37,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function mandatory(string $fieldName = null) {
+	static function mandatory(string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('mandatory_err', null, self::NS);
 		}
@@ -49,7 +49,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function email(string $fieldName = null) {
+	static function email(string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('email_err', null, self::NS);
 		}
@@ -62,7 +62,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function maxlength(string $maxlength, string $fieldName = null) {
+	static function maxlength(string $maxlength, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('maxlength_err', ['maxlength' => $maxlength], null, self::NS);
 		}
@@ -76,7 +76,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function minlength(string $minlength, string $fieldName = null) {
+	static function minlength(string $minlength, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('minlength_err', ['minlength' => $minlength], null, self::NS);
 		}
@@ -90,7 +90,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function min(float $min, string $fieldName = null) {
+	static function min(float $min, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('min_err', ['min' => $min], null, self::NS);
 		}
@@ -104,7 +104,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function max(float $max, string $fieldName = null) {
+	static function max(float $max, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('max_err', ['max' => $max], null, self::NS);
 		}
@@ -132,7 +132,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function minElements(int $min, string $fieldName = null) {
+	static function minElements(int $min, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('min_elements_err', ['min' => $min], self::NS, $min);
 		}
@@ -145,7 +145,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function maxElements(int $max, string $fieldName = null) {
+	static function maxElements(int $max, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('max_elements_err', ['max' => $max], self::NS, $max);
 		}
@@ -156,7 +156,7 @@ class ValidationMessages {
 	/**
 	 * @param int $maxSize
 	 */
-	static function uploadMaxSize(int $maxSize, string $fileName, string $size, string $fieldName = null) {
+	static function uploadMaxSize(int $maxSize, string $fileName, string $size, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('upload_size_err', ['fileName' => $fileName, 'size' => $size], 
 					null, self::NS);
@@ -171,7 +171,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function uploadIncomplete(string $fileName, string $fieldName = null) {
+	static function uploadIncomplete(string $fileName, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('upload_incomplete_err', ['fileName' => $fileName],
 					null, self::NS);
@@ -186,7 +186,7 @@ class ValidationMessages {
 	 * @param string $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function enum(array $allowedValues, string $fieldName = null) {
+	static function enum(array $allowedValues, string $fieldName = null): TextCodeMessage {
 		$allowedValuesStr = implode(', ', $allowedValues);
 		
 		if ($fieldName === null) {

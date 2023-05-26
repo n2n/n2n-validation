@@ -49,12 +49,8 @@ class StepValidator extends SimpleValidatorAdapter {
 		if ($value === null || ($value == 0 && $this->step == 0)) {
 			return true;
 		}
-		if ($this->step == 0) {
+		if ($this->step == 0 || (round($value, 8) !== $value)) {
 			return false;
-		}
-
-		if (round($value, 8) !== $value) {
-			throw new InvalidArgumentException('Value should not have more than 8 digits after decimal separator');
 		}
 
 		$precision = 0.0000000001; // fewer decimals means lower precision
