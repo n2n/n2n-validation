@@ -1,12 +1,13 @@
 <?php
 
-namespace n2n\validation\build\impl;
+namespace n2n\validation\build\impl\number;
 
 use PHPUnit\Framework\TestCase;
 use n2n\validation\validator\impl\Validators;
 use n2n\util\magic\MagicContext;
+use n2n\validation\build\impl\Validate;
 
-class StepValidateTest extends TestCase {
+class StepValidatorTest extends TestCase {
 
 	function testStep() {
 		//input Step and Values are like integer (code will handle them as float anyway)
