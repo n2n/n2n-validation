@@ -4,13 +4,14 @@ namespace n2n\validation\lang;
 use n2n\l10n\Message;
 use n2n\io\managed\File;
 use n2n\util\type\ArgUtils;
+use n2n\l10n\impl\TextCodeMessage;
 
 class ValidationMessages {
 	const NS = 'n2n\validation';
 	
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function invalid(string $fieldName = null) {
 		if ($fieldName === null) {
@@ -22,7 +23,7 @@ class ValidationMessages {
 	
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function required(string $fieldName = null) {
 		if ($fieldName === null) {
@@ -34,7 +35,7 @@ class ValidationMessages {
 	
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function mandatory(string $fieldName = null) {
 		if ($fieldName === null) {
@@ -46,7 +47,7 @@ class ValidationMessages {
 	
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function email(string $fieldName = null) {
 		if ($fieldName === null) {
@@ -59,7 +60,7 @@ class ValidationMessages {
 	/**
 	 * @param string $maxlength
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function maxlength(string $maxlength, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -73,7 +74,7 @@ class ValidationMessages {
 	/**
 	 * @param string $maxlength
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function minlength(string $minlength, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -87,7 +88,7 @@ class ValidationMessages {
 	/**
 	 * @param string $maxlength
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function min(float $min, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -101,7 +102,7 @@ class ValidationMessages {
 	/**
 	 * @param string $max
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function max(float $max, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -113,11 +114,11 @@ class ValidationMessages {
 	}
 
 	/**
-	 * @param string $step
-	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @param float $step
+	 * @param string|null $fieldName
+	 * @return TextCodeMessage
 	 */
-	static function step(float $step, string $fieldName = null) {
+	static function step(float $step, string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCodeArg('step_err', ['step' => $step], null, self::NS);
 		}
@@ -129,7 +130,7 @@ class ValidationMessages {
 	/**
 	 * @param int $min
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function minElements(int $min, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -142,7 +143,7 @@ class ValidationMessages {
 	/**
 	 * @param int $max
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function maxElements(int $max, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -168,7 +169,7 @@ class ValidationMessages {
 	/**
 	 * @param string $fileName
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function uploadIncomplete(string $fileName, string $fieldName = null) {
 		if ($fieldName === null) {
@@ -183,7 +184,7 @@ class ValidationMessages {
 	/**
 	 * @param array $allowedValues
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function enum(array $allowedValues, string $fieldName = null) {
 		$allowedValuesStr = implode(', ', $allowedValues);
@@ -252,7 +253,7 @@ class ValidationMessages {
 	
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function url(string $fieldName = null) {
 		if ($fieldName === null) {
@@ -264,7 +265,7 @@ class ValidationMessages {
 	
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function urlSchemeRequired(string $fieldName = null) {
 		if ($fieldName === null) {
@@ -277,7 +278,7 @@ class ValidationMessages {
 	/**
 	 * @param string[] $allowedSchemes
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function urlScheme(array $allowedSchemes, string $fieldName = null) {
 		ArgUtils::valArray($allowedSchemes, 'string');
@@ -295,7 +296,7 @@ class ValidationMessages {
 
 	/**
 	 * @param string $fieldName
-	 * @return \n2n\l10n\impl\TextCodeMessage
+	 * @return TextCodeMessage
 	 */
 	static function alreadyTaken(string $fieldName = null) {
 		if ($fieldName === null) {

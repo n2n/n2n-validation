@@ -35,14 +35,16 @@ class StepValidator extends SimpleValidatorAdapter {
 
 	function __construct(float $step, Message $errorMessage = null) {
 		parent::__construct($errorMessage);
-		$this->step = $step;
-		if (round($step, 8) != $step) {
+
+		if (round($step, 8) !== $step) {
 			throw new InvalidArgumentException('Step should not have more than 8 digits after decimal separator');
 		}
+
+		$this->step = abs($step);
 	}
 
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable, TypeConstraints::float(true)->setConvertable(false));
+		$value = $this->readSafeValue($validatable, TypeConstraints::float(true, convertable: true));
 
 		if ($value === null || ($value == 0 && $this->step == 0)) {
 			return true;
@@ -50,14 +52,14 @@ class StepValidator extends SimpleValidatorAdapter {
 		if ($this->step == 0) {
 			return false;
 		}
-		if (round($value, 8) != $value) {
+
+		if (round($value, 8) !== $value) {
 			throw new InvalidArgumentException('Value should not have more than 8 digits after decimal separator');
 		}
-		$step = $this->step < 0 ? ($this->step *= -1) : $this->step;
-		$precision = 0.0000000001; // fewer decimals means lower precision
-		return (abs(round($value / $step) - $value / $step) < $precision);
-	}
 
+		$precision = 0.0000000001; // fewer decimals means lower precision
+		return (abs(round($value / $this->step) - ($value / $this->step)) < $precision);
+	}
 
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
 		return ValidationMessages::step($this->step, $this->readLabel($validatable));

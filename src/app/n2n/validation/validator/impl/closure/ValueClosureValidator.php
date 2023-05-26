@@ -83,7 +83,7 @@ class ValueClosureValidator extends ValidatorAdapter {
 		$validatable->addError(ValidationMessages::invalid($validatable->getLabel()));
 	}
 	
-	public function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
+	public function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		throw new NotYetImplementedException();
 	}
 
