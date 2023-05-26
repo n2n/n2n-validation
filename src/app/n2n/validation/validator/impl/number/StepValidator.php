@@ -19,7 +19,6 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-
 namespace n2n\validation\validator\impl\number;
 
 use n2n\validation\plan\Validatable;
