@@ -19,6 +19,7 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
+
 namespace n2n\validation\validator\impl\number;
 
 use n2n\validation\plan\Validatable;
@@ -32,31 +33,60 @@ use InvalidArgumentException;
 class StepValidator extends SimpleValidatorAdapter {
 	private float $step;
 
-	function __construct(float $step, Message $errorMessage = null) {
+	function __construct(float $step, Message $errorMessage = null, private float $offset = 0.0) {
 		parent::__construct($errorMessage);
 
 		if (round($step, 8) !== $step) {
 			throw new InvalidArgumentException('Step should not have more than 8 digits after decimal separator');
 		}
+		if (round($offset, 8) !== $offset) {
+			throw new InvalidArgumentException('Offset should not have more than 8 digits after decimal separator');
+		}
 
-		$this->step = abs($step);
+		$this->step = (float) abs($step);
+	}
+
+	private function offsetValue(float $value): float {
+		if ($this->offset === 0.0) {
+			return $value;
+		}
+
+		if ($value >= $this->offset) {
+			return $value - $this->offset;
+		}
+
+		return $this->offset - $value;
 	}
 
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable, TypeConstraints::float(true, convertable: true));
 
-		if ($value === null || ($value == 0 && $this->step == 0)) {
+		if ($value === null) {
 			return true;
 		}
-		if ($this->step == 0 || (round($value, 8) !== $value)) {
+
+		if ((round($value, 8) !== $value)) {
+			return false;
+		}
+
+		$offsetValue = $this->offsetValue($value);
+
+		if ($offsetValue === 0.0 && $this->step === 0.0) {
+			return true;
+		}
+
+		if ($this->step === 0.0) {
 			return false;
 		}
 
 		$precision = 0.0000000001; // fewer decimals means lower precision
-		return (abs(round($value / $this->step) - ($value / $this->step)) < $precision);
+		return (abs(round($offsetValue / $this->step) - ($offsetValue / $this->step)) < $precision);
 	}
 
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		if (isset($this->offset) && $this->offset !== 0.0) {
+			return ValidationMessages::offsetStep($this->step, $this->offset, $this->readLabel($validatable));
+		}
 		return ValidationMessages::step($this->step, $this->readLabel($validatable));
 	}
 }

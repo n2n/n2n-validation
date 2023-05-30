@@ -30,13 +30,13 @@ class StepValidatorTest extends TestCase {
 		$this->assertFalse($validationResult->hasErrors());
 
 
-		//negative Step are also Ok, step is converted and handled like it is positive
+		//negative Step is also Ok, step is converted and handled like it is positive
 		$validationResult = Validate::value(-0.3, 0.2, 0.25, 4.1, 5.75, null)->val(Validators::step(-0.05))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
 
 
-		//more exact Step ar possible (up to 8 digits after decimal separator)
+		//more exact Step are possible (up to 8 digits after decimal separator)
 		$validationResult = Validate::value(-0.00003, 0.000205, 4.1010101, null)->val(Validators::step(0.0000001))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
@@ -126,5 +126,135 @@ class StepValidatorTest extends TestCase {
 		$this->expectException(TypeError::class);
 		$validationResult = Validate::value(1000)->val(Validators::step('aaa'))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+	}
+
+	function testOffsetStep(): void {
+		$validationResult = Validate::value(-8, 22, 52, 82, null)->val(Validators::step(30, offset: 22))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+	}
+	function testZeroOffsetStep(): void {
+		$validationResult = Validate::value(-30, 30, 60, 90, null)->val(Validators::step(30, offset: 0))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		//if offset = 0: it is not used and error message contain no offset hint
+		$validationResult = Validate::value(-30, 30, 60, 90, null)->val(Validators::step(33, offset: 0))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(4, $messages);
+		$this->assertEquals('Step [step = 33]', (string) $messages[0]);
+	}
+	function testOffsetStepFails(): void {
+		//if offset <> 0: error message contain step and offset as hint
+		$validationResult = Validate::value(-10, 0, 50, 80, null)->val(Validators::step(30, offset: 5))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(4, $messages);
+		$this->assertEquals('Offset Step [step = 30, offset = 5]', (string) $messages[0]);
+	}
+	function testOffsetStepNull(): void {
+		//positive offset: step start by 30 (offset)
+		$validationResult = Validate::value(0, null)->val(Validators::step(0, offset: 30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(1, $messages);
+
+		$validationResult = Validate::value(30, null)->val(Validators::step(0, offset: 30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		$validationResult = Validate::value(-30, null)->val(Validators::step(0, offset: 30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(1, $messages);
+
+		//negative offset: step start by -30 (offset)
+		$validationResult = Validate::value(0, null)->val(Validators::step(0, offset: -30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(1, $messages);
+
+		$validationResult = Validate::value(30, null)->val(Validators::step(0, offset: -30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(1, $messages);
+
+		$validationResult = Validate::value(-30, null)->val(Validators::step(0, offset: -30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+	}
+	function testNegativeOffsetStep(): void {
+		$validationResult = Validate::value(-20, 20, 50, 70, null)->val(Validators::step(-20, offset: 30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(2, $messages);
+
+		$validationResult = Validate::value(-20, 20, 50, 70, null)->val(Validators::step(-20, offset: -30))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(2, $messages);
+
+		//step of 40 shifted by -3
+		$validationResult = Validate::value(77, 37, -43, -83, null)->val(Validators::step(-40, offset: -3))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		//step of 40 shifted by -3 use wrong shift
+		$validationResult = Validate::value(-77, -37, 43, 83, null)->val(Validators::step(-40, offset: -3))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(4, $messages);
+
+		//step of 40 shifted by 3
+		$validationResult = Validate::value(-77, -37, 43, 83, null)->val(Validators::step(-40, offset: 3))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		//step of 40 shifted by 3 use wrong shift
+		$validationResult = Validate::value(77, 37, -43, -83, null)->val(Validators::step(-40, offset: 3))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(4, $messages);
+
+		//6 out of 9 are false, below the correct ones
+		$validationResult = Validate::value(-4, -3, -2, -1, 0, 1, 2, 3, 4, null)->val(Validators::step(3, offset: 1))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(6, $messages);
+		$validationResult = Validate::value(-2, 1, 4, null)->val(Validators::step(3, offset: 1))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		//6 out of 9 are false, below the correct ones
+		$validationResult = Validate::value(-4, -3, -2, -1, 0, 1, 2, 3, 4, null)->val(Validators::step(3, offset: 0))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(6, $messages);
+		$validationResult = Validate::value(-3, 0, 3, null)->val(Validators::step(3, offset: 0))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		//6 out of 9 are false, below the correct ones
+		$validationResult = Validate::value(-4, -3, -2, -1, 0, 1, 2, 3, 4, null)->val(Validators::step(3, offset: -1))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(6, $messages);
+		$validationResult = Validate::value(-4, -1, 2, null)->val(Validators::step(3, offset: -1))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
 	}
 }

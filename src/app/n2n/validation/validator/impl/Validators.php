@@ -82,8 +82,8 @@ class Validators {
 	 * @param Message|null $errorMessage
 	 * @return StepValidator
 	 */
-	static function step(float $step, $errorMessage = null) {
-		return new StepValidator($step, Message::build($errorMessage));
+	static function step(float $step, $errorMessage = null, float $offset = 0) {
+		return new StepValidator($step, Message::build($errorMessage), $offset);
 	}
 	
 	/**

@@ -128,6 +128,21 @@ class ValidationMessages {
 	}
 
 	/**
+	 * @param float $step
+	 * @param float $offset
+	 * @param string|null $fieldName
+	 * @return TextCodeMessage
+	 */
+	static function offsetStep(float $step, float $offset, string $fieldName = null): TextCodeMessage {
+		if ($fieldName === null) {
+			return Message::createCodeArg('offset_step_err', ['step' => $step, 'offset'=> $offset], null, self::NS);
+		}
+
+		return Message::createCodeArg('field_offset_step_err', ['step' => $step, 'offset' => $offset, 'field' => $fieldName],
+				null, self::NS);
+	}
+
+	/**
 	 * @param int $min
 	 * @param string|null $fieldName
 	 * @return TextCodeMessage
