@@ -20,14 +20,15 @@ use Closure;
 use n2n\validation\validator\impl\string\NoSpecialCharsValidator;
 
 class Validators {
-	
+
 	/**
-	 * @param TypeConstraint $typeConstraint
-	 * @param Message|string|null $errorMessage
+	 * @param TypeConstraint|null $typeConstraint
+	 * @param TypeConstraint|null $valTypeConstraint
+	 * @param null $errorMessage
 	 * @return TypeValidator
 	 */
-	static function type(TypeConstraint $typeConstraint, $errorMessage = null) {
-		return new TypeValidator($typeConstraint, $errorMessage);
+	static function type(?TypeConstraint $typeConstraint, TypeConstraint $valTypeConstraint = null, $errorMessage = null): TypeValidator {
+		return new TypeValidator($typeConstraint, $valTypeConstraint, Message::build($errorMessage));
 	}
 
 	/**
