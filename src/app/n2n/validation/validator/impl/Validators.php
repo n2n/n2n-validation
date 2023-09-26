@@ -24,74 +24,74 @@ class Validators {
 	/**
 	 * @param TypeConstraint|null $typeConstraint
 	 * @param TypeConstraint|null $valTypeConstraint
-	 * @param null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return TypeValidator
 	 */
-	static function type(?TypeConstraint $typeConstraint, TypeConstraint $valTypeConstraint = null, $errorMessage = null): TypeValidator {
+	static function type(?TypeConstraint $typeConstraint, TypeConstraint $valTypeConstraint = null, mixed $errorMessage = null): TypeValidator {
 		return new TypeValidator($typeConstraint, $valTypeConstraint, Message::build($errorMessage));
 	}
 
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return ExistsValidator
 	 */
-	static function exists($errorMessage = null) {
+	static function exists(mixed $errorMessage = null): ExistsValidator {
 		return new ExistsValidator(Message::build($errorMessage));
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return MandatoryValidator
 	 */
-	static function mandatory($errorMessage = null) {
+	static function mandatory(mixed $errorMessage = null): MandatoryValidator {
 		return new MandatoryValidator(Message::build($errorMessage));
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return MinlengthValidator
 	 */
-	static function minlength(int $minlength, $errorMessage = null) {
+	static function minlength(int $minlength, mixed $errorMessage = null): MinlengthValidator {
 		return new MinlengthValidator($minlength, Message::build($errorMessage));
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return MaxlengthValidator
 	 */
-	static function maxlength(int $maxlength, $errorMessage = null) {
+	static function maxlength(int $maxlength, mixed $errorMessage = null): MaxlengthValidator {
 		return new MaxlengthValidator($maxlength, Message::build($errorMessage));
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return MinValidator
 	 */
-	static function min(float $min, $errorMessage = null) {
+	static function min(float $min, mixed $errorMessage = null): MinValidator {
 		return new MinValidator($min, Message::build($errorMessage));
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return MaxValidator
 	 */
-	static function max(float $max, $errorMessage = null) {
+	static function max(float $max, mixed $errorMessage = null): MaxValidator {
 		return new MaxValidator($max, Message::build($errorMessage));
 	}
 
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return StepValidator
 	 */
-	static function step(float $step, $errorMessage = null, float $offset = 0) {
+	static function step(float $step, mixed $errorMessage = null, float $offset = 0): StepValidator {
 		return new StepValidator($step, Message::build($errorMessage), $offset);
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return EmailValidator
 	 */
-	static function email($errorMessage = null) {
+	static function email(mixed $errorMessage = null): EmailValidator {
 		return new EmailValidator(Message::build($errorMessage));
 	}
 
@@ -100,15 +100,15 @@ class Validators {
 	 * @param array|null $allowedSchemes
 	 * @return UrlValidator
 	 */
-	static function url(bool $schemeRequired = false, array $allowedSchemes = null) {
+	static function url(bool $schemeRequired = false, array $allowedSchemes = null): UrlValidator {
 		return new UrlValidator($schemeRequired, $allowedSchemes);
 	}
 	
 	/**
-	 * @param Message|null $errorMessage
+	 * @param mixed $errorMessage
 	 * @return EnumValidator
 	 */
-	static function enum(array $values, $errorMessage = null) {
+	static function enum(array $values, mixed $errorMessage = null): EnumValidator {
 		return new EnumValidator($values, Message::build($errorMessage));
 	}
 	
@@ -118,7 +118,7 @@ class Validators {
 	 * @param Closure $closure
 	 * @return ClosureValidator
 	 */
-	static function closure(Closure $closure) {
+	static function closure(Closure $closure): ClosureValidator {
 		return new ClosureValidator($closure, null);
 	}
 
@@ -128,7 +128,7 @@ class Validators {
 	 * @param Closure $closure
 	 * @return ClosureValidator
 	 */
-	static function closureAny(Closure $closure) {
+	static function closureAny(Closure $closure): ClosureValidator {
 		return new ClosureValidator($closure, false);
 	}
 
@@ -138,7 +138,7 @@ class Validators {
 	 * @param Closure $closure
 	 * @return ClosureValidator
 	 */
-	static function closureEvery(Closure $closure) {
+	static function closureEvery(Closure $closure): ClosureValidator {
 		return new ClosureValidator($closure, true);
 	}
 
@@ -148,11 +148,11 @@ class Validators {
 	 * @param Closure $closure
 	 * @return ValueClosureValidator
 	 */
-	static function valueClosure(Closure $closure) {
+	static function valueClosure(Closure $closure): ValueClosureValidator {
 		return new ValueClosureValidator($closure);
 	}
 
-	static function noSpecialChars(Message $errorMessage = null) {
-		return new NoSpecialCharsValidator($errorMessage);
+	static function noSpecialChars(mixed $errorMessage = null): NoSpecialCharsValidator {
+		return new NoSpecialCharsValidator(Message::build($errorMessage));
 	}
 }
