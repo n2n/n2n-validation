@@ -65,7 +65,7 @@ class ClosureValidator extends ValidatorAdapter {
 	 * @param Validatable[] $validatables
 	 */
 	private function handleReturn($value, $validatables) {
-		ArgUtils::valTypeReturn($value, [Message::class, Lstr::class, 'string', 'bool', null], null, $this->closure);
+		ArgUtils::valTypeReturn($value, [Message::class, Lstr::class, 'string', 'bool', 'array',  null], null, $this->closure);
 		
 		if ($value === null || $value === true) {
 			return;
