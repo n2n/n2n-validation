@@ -43,7 +43,15 @@ class ValidationUtils {
 		
 		return false;
 	}
-	
+
+	static function isLowerCaseOnly(string $str): bool {
+		return mb_strtolower($str) === $str;
+	}
+
+	static function isUpperCaseOnly(string $str): bool {
+		return mb_strtoupper($str) === $str;
+	}
+
 	static function minlength(string $str, int $minlength) {
 		return mb_strlen($str) >= $minlength;
 	}
