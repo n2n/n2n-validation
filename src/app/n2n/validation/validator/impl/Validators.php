@@ -18,6 +18,7 @@ use n2n\validation\validator\impl\number\MinValidator;
 use n2n\validation\validator\impl\number\MaxValidator;
 use Closure;
 use n2n\validation\validator\impl\string\NoSpecialCharsValidator;
+use n2n\validation\validator\impl\closure\UniqueClosureValidator;
 
 class Validators {
 
@@ -154,5 +155,9 @@ class Validators {
 
 	static function noSpecialChars(mixed $errorMessage = null): NoSpecialCharsValidator {
 		return new NoSpecialCharsValidator(Message::build($errorMessage));
+	}
+
+	static function uniqueClosure(\Closure $uniqueTester, mixed $errorMessage = null): UniqueClosureValidator {
+		return new UniqueClosureValidator($uniqueTester, Message::build($errorMessage));
 	}
 }
