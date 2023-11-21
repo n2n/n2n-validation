@@ -30,7 +30,7 @@ use n2n\util\magic\MagicContext;
 
 class MandatoryValidator extends SimpleValidatorAdapter {
 	function __construct(Message $errorMessage = null) {
-		parent::__construct(null, $errorMessage);
+		parent::__construct($errorMessage);
 	}
 	
 	/**
@@ -41,16 +41,20 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 		
 		return $this->isValid($value);
 	}
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		$value = $validatable->getValue();
-		
-		if (!$this->isValid($value)) {
-			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));
-		}
+//	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
+//		$value = $validatable->getValue();
+//
+//		if (!$this->isValid($value)) {
+//			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));
+//		}
+//	}
+//
+	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		return ValidationMessages::mandatory($this->readLabel($validatable));
 	}
 	
 	private function isValid($value) {
