@@ -25,6 +25,10 @@ class DetailedName {
 		return ArrayUtils::end($this->parts) ?? '<root>';
 	}
 
+	function toHash(): string {
+		return base64_encode(json_encode($this->parts));
+	}
+
 	function __toString() {
 		if (empty($this->parts)) {
 			return '<root>';
