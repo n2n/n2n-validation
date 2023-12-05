@@ -6,6 +6,7 @@ use n2n\util\type\attrs\DataMap;
 use n2n\validation\validator\impl\Validators;
 use n2n\util\magic\MagicContext;
 use n2n\util\ex\UnsupportedOperationException;
+use ReflectionClass;
 
 class ValidateTest extends TestCase {
 	
@@ -43,15 +44,36 @@ class ValidateTest extends TestCase {
 		$this->assertArrayHasKey(1, $validationResult->getErrorMap()->getChildren());
 	}
 
+	function testSpecialChars() {
+		$validationResult = Validate::value('asdf', null)->val(Validators::noSpecialChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+
+		$validationResult = Validate::value('@asdf', null)->val(Validators::noSpecialChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+
+		$validationResult = Validate::value('asdf/', null)->val(Validators::noSpecialChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+	}
 
 }
 
 class EmptyMagicContext implements MagicContext {
-	public function lookup($id, $required = true) {
+	function lookup(string|ReflectionClass $id, bool $required = true, string $contextNamespace = null): mixed {
 		throw new UnsupportedOperationException();
 	}
 
-	public function lookupParameterValue(\ReflectionParameter $parameter) {
+	function lookupParameterValue(\ReflectionParameter $parameter): mixed {
+		throw new UnsupportedOperationException();
+	}
+
+	function get(string $id) {
+		throw new UnsupportedOperationException();
+	}
+
+	function has(ReflectionClass|string $id): bool {
 		throw new UnsupportedOperationException();
 	}
 }

@@ -36,8 +36,8 @@ class ExistsValidator extends ValidatorAdapter {
 	 * {@inheritDoc}
 	 * @see \n2n\validation\validator\Validator::test()
 	 */
-	function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
-		foreach ($validatbles as $validatable) {
+	function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
+		foreach ($validatables as $validatable) {
 			if (!$validatable->doesExist()) {
 				return false;
 			}
@@ -50,8 +50,8 @@ class ExistsValidator extends ValidatorAdapter {
 	 * {@inheritDoc}
 	 * @see \n2n\validation\validator\Validator::validate()
 	 */
-	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
-		foreach ($validatbles as $validatable) {
+	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext) {
+		foreach ($validatables as $validatable) {
 			if (!$validatable->doesExist()) {
 				$validatable->addError(ValidationMessages::required($this->readLabel($validatable)));
 			}

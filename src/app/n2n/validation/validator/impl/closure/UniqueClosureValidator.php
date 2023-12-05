@@ -19,46 +19,40 @@
  * Bert Hofmänner.......: Idea, Frontend UI, Community Leader, Marketing
  * Thomas Günther.......: Developer, Hangar
  */
-namespace n2n\validation\validator\impl;
+namespace n2n\validation\validator\impl\closure;
 
-use n2n\l10n\Message;
-use n2n\util\type\TypeConstraint;
 use n2n\validation\plan\Validatable;
-use n2n\util\magic\MagicContext;
 use n2n\validation\lang\ValidationMessages;
+use n2n\validation\validator\impl\SimpleValidatorAdapter;
+use n2n\validation\validator\impl\ValidationUtils;
+use n2n\util\type\TypeConstraints;
+use n2n\util\magic\MagicContext;
+use n2n\l10n\Message;
+use n2n\reflection\magic\MagicMethodInvoker;
 
-abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
-	private $errorMessage;
+class UniqueClosureValidator extends SimpleValidatorAdapter {
 	
-	function __construct(Message $errorMessage = null) {
-		$this->errorMessage = $errorMessage;
+	function __construct(private \Closure $uniqueTester, Message $errorMessage = null) {
+		parent::__construct($errorMessage);
 	}
 	
 	/**
-	 * @param Message $errorMessage
-	 * @return SingleValidatorAdapter
+	 * {@inheritdoc}
 	 */
-	function setErrorMessage(?Message $errorMessage) {
-		$this->errorMessage = $errorMessage;
-		return $this;
-	}
-	
-	/**
-	 * @return \n2n\l10n\Message|null
-	 */
-	function getErrorMessage() {
-		return $this->errorMessage;
-	}
-	
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		if ($this->testSingle($validatable, $magicContext)) {
-			return;
+	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+		$value = $validatable->getValue();
+
+		if ($value === null) {
+			return true;
 		}
-		
-		$validatable->addError($this->getErrorMessage() ?? $this->createErrorMessage($validatable, $magicContext));
+
+		$invoker = new MagicMethodInvoker($magicContext);
+		$invoker->setReturnTypeConstraint(TypeConstraints::bool());
+
+		return $invoker->invoke(null, $this->uniqueTester, [$value]);
 	}
 	
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
-		return ValidationMessages::invalid($validatable->getLabel());
+		return ValidationMessages::alreadyTaken($this->readLabel($validatable));
 	}
 }

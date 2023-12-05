@@ -22,7 +22,9 @@
 namespace n2n\validation\plan;
 
 use n2n\util\magic\TaskResult;
+use n2n\util\magic\MagicArray;
 
 interface ValidationResult extends TaskResult {
 
+	function getErrorMap(): ErrorMap;
 }

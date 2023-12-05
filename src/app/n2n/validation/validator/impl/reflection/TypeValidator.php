@@ -27,21 +27,23 @@ use n2n\l10n\Message;
 use n2n\util\type\TypeConstraint;
 use n2n\util\type\TypeUtils;
 use n2n\util\magic\MagicContext;
+use n2n\util\type\TypeConstraints;
 
 class TypeValidator extends SimpleValidatorAdapter {
-	private $typeConstraint;
+
 	
-	function __construct(TypeConstraint $typeConstraint, Message $errorMessage = null) {
+	function __construct(private ?TypeConstraint $typeConstraint, private ?TypeConstraint $valTypeConstraint,
+			Message $errorMessage = null) {
 		parent::__construct($errorMessage);
-		
-		$this->typeConstraint = $typeConstraint;
 	}
 	
 	/**
 	 * {@inheritdoc}
 	 */
 	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
-		return $this->typeConstraint->isValueValid($this->readSafeValue($validatable, $this->typeConstraint));
+		$value = $this->readSafeValue($validatable, $this->typeConstraint ?? TypeConstraints::mixed());
+
+		return $this->valTypeConstraint?->isValueValid($value) ?? true;
 	}
 	
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
