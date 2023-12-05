@@ -31,9 +31,9 @@ class DetailedName {
 
 	function __toString() {
 		if (empty($this->parts)) {
-			return '<root>';
+			return '/';
 		}
 
-		return join('/', $this->parts);
+		return '/' . join('/', $this->parts);
 	}
 }
