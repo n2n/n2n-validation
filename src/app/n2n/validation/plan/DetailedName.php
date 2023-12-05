@@ -30,10 +30,6 @@ class DetailedName {
 	}
 
 	function __toString() {
-		if (empty($this->parts)) {
-			return '/';
-		}
-
 		return '/' . join('/', $this->parts);
 	}
 }
