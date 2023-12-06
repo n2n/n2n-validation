@@ -43,7 +43,7 @@ abstract class ValidatorAdapter implements Validator {
 		try {
 			return $typeConstraint->validate($value);
 		} catch (ValueIncompatibleWithConstraintsException $e) {
-			throw new ValidationMismatchException('Validatable ' . $validatable->getName() . ' is not compatible with '
+			throw new ValidationMismatchException('Validatable ' . $validatable->getPath() . ' is not compatible with '
 					. get_class($this), 0, $e);
 		}
 	}

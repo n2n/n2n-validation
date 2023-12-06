@@ -54,7 +54,7 @@ class ValueClosureValidator extends ValidatorAdapter {
 			$invoker->setClassParamObject(Validatable::class, $validatable);
 			
 			$value = $validatable->getValue();
-			$invoker->setParamValue(StringUtils::camelCased($validatable->getName()), $value);
+			$invoker->setParamValue(StringUtils::camelCased($validatable->getPath()), $value);
 			$this->handleReturn($invoker->invoke(null, null, [$value]), $validatable);
 		}
 	}
