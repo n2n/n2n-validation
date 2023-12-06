@@ -5,10 +5,8 @@ use n2n\util\type\attrs\AttributeReader;
 use n2n\util\type\attrs\AttributePath;
 use n2n\validation\err\UnresolvableValidationException;
 use n2n\util\type\attrs\AttributesException;
-use n2n\util\type\ArgUtils;
 use n2n\validation\plan\impl\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidationComposerSource;
-use n2n\validation\plan\DetailedName;
 
 class AttrsPropValidationComposerSource extends ComposerSourceAdapter implements PropValidationComposerSource {
 
@@ -18,7 +16,7 @@ class AttrsPropValidationComposerSource extends ComposerSourceAdapter implements
 	
 	public function resolveValidatables(string $expression, bool $mustExist): array {
 		$attributePath = AttributePath::create($expression);
-		$detailedName = new DetailedName($attributePath->toArray());
+		$detailedName = new AttributePath($attributePath->toArray());
 
 		$validatable = $this->getValidatable($detailedName);
 		if ($validatable !== null && (!$mustExist || $validatable->doesExist())) {

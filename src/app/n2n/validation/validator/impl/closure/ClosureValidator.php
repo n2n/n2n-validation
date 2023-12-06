@@ -37,7 +37,7 @@ class ClosureValidator extends ValidatorAdapter {
 	function __construct(private \Closure $closure, private ?bool $everyValidatableMustExist) {
 	}
 	
-	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext) {
+	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): void {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
 		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
@@ -103,7 +103,7 @@ class ClosureValidator extends ValidatorAdapter {
 		
 		$handled = false;
 		foreach ($validatables as $validatable) {
-			$name = (string) $validatable->getName();
+			$name = (string) $validatable->getPath();
 			if (!isset($returnValue[$name])) {
 				continue;
 			}
