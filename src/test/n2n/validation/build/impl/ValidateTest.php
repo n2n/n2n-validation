@@ -21,6 +21,7 @@ class ValidateTest extends TestCase {
 				->exec(new EmptyMagicContext());
 		
 		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
 		
 		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['firstname']));
 		$this->assertTrue($validationResult->getErrorMap()->getChildren()['firstname']->isEmpty());
@@ -41,6 +42,7 @@ class ValidateTest extends TestCase {
 
 
 		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
 		$this->assertArrayHasKey(1, $validationResult->getErrorMap()->getChildren());
 	}
 
@@ -48,14 +50,17 @@ class ValidateTest extends TestCase {
 		$validationResult = Validate::value('asdf', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
+		$this->assertTrue($validationResult->get());
 
 		$validationResult = Validate::value('@asdf', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
 
 		$validationResult = Validate::value('asdf/', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
 	}
 
 }
