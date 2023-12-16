@@ -24,7 +24,12 @@ namespace n2n\validation\plan;
 use n2n\util\magic\TaskResult;
 use n2n\util\magic\MagicArray;
 
+/**
+ * @template-implements bool
+ */
 interface ValidationResult extends TaskResult {
 
 	function getErrorMap(): ErrorMap;
+
+	function get(): bool;
 }
