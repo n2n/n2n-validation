@@ -14,7 +14,7 @@ class ValidateTest extends TestCase {
 		$dataMap = new DataMap(['firstname' => 'Huii', 'lastname' => null, 'data' => [ 'huii' => null, 'huii2' => 'hoi' ]]);
 		
 		$validationResult = Validate::attrs($dataMap)
-				->props(['firstname', 'lastname', 'data/huii', 'data/huii2'], Validators::mandatory(),
+				->props(['firstname', 'lastname', 'data/huii', 'data/huii2'],
 						Validators::closure(function ($firstname, $lastname, $huii, $huii2) {
 							return ['data/huii2' => 'wrong: ' . $huii2];
 						}))
@@ -27,12 +27,12 @@ class ValidateTest extends TestCase {
 		$this->assertTrue($validationResult->getErrorMap()->getChildren()['firstname']->isEmpty());
 		
 		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['lastname']));
-		$this->assertTrue(!$validationResult->getErrorMap()->getChildren()['lastname']->isEmpty());
+		$this->assertTrue($validationResult->getErrorMap()->getChildren()['lastname']->isEmpty());
 
 		$this->assertTrue(isset($validationResult->getErrorMap()->getChildren()['data']));
 
 		$dataErrorMap = $validationResult->getErrorMap()->getChildren()['data'];
-		$this->assertTrue(!$dataErrorMap->getChildren()['huii']->isEmpty());
+		$this->assertTrue($dataErrorMap->getChildren()['huii']->isEmpty());
 		$this->assertEquals('wrong: hoi', $dataErrorMap->getChildren()['huii2']->getMessages()[0]->__toString());
 	}
 

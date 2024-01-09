@@ -29,6 +29,7 @@ use n2n\util\type\TypeConstraints;
 use n2n\util\magic\MagicContext;
 use n2n\l10n\Message;
 use n2n\reflection\magic\MagicMethodInvoker;
+use n2n\validation\plan\ValidationContext;
 
 class UniqueClosureValidator extends SimpleValidatorAdapter {
 	
@@ -39,7 +40,7 @@ class UniqueClosureValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $validatable->getValue();
 
 		if ($value === null) {

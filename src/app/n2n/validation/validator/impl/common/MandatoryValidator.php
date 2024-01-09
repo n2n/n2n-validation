@@ -27,6 +27,7 @@ use n2n\validation\validator\impl\SimpleValidatorAdapter;
 use n2n\validation\validator\impl\ValidationUtils;
 use n2n\l10n\Message;
 use n2n\util\magic\MagicContext;
+use n2n\validation\plan\ValidationContext;
 
 class MandatoryValidator extends SimpleValidatorAdapter {
 	function __construct(Message $errorMessage = null) {
@@ -36,7 +37,7 @@ class MandatoryValidator extends SimpleValidatorAdapter {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $validatable->getValue();
 		
 		return $this->isValid($value);

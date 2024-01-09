@@ -31,13 +31,14 @@ use n2n\l10n\Message;
 use n2n\validation\lang\ValidationMessages;
 use n2n\l10n\Lstr;
 use n2n\util\ex\NotYetImplementedException;
+use n2n\validation\validator\impl\MultiValidatorAdapter;
 
-class ClosureValidator extends ValidatorAdapter {
+class ClosureValidator extends MultiValidatorAdapter {
 
 	function __construct(private \Closure $closure, private ?bool $everyValidatableMustExist) {
 	}
 	
-	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): void {
+	function validateMulti(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): void {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
 		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
@@ -120,7 +121,7 @@ class ClosureValidator extends ValidatorAdapter {
 		return $handled;
 	}
 	
-	public function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
+	public function testMulti(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		throw new NotYetImplementedException();
 	}
 

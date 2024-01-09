@@ -31,6 +31,7 @@ use n2n\validation\lang\ValidationMessages;
 use n2n\util\type\ArgUtils;
 use n2n\util\type\TypeConstraint;
 use n2n\util\type\TypeConstraints;
+use n2n\validation\plan\ValidationContext;
 
 class UrlValidator extends SingleValidatorAdapter {
 	
@@ -41,7 +42,7 @@ class UrlValidator extends SingleValidatorAdapter {
 		ArgUtils::valArray($allowedSchemes, 'string', true, 'allowedSchemes');
 	}
 	
-	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', Url::class, 'null']));
 		
 		if ($value === null) {
@@ -65,7 +66,7 @@ class UrlValidator extends SingleValidatorAdapter {
 		return true;
 	}
 	
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
+	protected function validateSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): void {
 		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', Url::class, 'null']));
 		
 		if ($value === null)  {

@@ -26,6 +26,7 @@ use n2n\util\type\TypeConstraint;
 use n2n\validation\plan\Validatable;
 use n2n\util\magic\MagicContext;
 use n2n\validation\lang\ValidationMessages;
+use n2n\validation\plan\ValidationContext;
 
 abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	private $errorMessage;
@@ -50,8 +51,8 @@ abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 		return $this->errorMessage;
 	}
 	
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		if ($this->testSingle($validatable, $magicContext)) {
+	protected function validateSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): void {
+		if ($this->testSingle($validatable, $validationContext, $magicContext)) {
 			return;
 		}
 		

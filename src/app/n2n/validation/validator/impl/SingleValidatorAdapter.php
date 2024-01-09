@@ -36,7 +36,7 @@ abstract class SingleValidatorAdapter extends ValidatorAdapter {
 				continue;
 			}
 			
-			if (!$this->testSingle($validatable, $magicContext)) {
+			if (!$this->testSingle($validatable, $validationContext, $magicContext)) {
 				return false;
 			}
 		}
@@ -44,7 +44,7 @@ abstract class SingleValidatorAdapter extends ValidatorAdapter {
 		return true;
 	}
 	
-	protected abstract function testSingle(Validatable $validatable, MagicContext $magicContext): bool;
+	protected abstract function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool;
 	
 	final function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext) {
 		ArgUtils::valArray($validatables, Validatable::class);
@@ -54,10 +54,10 @@ abstract class SingleValidatorAdapter extends ValidatorAdapter {
 				continue;
 			}
 			
-			$this->validateSingle($validatable, $magicContext);
+			$this->validateSingle($validatable, $validationContext, $magicContext);
 		}
 	}
 	
-	protected abstract function validateSingle(Validatable $validatable, MagicContext $magicContext): void;
+	protected abstract function validateSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): void;
 	
 }

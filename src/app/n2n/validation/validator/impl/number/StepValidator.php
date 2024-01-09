@@ -29,6 +29,7 @@ use n2n\util\type\TypeConstraints;
 use n2n\util\magic\MagicContext;
 use n2n\l10n\Message;
 use InvalidArgumentException;
+use n2n\validation\plan\ValidationContext;
 
 class StepValidator extends SimpleValidatorAdapter {
 	private float $step;
@@ -58,7 +59,7 @@ class StepValidator extends SimpleValidatorAdapter {
 		return $this->offset - $value;
 	}
 
-	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable, TypeConstraints::float(true, convertable: true));
 
 		if ($value === null) {
