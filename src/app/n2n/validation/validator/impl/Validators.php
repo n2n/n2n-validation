@@ -17,6 +17,8 @@ use n2n\validation\validator\impl\number\MinValidator;
 use n2n\validation\validator\impl\number\MaxValidator;
 use Closure;
 use n2n\validation\validator\impl\string\NoSpecialCharsValidator;
+use n2n\validation\validator\impl\closure\ConditionalValidator;
+use n2n\validation\validator\Validator;
 
 class Validators {
 	
@@ -44,7 +46,22 @@ class Validators {
 	static function mandatory($errorMessage = null) {
 		return new MandatoryValidator(Message::build($errorMessage));
 	}
-	
+
+	/**
+	 * Creates a ConditionalValidator that wraps a MandatoryValidator
+	 *
+	 * @param Closure|bool $condition A boolean value or a Closure that returns a boolean indicating if the validator should be applied.
+	 * @param string|null $errorMessage The error message for the validator.
+	 * @return ConditionalValidator Returns an instance of ConditionalValidator wrapping a MandatoryValidator.
+	 */
+	public static function mandatoryIf(Closure|bool $condition, $errorMessage = null): ConditionalValidator {
+		if ($condition instanceof Closure) {
+			return new ConditionalValidator($condition, new MandatoryValidator($errorMessage));
+		}
+
+		return new ConditionalValidator(fn() => $condition, new MandatoryValidator($errorMessage));
+	}
+
 	/**
 	 * @param Message|null $errorMessage
 	 * @return MinlengthValidator
