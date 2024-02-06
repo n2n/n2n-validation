@@ -64,19 +64,19 @@ class ValidateTest extends TestCase {
 	}
 
 	function testMandatoryIf() {
-		$dataMap = new DataMap(['employee' => true, 'badgeNumber' => 1234]);
+		$dataMap = new DataMap(['isEmployee' => true, 'badgeNumber' => 1234]);
 
 		$validationResult = Validate::attrs($dataMap)
-				->prop('badgeNumber', Validators::mandatoryIf(fn($employee) => $employee))
+				->prop('badgeNumber', Validators::mandatoryIf(fn() => true))
 				->exec(new EmptyMagicContext());
 
 		$this->assertFalse($validationResult->hasErrors());
 		$this->assertTrue($validationResult->get());
 
-		$dataMap = new DataMap(['employee' => true, 'badgeNumber' => null]);
+		$dataMap = new DataMap(['isEmployee' => true, 'badgeNumber' => null]);
 
 		$validationResult = Validate::attrs($dataMap)
-				->prop('badgeNumber', Validators::mandatoryIf(fn($employee) => $employee))
+				->prop('badgeNumber', Validators::mandatoryIf(true))
 				->exec(new EmptyMagicContext());
 
 		$this->assertTrue($validationResult->hasErrors());
