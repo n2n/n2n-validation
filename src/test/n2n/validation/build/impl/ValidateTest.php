@@ -63,6 +63,25 @@ class ValidateTest extends TestCase {
 		$this->assertFalse($validationResult->get());
 	}
 
+	function testMandatoryIf() {
+		$dataMap = new DataMap(['employee' => true, 'badgeNumber' => 1234]);
+
+		$validationResult = Validate::attrs($dataMap)
+				->prop('badgeNumber', Validators::mandatoryIf(fn($employee) => $employee))
+				->exec(new EmptyMagicContext());
+
+		$this->assertFalse($validationResult->hasErrors());
+		$this->assertTrue($validationResult->get());
+
+		$dataMap = new DataMap(['employee' => true, 'badgeNumber' => null]);
+
+		$validationResult = Validate::attrs($dataMap)
+				->prop('badgeNumber', Validators::mandatoryIf(fn($employee) => $employee))
+				->exec(new EmptyMagicContext());
+
+		$this->assertTrue($validationResult->hasErrors());
+	}
+
 }
 
 class EmptyMagicContext implements MagicContext {
