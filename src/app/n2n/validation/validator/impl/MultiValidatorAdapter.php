@@ -32,10 +32,10 @@ abstract class MultiValidatorAdapter extends ValidatorAdapter {
 	final function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		ArgUtils::valArray($validatables, Validatable::class);
 		
-		return $this->testMulti($validatables, $magicContext);
-	}
+		return $this->testMulti($validatables, $validationContext, $magicContext);
+	 }
 	
-	protected abstract function testMulti(array $validatables, MagicContext $magicContext): bool;
+	protected abstract function testMulti(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool;
 
 
 	/**
@@ -51,10 +51,10 @@ abstract class MultiValidatorAdapter extends ValidatorAdapter {
 				return;
 			}
 		}
-			
-		$this->validateMulti($validatables, $magicContext);
+
+		$this->validateMulti($validatables, $validationContext, $magicContext);
 	}
 	
-	protected abstract function validateMulti(array $validatables, MagicContext $magicContext): void;
+	protected abstract function validateMulti(array $validatables,  ValidationContext $validationContext, MagicContext $magicContext): void;
 	
 }

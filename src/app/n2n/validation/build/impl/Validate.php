@@ -8,7 +8,7 @@ use n2n\validation\build\impl\compose\union\UnionValidationComposer;
 use n2n\validation\build\impl\source\AttrsPropValidationComposerSource;
 use n2n\validation\plan\impl\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidationComposer;
-use n2n\validation\plan\DetailedName;
+use n2n\util\type\attrs\AttributePath;
 
 class Validate {
 	/**
@@ -18,7 +18,7 @@ class Validate {
 	static function value(...$values) {
 		$validatables = [];
 		foreach ($values as $name => $value) {
-			$validatables[] = new ValueValidatable(new DetailedName([(string) $name]), $value, true);
+			$validatables[] = new ValueValidatable(new AttributePath([(string) $name]), $value, true);
 		}
 		
 		return new UnionValidationComposer(new StaticUnionValidationComposerSource($validatables));

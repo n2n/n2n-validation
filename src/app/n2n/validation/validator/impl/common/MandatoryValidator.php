@@ -27,30 +27,35 @@ use n2n\validation\validator\impl\SimpleValidatorAdapter;
 use n2n\validation\validator\impl\ValidationUtils;
 use n2n\l10n\Message;
 use n2n\util\magic\MagicContext;
+use n2n\validation\plan\ValidationContext;
 
 class MandatoryValidator extends SimpleValidatorAdapter {
 	function __construct(Message $errorMessage = null) {
-		parent::__construct(null, $errorMessage);
+		parent::__construct($errorMessage);
 	}
 	
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function testSingle(Validatable $validatable, MagicContext $magicContext): bool {
+	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $validatable->getValue();
 		
 		return $this->isValid($value);
 	}
-	
+
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
-		$value = $validatable->getValue();
-		
-		if (!$this->isValid($value)) {
-			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));
-		}
+//	protected function validateSingle(Validatable $validatable, MagicContext $magicContext): void {
+//		$value = $validatable->getValue();
+//
+//		if (!$this->isValid($value)) {
+//			$validatable->addError(ValidationMessages::mandatory($this->readLabel($validatable)));
+//		}
+//	}
+//
+	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
+		return ValidationMessages::mandatory($this->readLabel($validatable));
 	}
 	
 	private function isValid($value) {

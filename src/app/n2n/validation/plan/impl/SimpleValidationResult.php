@@ -38,4 +38,8 @@ class SimpleValidationResult implements ValidationResult {
 		IllegalStateException::assertTrue($this->errorMap !== null, 'ValidationResult is valid.');
 		return $this->errorMap;
 	}
+
+	function get(): bool {
+		return !$this->hasErrors();
+	}
 }

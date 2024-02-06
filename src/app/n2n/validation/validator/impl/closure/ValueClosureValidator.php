@@ -54,7 +54,7 @@ class ValueClosureValidator extends ValidatorAdapter {
 			$invoker->setClassParamObject(Validatable::class, $validatable);
 			
 			$value = $validatable->getValue();
-			$invoker->setParamValue(StringUtils::camelCased($validatable->getName()), $value);
+			$invoker->setParamValue(StringUtils::camelCased($validatable->getPath()), $value);
 			$this->handleReturn($invoker->invoke(null, null, [$value]), $validatable);
 		}
 	}
@@ -83,7 +83,7 @@ class ValueClosureValidator extends ValidatorAdapter {
 		$validatable->addError(ValidationMessages::invalid($validatable->getLabel()));
 	}
 	
-	public function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
+	public function test(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		throw new NotYetImplementedException();
 	}
 

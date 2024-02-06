@@ -31,20 +31,21 @@ use n2n\l10n\Message;
 use n2n\validation\lang\ValidationMessages;
 use n2n\l10n\Lstr;
 use n2n\util\ex\NotYetImplementedException;
+use n2n\validation\validator\impl\MultiValidatorAdapter;
 
-class ClosureValidator extends ValidatorAdapter {
+class ClosureValidator extends MultiValidatorAdapter {
 
 	function __construct(private \Closure $closure, private ?bool $everyValidatableMustExist) {
 	}
 	
-	function validate(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext) {
+	function validateMulti(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): void {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
 		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
 
 		$existNum = 0;
 		$args = [];
-		foreach ($validatbles as $validatable) {
+		foreach ($validatables as $validatable) {
 			if (!$validatable->doesExist()) {
 				$args[] = null;
 			} else {
@@ -54,9 +55,9 @@ class ClosureValidator extends ValidatorAdapter {
 		}
 
 		if ($this->everyValidatableMustExist === null
-				|| ($this->everyValidatableMustExist === true && (count($validatbles) === $existNum))
+				|| ($this->everyValidatableMustExist === true && (count($validatables) === $existNum))
 				|| ($this->everyValidatableMustExist === false && $existNum > 0)) {
-			$this->handleReturn($invoker->invoke(null, null, $args), $validatbles);
+			$this->handleReturn($invoker->invoke(null, null, $args), $validatables);
 		}
 	}
 	
@@ -65,7 +66,7 @@ class ClosureValidator extends ValidatorAdapter {
 	 * @param Validatable[] $validatables
 	 */
 	private function handleReturn($value, $validatables) {
-		ArgUtils::valTypeReturn($value, [Message::class, Lstr::class, 'string', 'bool', null], null, $this->closure);
+		ArgUtils::valTypeReturn($value, [Message::class, Lstr::class, 'string', 'bool', 'array',  'null'], null, $this->closure);
 		
 		if ($value === null || $value === true) {
 			return;
@@ -103,7 +104,7 @@ class ClosureValidator extends ValidatorAdapter {
 		
 		$handled = false;
 		foreach ($validatables as $validatable) {
-			$name = (string) $validatable->getName();
+			$name = (string) $validatable->getPath();
 			if (!isset($returnValue[$name])) {
 				continue;
 			}
@@ -120,7 +121,7 @@ class ClosureValidator extends ValidatorAdapter {
 		return $handled;
 	}
 	
-	public function test(array $validatbles, ValidationContext $validationContext, MagicContext $magicContext): bool {
+	public function testMulti(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		throw new NotYetImplementedException();
 	}
 

@@ -8,7 +8,7 @@ use n2n\util\type\ArgUtils;
 use n2n\validation\plan\ValidatableSource;
 use n2n\validation\plan\ValidationContext;
 use n2n\util\ex\IllegalStateException;
-use n2n\validation\plan\DetailedName;
+use n2n\util\type\attrs\AttributePath;
 
 abstract class ComposerSourceAdapter implements ValidatableSource, ValidationContext {
 	/**
@@ -33,7 +33,7 @@ abstract class ComposerSourceAdapter implements ValidatableSource, ValidationCon
 	 * @return void
 	 */
 	protected function addValidatable(Validatable $validatable): void {
-		$nameStr = $validatable->getName()->__toString();
+		$nameStr = $validatable->getPath()->__toString();
 		if (isset($this->validatables[$nameStr])) {
 			throw new IllegalStateException('Validatable \''  . $nameStr . '\' already defined.');
 		}
@@ -42,10 +42,10 @@ abstract class ComposerSourceAdapter implements ValidatableSource, ValidationCon
 	}
 
 	/**
-	 * @param DetailedName $detailedName
+	 * @param AttributePath $detailedName
 	 * @return Validatable|null
 	 */
-	protected function getValidatable(DetailedName $detailedName) {
+	protected function getValidatable(AttributePath $detailedName) {
 		return $this->validatables[$detailedName->__toString()] ?? null;
 	}
 
@@ -60,7 +60,7 @@ abstract class ComposerSourceAdapter implements ValidatableSource, ValidationCon
 		$errorMap = new ErrorMap($this->generalMessages);
 		
 		foreach ($this->validatables as $attrValidatable) {
-			$errorMap->putDecendant($attrValidatable->getName()->toArray(), new ErrorMap($attrValidatable->getMessages()));
+			$errorMap->putDecendant($attrValidatable->getPath()->toArray(), new ErrorMap($attrValidatable->getMessages()));
 		}
 		
 		return $errorMap;
