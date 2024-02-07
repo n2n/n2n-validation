@@ -81,7 +81,6 @@ class ValidateTest extends TestCase {
 
 		$this->assertTrue($validationResult->hasErrors());
 	}
-
 }
 
 class EmptyMagicContext implements MagicContext {

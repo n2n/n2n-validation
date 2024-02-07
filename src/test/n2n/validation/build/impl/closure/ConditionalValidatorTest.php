@@ -21,7 +21,8 @@ class ConditionalValidatorTest extends TestCase {
 	}
 
 	public function testValidatorInvokedOnTrueCondition() {
-		$condition = function($validatables) { return $validatables[0] === 'asdf'; };
+		$adminMode = true;
+		$condition = function() use ($adminMode) { return  $adminMode; };
 
 		$this->validatorMock->expects($this->once())
 				->method('validate');
