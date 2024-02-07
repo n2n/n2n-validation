@@ -10,7 +10,7 @@ use n2n\reflection\magic\MagicMethodInvoker;
 use n2n\util\type\TypeConstraints;
 
 class ConditionalValidator extends ValidatorAdapter {
-	private Closure $condition;
+	private Closure|bool $condition;
 	private Validator $validator;
 
 	public function __construct(Closure|bool $condition, Validator $validator) {

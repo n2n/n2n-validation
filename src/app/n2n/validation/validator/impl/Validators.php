@@ -57,11 +57,7 @@ class Validators {
 	 * @return ConditionalValidator Returns an instance of ConditionalValidator wrapping a MandatoryValidator.
 	 */
 	public static function mandatoryIf(Closure|bool $condition, $errorMessage = null): ConditionalValidator {
-		if ($condition instanceof Closure) {
-			return new ConditionalValidator($condition, new MandatoryValidator($errorMessage));
-		}
-
-		return new ConditionalValidator(fn() => $condition, new MandatoryValidator($errorMessage));
+		return new ConditionalValidator($condition, new MandatoryValidator($errorMessage));
 	}
 
 	/**
