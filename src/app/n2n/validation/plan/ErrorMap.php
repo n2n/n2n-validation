@@ -231,5 +231,14 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		return array_filter($this->children, function ($child) { return !$child->isEmpty(); });
 	}
 
+	static function from(string|Message|null $message): ErrorMap {
+		$message = Message::build($message);
+
+		if ($message === null) {
+			return new ErrorMap();
+		}
+
+		return new ErrorMap([$message]);
+	}
 
 }
