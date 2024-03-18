@@ -20,6 +20,8 @@ use n2n\validation\validator\impl\closure\ConditionalValidator;
 use n2n\validation\validator\impl\closure\UniqueClosureValidator;
 use n2n\validation\validator\impl\elements\MaxElementsValidator;
 use n2n\validation\validator\impl\elements\MinElementsValidator;
+use n2n\validation\validator\impl\number\MaxValidator;
+use n2n\validation\validator\impl\number\MinValidator;
 
 class Validators {
 
@@ -78,18 +80,18 @@ class Validators {
 	
 	/**
 	 * @param mixed $errorMessage
-	 * @return MinElementsValidator
+	 * @return MinValidator
 	 */
-	static function min(float $min, mixed $errorMessage = null): MinElementsValidator {
-		return new MinElementsValidator($min, Message::build($errorMessage));
+	static function min(float $min, mixed $errorMessage = null): MinValidator {
+		return new MinValidator($min, Message::build($errorMessage));
 	}
 	
 	/**
 	 * @param mixed $errorMessage
-	 * @return MaxElementsValidator
+	 * @return MaxValidator
 	 */
-	static function max(float $max, mixed $errorMessage = null): MaxElementsValidator {
-		return new MaxElementsValidator($max, Message::build($errorMessage));
+	static function max(float $max, mixed $errorMessage = null): MaxValidator {
+		return new MaxValidator($max, Message::build($errorMessage));
 	}
 
 	/**
