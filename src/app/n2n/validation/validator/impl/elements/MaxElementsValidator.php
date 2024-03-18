@@ -30,11 +30,9 @@ use n2n\l10n\Message;
 use n2n\validation\plan\ValidationContext;
 
 class MaxElementsValidator extends SimpleValidatorAdapter {
-	private int $max;
 
-	function __construct(int $max, Message $errorMessage = null) {
+	function __construct(private int $max, Message $errorMessage = null) {
 		parent::__construct($errorMessage);
-		$this->max = $max;
 	}
 
 	/**

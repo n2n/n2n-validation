@@ -30,11 +30,9 @@ use n2n\l10n\Message;
 use n2n\validation\plan\ValidationContext;
 
 class MinElementsValidator extends SimpleValidatorAdapter {
-	private int $min;
 
-	function __construct(int $min, Message $errorMessage = null) {
+	function __construct(private int $min, Message $errorMessage = null) {
 		parent::__construct($errorMessage);
-		$this->min = $min;
 	}
 
 	/**

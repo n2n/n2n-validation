@@ -13,7 +13,8 @@ class ElementsValidatorTest extends TestCase {
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
 
-		$validationResult = Validate::value(new \ArrayObject(['asdf', 'bsdf']))->val(Validators::minElements(3, 'custom error'))
+		$validationResult = Validate::value(new \ArrayObject(['asdf', 'bsdf']))
+				->val(Validators::minElements(3, 'custom error'))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
 
@@ -27,7 +28,8 @@ class ElementsValidatorTest extends TestCase {
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
 
-		$validationResult = Validate::value(new \ArrayObject(['asdf', 'bsdf']))->val(Validators::maxElements(1, 'custom error'))
+		$validationResult = Validate::value(new \ArrayObject(['asdf', 'bsdf']))
+				->val(Validators::maxElements(1, 'custom error'))
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
 
