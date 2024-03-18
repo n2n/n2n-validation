@@ -12,7 +12,7 @@ use n2n\util\type\attrs\AttributePath;
 
 class Validate {
 	/**
-	 * @param string[] $values
+	 * @param array $values
 	 * @return UnionValidationComposer
 	 */
 	static function value(...$values) {
