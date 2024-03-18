@@ -1,6 +1,7 @@
 <?php
 namespace n2n\validation\validator\impl;
 
+use Closure;
 use n2n\validation\validator\impl\common\MandatoryValidator;
 use n2n\l10n\Message;
 use n2n\validation\validator\impl\number\StepValidator;
@@ -14,12 +15,11 @@ use n2n\validation\validator\impl\closure\ValueClosureValidator;
 use n2n\validation\validator\impl\common\ExistsValidator;
 use n2n\validation\validator\impl\string\UrlValidator;
 use n2n\validation\validator\impl\closure\ClosureValidator;
-use n2n\validation\validator\impl\number\MinValidator;
-use n2n\validation\validator\impl\number\MaxValidator;
-use Closure;
 use n2n\validation\validator\impl\string\NoSpecialCharsValidator;
 use n2n\validation\validator\impl\closure\ConditionalValidator;
 use n2n\validation\validator\impl\closure\UniqueClosureValidator;
+use n2n\validation\validator\impl\elements\MaxElementsValidator;
+use n2n\validation\validator\impl\elements\MinElementsValidator;
 
 class Validators {
 
@@ -78,18 +78,18 @@ class Validators {
 	
 	/**
 	 * @param mixed $errorMessage
-	 * @return MinValidator
+	 * @return MinElementsValidator
 	 */
-	static function min(float $min, mixed $errorMessage = null): MinValidator {
-		return new MinValidator($min, Message::build($errorMessage));
+	static function min(float $min, mixed $errorMessage = null): MinElementsValidator {
+		return new MinElementsValidator($min, Message::build($errorMessage));
 	}
 	
 	/**
 	 * @param mixed $errorMessage
-	 * @return MaxValidator
+	 * @return MaxElementsValidator
 	 */
-	static function max(float $max, mixed $errorMessage = null): MaxValidator {
-		return new MaxValidator($max, Message::build($errorMessage));
+	static function max(float $max, mixed $errorMessage = null): MaxElementsValidator {
+		return new MaxElementsValidator($max, Message::build($errorMessage));
 	}
 
 	/**
@@ -171,5 +171,23 @@ class Validators {
 
 	static function uniqueClosure(\Closure $uniqueTester, mixed $errorMessage = null): UniqueClosureValidator {
 		return new UniqueClosureValidator($uniqueTester, Message::build($errorMessage));
+	}
+
+	/**
+	 * @param int $min
+	 * @param mixed $errorMessage
+	 * @return MinElementsValidator
+	 */
+	static function minElements(int $min, mixed $errorMessage = null): MinElementsValidator {
+		return new MinElementsValidator($min, Message::build($errorMessage));
+	}
+
+	/**
+	 * @param int $max
+	 * @param mixed $errorMessage
+	 * @return MaxElementsValidator
+	 */
+	static function maxElements(int $max, mixed $errorMessage = null): MaxElementsValidator {
+		return new MaxElementsValidator($max, Message::build($errorMessage));
 	}
 }
