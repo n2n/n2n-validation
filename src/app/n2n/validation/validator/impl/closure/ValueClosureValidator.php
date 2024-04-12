@@ -32,9 +32,8 @@ use n2n\l10n\Message;
 use n2n\validation\lang\ValidationMessages;
 use n2n\l10n\Lstr;
 use n2n\util\ex\NotYetImplementedException;
-use n2n\validation\validator\impl\SingleValidatorAdapter;
 
-class ValueClosureValidator extends SingleValidatorAdapter {
+class ValueClosureValidator extends ValidatorAdapter {
 	
 	private $closure;
 	
@@ -42,11 +41,10 @@ class ValueClosureValidator extends SingleValidatorAdapter {
 		$this->closure = $closure;
 	}
 	
-	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext) {
+	function validate(array $validatables, ValidationContext $validationContext, MagicContext $magicContext): void {
 		$invoker = new MagicMethodInvoker($magicContext);
 		$invoker->setMethod(new \ReflectionFunction($this->closure));
 		$invoker->setClassParamObject(ValidationContext::class, $validationContext);
-
 		
 		foreach ($validatables as $validatable) {
 			if (!$validatable->doesExist() || !$validatable->isValid()) {
@@ -89,11 +87,4 @@ class ValueClosureValidator extends SingleValidatorAdapter {
 		throw new NotYetImplementedException();
 	}
 
-	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
-		throw new NotYetImplementedException();
-	}
-
-	protected function validateSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): void {
-		// TODO: Implement validateSingle() method.
-	}
 }
