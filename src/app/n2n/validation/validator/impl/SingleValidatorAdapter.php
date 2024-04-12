@@ -32,7 +32,7 @@ abstract class SingleValidatorAdapter extends ValidatorAdapter {
 		ArgUtils::valArray($validatables, Validatable::class);
 		
 		foreach ($validatables as $validatable) {
-			if (!$validatable->doesExist()) {
+			if (!$validatable->doesExist() || !$validatable->isValid()) {
 				continue;
 			}
 			
