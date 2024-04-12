@@ -54,20 +54,20 @@ class ValidationGroup {
 		ArgUtils::valArray($validatables, Validatable::class);
 		
 		$this->validators = $validators;
-		
-		foreach ($validatables as $validatable) {
-			$this->addValidatable($validatable);
-		}
+		$this->validatables = $validatables;
+//		foreach ($validatables as $validatable) {
+//			$this->addValidatable($validatable);
+//		}
 	}
 	
-	/**
-	 * @param Validatable $validatable
-	 */
-	private function addValidatable(Validatable $validatable) {
+//	/**
+//	 * @param Validatable $validatable
+//	 */
+//	private function addValidatable(Validatable $validatable) {
 //		$typeConstraint = $validatable->getTypeConstraint();
 //
 //		if ($typeConstraint === null) {
-			$this->validatables[] = $validatable;
+//			$this->validatables[] = $validatable;
 //			return;
 //		}
 //
@@ -84,7 +84,7 @@ class ValidationGroup {
 //		}
 //
 //		$this->validatables[] = $validatable;
-	}
+//	}
 	
 	/**
 	 * @param MagicContext $magicContext
