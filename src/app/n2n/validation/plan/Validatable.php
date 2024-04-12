@@ -55,11 +55,10 @@ interface Validatable {
 	
 	/**
 	 * Returns true if future validations for this Validatable make sense. If this method returns false it signals 
-	 * that all future validations planed for this Validatable should be skipped. This method exists to prevent the 
+	 * that all future validations planed for this Validatable should be skipped. This flag exists to prevent the
 	 * occurrence of too many error messages for one single Validatable and to prevent that a Validator analyses
-	 * a corrupted value. All {@see Validator}s should follow this
-	 * rule but are not obligated to do so. In most cases this method returns true as long no errors have been added 
-	 * through {@see self::addError()} yet.
+	 * a corrupted value. All {@see Validator}s should follow this rule but are not obligated to do so.
+	 * In most cases this method returns true as long no errors have been added through {@see self::addError()} yet.
 	 * 
 	 * @return bool
 	 */
