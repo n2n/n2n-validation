@@ -9,7 +9,7 @@ class ValueValidatable extends ValidatableAdapter {
 		parent::__construct($name, $label);
 	}
 	
-	function getValue() {
+	function getValue(): mixed {
 		return $this->value;
 	}
 	

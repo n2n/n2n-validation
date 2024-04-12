@@ -51,7 +51,7 @@ interface Validatable {
 	 * @return mixed
 	 * @throws IllegalStateException if {@see Validatable::doesExist()} returns false 
 	 */
-	function getValue();
+	function getValue(): mixed;
 	
 	/**
 	 * Returns true if future validations for this Validatable make sense. If this method returns false it signals 
