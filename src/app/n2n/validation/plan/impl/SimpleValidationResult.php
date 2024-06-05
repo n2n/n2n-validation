@@ -30,6 +30,10 @@ class SimpleValidationResult implements ValidationResult {
 	function __construct(private ?ErrorMap $errorMap = null) {
 	}
 
+	function isValid(): bool {
+		return $this->errorMap === null;
+	}
+
 	function hasErrors(): bool {
 		return $this->errorMap !== null;
 	}
