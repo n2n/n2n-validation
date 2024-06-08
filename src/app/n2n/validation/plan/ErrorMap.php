@@ -27,6 +27,7 @@ use n2n\util\magic\MagicArray;
 use n2n\util\magic\MagicContext;
 use n2n\l10n\N2nLocale;
 use n2n\util\magic\MagicObjectUnavailableException;
+use PhpParser\Error;
 
 class ErrorMap implements MagicArray, \JsonSerializable {
 	private $messages = [];
@@ -59,14 +60,14 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	/**
 	 * @return Message[]
 	 */
-	function getMessages() {
+	function getMessages(): array {
 		return $this->messages;
 	}
 	
 	/**
 	 * @param Message[] $messages
 	 */
-	function setMessages(array $messages) {
+	function setMessages(array $messages): static {
 		ArgUtils::valArray($messages, Message::class);
 		$this->messages = $messages;
 		return $this;
@@ -76,7 +77,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 * @param Message $message
 	 * @return ErrorMap
 	 */
-	function addMessage(Message $message) {
+	function addMessage(Message $message): static {
 		$this->messages[] = $message;
 		return $this;
 	}
@@ -86,7 +87,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 * @param Message $message
 	 * @return ErrorMap
 	 */
-	function addDecendantMessage(array $keys, Message $message) {
+	function addDecendantMessage(array $keys, Message $message): static {
 		if (empty($keys)) {
 			$this->addMessage($message);
 			return $this;
@@ -100,7 +101,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	/**
 	 * @return ErrorMap[]
 	 */
-	function getChildren() {
+	function getChildren(): array {
 		return $this->children;
 	}
 	
@@ -108,7 +109,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 * @param ErrorMap[] $children
 	 * @return ErrorMap
 	 */
-	function setChildren(array $children) {
+	function setChildren(array $children): static {
 		ArgUtils::valArray($children, ErrorMap::class);
 		$this->children = $children;
 		return $this;
@@ -117,7 +118,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	/**
 	 * @param ErrorMap $errorMap
 	 */
-	function putChild(string $key, ErrorMap $errorMap) {
+	function putChild(string $key, ErrorMap $errorMap): static {
 		$this->children[$key] = $errorMap;
 		
 		return $this;
@@ -127,7 +128,7 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 * @param string $key
 	 * @return ErrorMap|null
 	 */
-	function getChild(string $key) {
+	function getChild(string $key): ?ErrorMap {
 		return $this->children[$key] ?? null;
 	}
 	
@@ -135,21 +136,31 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 * @param string $key
 	 * @return ErrorMap|null
 	 */
-	function getOrCreateChild(string $key) {
+	function getOrCreateChild(string $key): ?ErrorMap {
 		if (!isset($this->children[$key])) {
 			$this->children[$key] = new ErrorMap(); 
 		}
 		
 		return $this->children[$key];
 	}
-	
+
 	/**
 	 * @param array $keys
 	 * @param ErrorMap $errorMap
-	 * @return ErrorMap|void
-	 *@throws \InvalidArgumentException
+	 * @return static
+	 * @deprecated use {@link self::putDescendant()}
 	 */
-	function putDecendant(array $keys, ErrorMap $errorMap) {
+	function putDecendant(array $keys, ErrorMap $errorMap): static {
+		$this->putDescendant($keys, $errorMap);
+		return $this;
+	}
+
+	/**
+	 * @param array $keys
+	 * @param ErrorMap $errorMap
+	 * @return ErrorMap
+	 */
+	function putDescendant(array $keys, ErrorMap $errorMap): static {
 		if (empty($keys)) {
 			throw new \InvalidArgumentException('No keys passed.');
 		}
@@ -157,12 +168,21 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 		$key = array_shift($keys);
 		if (empty($keys)) {
 			$this->putChild($key, $errorMap);
-			return;
+			return $this;
 		}
 		
 		$this->getOrCreateChild($key)->putDecendant($keys, $errorMap);
 		
 		return $this;
+	}
+
+	function getDescendant(array $keys): ?ErrorMap {
+		if (empty($keys)) {
+			return null;
+		}
+
+		$key = array_shift($keys);
+		return $this->getChild($key)?->getDescendant($keys);
 	}
 
 	/**
