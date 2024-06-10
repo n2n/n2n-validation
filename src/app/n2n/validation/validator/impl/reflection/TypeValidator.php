@@ -33,9 +33,13 @@ use n2n\validation\plan\ValidationContext;
 class TypeValidator extends SimpleValidatorAdapter {
 
 	
-	function __construct(private ?TypeConstraint $typeConstraint, private ?TypeConstraint $valTypeConstraint,
-			Message $errorMessage = null) {
+	function __construct(private ?TypeConstraint $valTypeConstraint, Message $errorMessage = null) {
 		parent::__construct($errorMessage);
+	}
+
+	function setTypeConstraint(TypeConstraint $typeConstraint): static {
+		$this->typeConstraint = $typeConstraint;
+		return $this;
 	}
 	
 	/**

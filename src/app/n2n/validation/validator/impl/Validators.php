@@ -26,13 +26,12 @@ use n2n\validation\validator\impl\number\MinValidator;
 class Validators {
 
 	/**
-	 * @param TypeConstraint|null $typeConstraint
 	 * @param TypeConstraint|null $valTypeConstraint
 	 * @param mixed $errorMessage
 	 * @return TypeValidator
 	 */
-	static function type(?TypeConstraint $typeConstraint, TypeConstraint $valTypeConstraint = null, mixed $errorMessage = null): TypeValidator {
-		return new TypeValidator($typeConstraint, $valTypeConstraint, Message::build($errorMessage));
+	static function type(TypeConstraint $valTypeConstraint = null, mixed $errorMessage = null): TypeValidator {
+		return new TypeValidator($valTypeConstraint, Message::build($errorMessage));
 	}
 
 	/**
