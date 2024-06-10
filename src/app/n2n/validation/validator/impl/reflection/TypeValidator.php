@@ -32,6 +32,7 @@ use n2n\validation\plan\ValidationContext;
 
 class TypeValidator extends SimpleValidatorAdapter {
 
+	private ?TypeConstraint $typeConstraint = null;
 	
 	function __construct(private ?TypeConstraint $valTypeConstraint, Message $errorMessage = null) {
 		parent::__construct($errorMessage);
