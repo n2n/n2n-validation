@@ -54,7 +54,7 @@ class TypeValidator extends SimpleValidatorAdapter {
 	
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
 		return Message::create('Invalid type: '
-				. TypeUtils::getTypeInfo($this->readSafeValue($validatable, $this->typeConstraint))
-				. '. Required type: ' . $this->typeConstraint);
+				. TypeUtils::getTypeInfo($this->readSafeValue($validatable, TypeConstraints::mixed()))
+				. '. Required type: ' . $this->valTypeConstraint);
 	}
 }

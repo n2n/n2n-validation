@@ -33,6 +33,17 @@ class TypeValidatorTest extends TestCase {
 		$this->assertEquals('custom type error', (string) $messages[0]);
 	}
 
+	function testDefaultErrorMessage(): void {
+
+		$validationResult = Validate::value(1, 'string', null)
+				->val(Validators::type(TypeConstraints::int(true)))
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+
+		$messages = $validationResult->getErrorMap()->getAllMessages();
+		$this->assertCount(1, $messages);
+		$this->assertEquals('Invalid type: string. Required type: ?int', (string) $messages[0]);
+	}
+
 	function testTypeError(): void {
 		$this->expectException(ValidationMismatchException::class);
 
