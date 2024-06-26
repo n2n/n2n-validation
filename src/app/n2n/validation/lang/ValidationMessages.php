@@ -215,8 +215,20 @@ class ValidationMessages {
 		return Message::createCodeArg('field_enum_err', ['allowedValues' => $allowedValuesStr, 'field' => $fieldName], 
 				null, self::NS);
 	}
-	
-	
+
+	static function wrongValues(array $allowedValues, array $wrongValues, string $fieldName = null) {
+		$allowedValuesStr = implode(', ', $allowedValues);
+		$wrongValuesStr = implode(', ', $wrongValues);
+
+		if ($fieldName === null) {
+			return Message::createCodeArg('wrong_values_err', ['allowedValues' => $allowedValuesStr,
+					'wrongValues' => $wrongValuesStr], null, self::NS, count($wrongValues));
+		}
+
+		return Message::createCodeArg('field_wrong_values_err', ['allowedValues' => $allowedValuesStr,
+				'wrongValues' => $wrongValuesStr, 'field' => $fieldName],
+				null, self::NS, count($wrongValues));
+	}
 
 // 	static function extension(string $fileName, array $allowedFileExtensions, string $fieldName = null) {
 // 		if ($fieldName === null) {
