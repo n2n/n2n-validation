@@ -28,10 +28,11 @@ use n2n\util\magic\MagicTask;
 
 interface ValidationTask extends MagicTask {
 	/**
-	 * @param MagicContext $magicContext
+	 * @param MagicContext|null $magicContext
+	 * @param mixed|null $input
 	 * @return ValidationResult
 	 * @throws UnresolvableValidationException
 	 * @throws ValidationMismatchException
 	 */
-	function exec(MagicContext $magicContext): ValidationResult;
+	function exec(MagicContext $magicContext = null, mixed $input = null): ValidationResult;
 }

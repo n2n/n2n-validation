@@ -67,7 +67,7 @@ class ValidationPlan {
 	 * @param MagicContext $magicContext
 	 * @return bool
 	 */
-	function test(MagicContext $magicContext) {
+	function test(MagicContext $magicContext): bool {
 		foreach ($this->validationGroups as $validationGroup) {
 			if (!$validationGroup->test($magicContext)) {
 				return false;

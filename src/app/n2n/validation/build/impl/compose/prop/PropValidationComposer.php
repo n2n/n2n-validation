@@ -12,6 +12,7 @@ use n2n\util\magic\MagicContext;
 use n2n\validation\plan\impl\SimpleValidationResult;
 use n2n\validation\err\ValidationException;
 use n2n\validation\plan\ValidationResult;
+use n2n\util\magic\impl\MagicContexts;
 
 class PropValidationComposer implements ValidationTask {
 	/**
@@ -130,11 +131,13 @@ class PropValidationComposer implements ValidationTask {
 	}
 
 	/**
-	 * @param MagicContext $magicContext
+	 * @param MagicContext|null $magicContext
+	 * @param mixed|null $input
 	 * @return ValidationResult
-	 * @throws ValidationException
 	 */
-	function exec(MagicContext $magicContext): ValidationResult {
+	function exec(MagicContext $magicContext = null, mixed $input = null): ValidationResult {
+		$magicContext ??= MagicContexts::simple([]);
+
 		$this->prepareJob();
 
 		return $this->validationPlan->exec($magicContext);
