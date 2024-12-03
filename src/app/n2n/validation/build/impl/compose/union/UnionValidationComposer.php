@@ -61,7 +61,7 @@ class UnionValidationComposer implements ValidationTask {
 	 * {@inheritDoc}
 	 * @see \n2n\validation\plan\ValidationTask::exec()
 	 */
-	function exec(MagicContext $magicContext = null, mixed $input = null): ValidationResult {
+	function exec(?MagicContext $magicContext = null, mixed $input = null): ValidationResult {
 		$this->prepareJob();
 
 		return $this->validationPlan->exec($magicContext ?? MagicContexts::simple([]));

@@ -34,7 +34,7 @@ use n2n\validation\plan\ValidationContext;
 class StepValidator extends SimpleValidatorAdapter {
 	private float $step;
 
-	function __construct(float $step, Message $errorMessage = null, private float $offset = 0.0) {
+	function __construct(float $step, ?Message $errorMessage = null, private float $offset = 0.0) {
 		parent::__construct($errorMessage);
 
 		if (round($step, 8) !== $step) {

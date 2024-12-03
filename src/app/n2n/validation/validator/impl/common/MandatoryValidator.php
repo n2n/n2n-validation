@@ -30,7 +30,7 @@ use n2n\util\magic\MagicContext;
 use n2n\validation\plan\ValidationContext;
 
 class MandatoryValidator extends SimpleValidatorAdapter {
-	function __construct(Message $errorMessage = null) {
+	function __construct(?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
 	

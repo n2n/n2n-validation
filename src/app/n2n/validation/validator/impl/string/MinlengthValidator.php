@@ -33,7 +33,7 @@ use n2n\validation\plan\ValidationContext;
 class MinlengthValidator extends SimpleValidatorAdapter {
 	private $minlength;
 	
-	function __construct(int $minlength, Message $errorMessage = null) {
+	function __construct(int $minlength, ?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 		$this->minlength = $minlength;
 	}

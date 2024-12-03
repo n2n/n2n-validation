@@ -72,7 +72,7 @@ class ValidationUtils {
 		return $str !== null && !StringUtils::isEmpty($str);
 	}
 	
-	static function isFileTypeSupported(File $file, ?array $allowedMimeTypes, array $allowedExtensions = null) {
+	static function isFileTypeSupported(File $file, ?array $allowedMimeTypes, ?array $allowedExtensions = null) {
 		return ($allowedMimeTypes === null && $allowedExtensions === null)
 				|| ($allowedExtensions !== null && in_array($file->getOriginalExtension(), $allowedExtensions))
 				|| ($allowedMimeTypes !== null && in_array($file->getFileSource()->getMimeType(), $allowedMimeTypes));

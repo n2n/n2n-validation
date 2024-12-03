@@ -84,7 +84,7 @@ class ValidateTest extends TestCase {
 }
 
 class EmptyMagicContext implements MagicContext {
-	function lookup(string|ReflectionClass $id, bool $required = true, string $contextNamespace = null): mixed {
+	function lookup(string|ReflectionClass $id, bool $required = true, ?string $contextNamespace = null): mixed {
 		throw new UnsupportedOperationException();
 	}
 

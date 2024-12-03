@@ -30,7 +30,7 @@ class Validators {
 	 * @param mixed $errorMessage
 	 * @return TypeValidator
 	 */
-	static function type(TypeConstraint $valTypeConstraint = null, mixed $errorMessage = null): TypeValidator {
+	static function type(?TypeConstraint $valTypeConstraint = null, mixed $errorMessage = null): TypeValidator {
 		return new TypeValidator($valTypeConstraint, Message::build($errorMessage));
 	}
 
@@ -114,7 +114,7 @@ class Validators {
 	 * @param array|null $allowedSchemes
 	 * @return UrlValidator
 	 */
-	static function url(bool $schemeRequired = false, array $allowedSchemes = null): UrlValidator {
+	static function url(bool $schemeRequired = false, ?array $allowedSchemes = null): UrlValidator {
 		return new UrlValidator($schemeRequired, $allowedSchemes);
 	}
 	

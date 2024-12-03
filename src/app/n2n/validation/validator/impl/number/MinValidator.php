@@ -32,7 +32,7 @@ use n2n\validation\plan\ValidationContext;
 class MinValidator extends SimpleValidatorAdapter {
 	private $min;
 	
-	function __construct(float $min, Message $errorMessage = null) {
+	function __construct(float $min, ?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 		$this->min = $min;
 	}

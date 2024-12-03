@@ -32,7 +32,7 @@ use n2n\validation\plan\ValidationContext;
 class EnumValidator extends SimpleValidatorAdapter {
 	private $allowedValues;
 	
-	function __construct(array $allowedValues, Message $errorMessage = null) {
+	function __construct(array $allowedValues, ?Message $errorMessage = null) {
 		$this->allowedValues = $allowedValues;
 		parent::__construct(null, $errorMessage);
 	}

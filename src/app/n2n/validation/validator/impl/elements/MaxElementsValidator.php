@@ -31,7 +31,7 @@ use n2n\validation\plan\ValidationContext;
 
 class MaxElementsValidator extends SimpleValidatorAdapter {
 
-	function __construct(private int $max, Message $errorMessage = null) {
+	function __construct(private int $max, ?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
 

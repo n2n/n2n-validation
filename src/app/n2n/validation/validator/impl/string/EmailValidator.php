@@ -32,7 +32,7 @@ use n2n\validation\plan\ValidationContext;
 
 class EmailValidator extends SimpleValidatorAdapter {
 	
-	function __construct(Message $errorMessage = null) {
+	function __construct(?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
 	

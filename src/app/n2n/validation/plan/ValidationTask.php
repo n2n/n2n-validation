@@ -34,5 +34,5 @@ interface ValidationTask extends MagicTask {
 	 * @throws UnresolvableValidationException
 	 * @throws ValidationMismatchException
 	 */
-	function exec(MagicContext $magicContext = null, mixed $input = null): ValidationResult;
+	function exec(?MagicContext $magicContext = null, mixed $input = null): ValidationResult;
 }

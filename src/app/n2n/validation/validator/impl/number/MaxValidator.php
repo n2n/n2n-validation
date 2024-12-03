@@ -32,7 +32,7 @@ use n2n\validation\plan\ValidationContext;
 class MaxValidator extends SimpleValidatorAdapter {
 	private $max;
 	
-	function __construct(float $max, Message $errorMessage = null) {
+	function __construct(float $max, ?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 		$this->max = $max;
 	}

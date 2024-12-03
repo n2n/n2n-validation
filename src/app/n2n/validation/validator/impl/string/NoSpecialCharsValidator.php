@@ -11,7 +11,7 @@ use n2n\util\io\IoUtils;
 use n2n\validation\plan\ValidationContext;
 
 class NoSpecialCharsValidator extends SimpleValidatorAdapter {
-	public function __construct(Message $errorMessage = null) {
+	public function __construct(?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
 

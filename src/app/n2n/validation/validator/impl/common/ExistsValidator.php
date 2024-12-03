@@ -29,7 +29,7 @@ use n2n\util\magic\MagicContext;
 
 class ExistsValidator extends ValidatorAdapter {
 	
-	function __construct(Message $errorMessage = null) {
+	function __construct(?Message $errorMessage = null) {
 	}
 	
 	/**

@@ -135,7 +135,7 @@ class PropValidationComposer implements ValidationTask {
 	 * @param mixed|null $input
 	 * @return ValidationResult
 	 */
-	function exec(MagicContext $magicContext = null, mixed $input = null): ValidationResult {
+	function exec(?MagicContext $magicContext = null, mixed $input = null): ValidationResult {
 		$magicContext ??= MagicContexts::simple([]);
 
 		$this->prepareJob();

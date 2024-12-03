@@ -31,7 +31,7 @@ use n2n\validation\plan\ValidationContext;
 abstract class SimpleValidatorAdapter extends SingleValidatorAdapter {
 	private $errorMessage;
 	
-	function __construct(Message $errorMessage = null) {
+	function __construct(?Message $errorMessage = null) {
 		$this->errorMessage = $errorMessage;
 	}
 	

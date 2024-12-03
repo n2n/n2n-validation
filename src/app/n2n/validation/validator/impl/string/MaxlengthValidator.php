@@ -32,7 +32,7 @@ use n2n\validation\plan\ValidationContext;
 
 class MaxlengthValidator extends SimpleValidatorAdapter {
 
-	function __construct(private int $maxlength, Message $errorMessage = null) {
+	function __construct(private int $maxlength, ?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
 	

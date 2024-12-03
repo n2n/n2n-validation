@@ -33,7 +33,7 @@ use n2n\validation\plan\ValidationContext;
 
 class UniqueClosureValidator extends SimpleValidatorAdapter {
 	
-	function __construct(private \Closure $uniqueTester, Message $errorMessage = null) {
+	function __construct(private \Closure $uniqueTester, ?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
 	
