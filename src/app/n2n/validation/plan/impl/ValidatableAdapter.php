@@ -12,7 +12,7 @@ abstract class ValidatableAdapter implements Validatable {
 	private Lstr|string|null $label;
 	private array $messages = [];
 
-	function __construct(AttributePath $name, string|Lstr $label = null) {
+	function __construct(AttributePath $name, string|Lstr|null $label = null) {
 		$this->name = $name;
 		$this->label = $label;
 	}
