@@ -28,6 +28,7 @@ use n2n\util\magic\MagicContext;
 use n2n\l10n\N2nLocale;
 use n2n\util\magic\MagicObjectUnavailableException;
 use PhpParser\Error;
+use n2n\l10n\Lstr;
 
 class ErrorMap implements MagicArray, \JsonSerializable {
 	private $messages = [];
@@ -68,8 +69,9 @@ class ErrorMap implements MagicArray, \JsonSerializable {
 	 * @param Message[] $messages
 	 */
 	function setMessages(array $messages): static {
-		ArgUtils::valArray($messages, Message::class);
-		$this->messages = $messages;
+		ArgUtils::valArray($messages, [Message::class, Lstr::class, 'string']);
+
+		$this->messages = array_map(fn ($m) => Message::create($m), $messages);
 		return $this;
 	}
 	
