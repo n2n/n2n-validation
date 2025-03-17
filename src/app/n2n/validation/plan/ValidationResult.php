@@ -30,6 +30,4 @@ use n2n\util\magic\MagicArray;
 interface ValidationResult extends TaskResult {
 
 	function getErrorMap(): ErrorMap;
-
-	function get(): bool;
 }
