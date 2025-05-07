@@ -113,6 +113,24 @@ class ValidationMessages {
 				null, self::NS);
 	}
 
+	static function notEarlierThan(string $earliest, ?string $fieldName = null): TextCodeMessage {
+		if ($fieldName === null) {
+			return Message::createCodeArg('not_earlier_than_earliest_err', ['earliest' => $earliest], null, self::NS);
+		}
+
+		return Message::createCodeArg('field_not_earlier_than_earliest_err', ['earliest' => $earliest, 'field' => $fieldName],
+				null, self::NS);
+	}
+
+	static function notLaterThan(string $latest, ?string $fieldName = null): TextCodeMessage {
+		if ($fieldName === null) {
+			return Message::createCodeArg('not_later_than_latest_err', ['latest' => $latest], null, self::NS);
+		}
+
+		return Message::createCodeArg('field_not_later_than_latest_err', ['latest' => $latest, 'field' => $fieldName],
+				null, self::NS);
+	}
+
 	/**
 	 * @param float $step
 	 * @param string|null $fieldName
