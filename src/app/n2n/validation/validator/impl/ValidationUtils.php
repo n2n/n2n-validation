@@ -22,25 +22,26 @@ class ValidationUtils {
 	 * checks a string, if it is a valid url address
 	 *
 	 * @param string $url
+	 * @param bool $schemeRequired
 	 * @return bool
 	 */
-	public static function isUrl(string $url, bool $schemeRequired = true) {
+	public static function isUrl(string $url, bool $schemeRequired = true): bool {
 		try {
 			$url = Url::create($url)->toIdnaAsciiString();
 		} catch (\InvalidArgumentException $e) {
 			return false;
 		}
-		
-		if ($schemeRequired) {
-			if (false !== filter_var($url, FILTER_VALIDATE_URL)) {
-				return true;
-			}
-		} else {
-			if (false !== filter_var($url, FILTER_VALIDATE_URL)) {
-				return true;
-			}
+
+		if (parse_url($url, PHP_URL_SCHEME)
+				&& parse_url($url, PHP_URL_HOST)
+				&& filter_var($url, FILTER_VALIDATE_URL)) {
+			return true;
 		}
-		
+
+		if (!$schemeRequired) {
+			str_contains($url, '.') && preg_match('/\.[a-zA-Z]{2,}$/', $url);
+		}
+
 		return false;
 	}
 
