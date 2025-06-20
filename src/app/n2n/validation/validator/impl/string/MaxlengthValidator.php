@@ -40,7 +40,7 @@ class MaxlengthValidator extends SimpleValidatorAdapter {
 	 * {@inheritDoc}
 	 */
 	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
-		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
+		$value = $this->readSafeValue($validatable, TypeConstraints::type(['string', \Stringable::class, null]));
 		
 		return $value === null || ValidationUtils::isNotLongerThen($value, $this->maxlength);
 	}
