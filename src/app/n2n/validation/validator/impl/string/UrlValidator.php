@@ -48,7 +48,7 @@ class UrlValidator extends SingleValidatorAdapter {
 			return true;
 		}
 
-		if (!ValidationUtils::isUrl($value, $this->schemeRequired)) {
+		if (!ValidationUtils::isUrl($value, false)) {
 			return false;
 		}
 		$url = Url::create($value);
