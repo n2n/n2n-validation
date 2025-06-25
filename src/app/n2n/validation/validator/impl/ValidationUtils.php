@@ -4,6 +4,7 @@ namespace n2n\validation\validator\impl;
 use n2n\util\uri\Url;
 use n2n\util\StringUtils;
 use n2n\util\io\IoUtils;
+use n2n\util\ex\IllegalStateException;
 
 class ValidationUtils {
 	/**
@@ -15,61 +16,86 @@ class ValidationUtils {
 	public static function isEmail(string $email) {
 		return false !== filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
-	
-	/**
-	 * checks a string, if it is a valid url address
-	 *
-	 * @param string $url
-	 * @return bool
-	 */
-	public static function isUrl(string $url): bool {
-		if (empty(trim($url))) {
-			return false;
+
+
+	public static function isUrl(string $urlStr, bool $absoluteRequired = true): bool {
+		if ($absoluteRequired) {
+			return is_string(filter_var($urlStr, FILTER_VALIDATE_URL));
 		}
 
-		// Check if URL ends with invalid characters
-		if (preg_match('/[.:]$/', trim($url))) {
-			return false;
+		$schemeStr = parse_url($urlStr, PHP_URL_SCHEME);
+		$hostStr = parse_url($urlStr, PHP_URL_HOST);
+		if (null !== $schemeStr && null !== $hostStr) {
+			return is_string(filter_var($urlStr, FILTER_VALIDATE_URL));
 		}
 
-		if (!parse_url($url, PHP_URL_SCHEME)) {
-			$url = 'http://' . $url;
+		if ($schemeStr !== null && $hostStr === null) {
+			throw new IllegalStateException('Could not handle url: ' . $urlStr);
 		}
 
-		try {
-			$url = Url::create($url)->toIdnaAsciiString();
-		} catch (\InvalidArgumentException $e) {
-			return false;
+		if ($hostStr === null) {
+			$urlStr = 'https://example.ch/' . ltrim($urlStr, '/');
+		} else if ($schemeStr === null) {
+			$urlStr = 'https://' . ltrim($urlStr, '/');
 		}
 
-		// Check if parse_url can handle the URL (not seriously malformed)
-		$parsedUrl = parse_url($url);
-		if ($parsedUrl === false) {
-			return false;
-		}
-
-		// Ensure we have both scheme and host, and host is not empty
-		$scheme = parse_url($url, PHP_URL_SCHEME);
-		$host = parse_url($url, PHP_URL_HOST);
-
-		if (!$scheme || !$host || empty(trim($host))) {
-			return false;
-		}
-
-		// Validate hostname format (must contain dot or be localhost/IP)
-		if (!filter_var($host, FILTER_VALIDATE_IP) &&
-				$host !== 'localhost' &&
-				!str_contains($host, '.')) {
-			return false;
-		}
-
-		// Final validation with PHP's built-in filter
-		if (!filter_var($url, FILTER_VALIDATE_URL)) {
-			return false;
-		}
-
-		return true;
+		return is_string(filter_var($urlStr, FILTER_VALIDATE_URL));
 	}
+	
+//	/**
+//	 * checks a string, if it is a valid url address
+//	 *
+//	 * @param string $url
+//	 * @return bool
+//	 */
+//	public static function isUrl(string $url): bool {
+//		if (empty(trim($url))) {
+//			return false;
+//		}
+//
+//		// Check if URL ends with invalid characters
+//		if (preg_match('/[.:]$/', trim($url))) {
+//			return false;
+//		}
+//
+//		if (!parse_url($url, PHP_URL_SCHEME)) {
+//			$url = 'http://' . $url;
+//		}
+//
+//		try {
+//			$url = Url::create($url)->toIdnaAsciiString();
+//		} catch (\InvalidArgumentException $e) {
+//			return false;
+//		}
+//
+//		// Check if parse_url can handle the URL (not seriously malformed)
+//		$parsedUrl = parse_url($url);
+//		if ($parsedUrl === false) {
+//			return false;
+//		}
+//
+//		// Ensure we have both scheme and host, and host is not empty
+//		$scheme = parse_url($url, PHP_URL_SCHEME);
+//		$host = parse_url($url, PHP_URL_HOST);
+//
+//		if (!$scheme || !$host || empty(trim($host))) {
+//			return false;
+//		}
+//
+//		// Validate hostname format (must contain dot or be localhost/IP)
+//		if (!filter_var($host, FILTER_VALIDATE_IP) &&
+//				$host !== 'localhost' &&
+//				!str_contains($host, '.')) {
+//			return false;
+//		}
+//
+//		// Final validation with PHP's built-in filter
+//		if (!filter_var($url, FILTER_VALIDATE_URL)) {
+//			return false;
+//		}
+//
+//		return true;
+//	}
 
 	static function isLowerCaseOnly(string $str): bool {
 		return mb_strtolower($str) === $str;

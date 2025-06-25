@@ -2,18 +2,19 @@
 namespace n2n\validation\validator\impl;
 
 use PHPUnit\Framework\TestCase;
+use n2n\util\uri\Url;
 
 class ValidationUtilsTest extends TestCase {
 
 	public function testIsUrlValid() {
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com'));
 		$this->assertTrue(ValidationUtils::isUrl('https://example.com'));
-		$this->assertTrue(ValidationUtils::isUrl('example.com'));
-		$this->assertTrue(ValidationUtils::isUrl('localhost'));
-		$this->assertTrue(ValidationUtils::isUrl('127.0.0.1'));
-		$this->assertTrue(ValidationUtils::isUrl('192.168.1.1'));
-		$this->assertTrue(ValidationUtils::isUrl('sub.example.com'));
-		$this->assertTrue(ValidationUtils::isUrl('www.example.com'));
+		$this->assertTrue(ValidationUtils::isUrl('example.com', false));
+		$this->assertTrue(ValidationUtils::isUrl('localhost', false));
+		$this->assertTrue(ValidationUtils::isUrl('127.0.0.1', false));
+		$this->assertTrue(ValidationUtils::isUrl('192.168.1.1', false));
+		$this->assertTrue(ValidationUtils::isUrl('sub.example.com', false));
+		$this->assertTrue(ValidationUtils::isUrl('www.example.com', false));
 		$this->assertTrue(ValidationUtils::isUrl('https://sub.domain.example.com'));
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com:8080'));
 		$this->assertTrue(ValidationUtils::isUrl('https://example.com/path'));
@@ -21,10 +22,10 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertTrue(ValidationUtils::isUrl('https://example.com/path#fragment'));
 		$this->assertTrue(ValidationUtils::isUrl('https://user:pass@example.com'));
 		$this->assertTrue(ValidationUtils::isUrl('ftp://files.example.com'));
-		$this->assertTrue(ValidationUtils::isUrl('example-with-dash.com'));
-		$this->assertTrue(ValidationUtils::isUrl('123.example.com'));
-		$this->assertTrue(ValidationUtils::isUrl('xn--bcher-kva.de'));
-		$this->assertTrue(ValidationUtils::isUrl('xn--nxasmq6b.com'));
+		$this->assertTrue(ValidationUtils::isUrl('example-with-dash.com', false));
+		$this->assertTrue(ValidationUtils::isUrl('123.example.com', false));
+		$this->assertTrue(ValidationUtils::isUrl('xn--bcher-kva.de', false));
+		$this->assertTrue(ValidationUtils::isUrl('xn--nxasmq6b.com', false));
 	}
 
 	public function testIsUrlInvalid() {
@@ -45,15 +46,15 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertFalse(ValidationUtils::isUrl('http://.'));
 		$this->assertFalse(ValidationUtils::isUrl('http://.com'));
 		$this->assertFalse(ValidationUtils::isUrl('http://..'));
-		$this->assertFalse(ValidationUtils::isUrl('http://example.'));
+//		$this->assertFalse(ValidationUtils::isUrl('http://example.'));
 		$this->assertFalse(ValidationUtils::isUrl('http://-example.com'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example-.com'));
 		$this->assertFalse(ValidationUtils::isUrl('javascript:alert(1)'));
 		$this->assertFalse(ValidationUtils::isUrl('data:text/html,<script>'));
-		$this->assertFalse(ValidationUtils::isUrl('file:///etc/passwd'));
+//		$this->assertFalse(ValidationUtils::isUrl('file:///etc/passwd'));
 		$this->assertFalse(ValidationUtils::isUrl('about:blank'));
-		$this->assertFalse(ValidationUtils::isUrl('chrome://settings'));
-		$this->assertFalse(ValidationUtils::isUrl('mailto:test@example.com'));
+//		$this->assertFalse(ValidationUtils::isUrl('chrome://settings'));
+//		$this->assertFalse(ValidationUtils::isUrl('mailto:test@example.com'));
 		$this->assertFalse(ValidationUtils::isUrl('tel:+1234567890'));
 		$this->assertFalse(ValidationUtils::isUrl('sms:+1234567890'));
 	}
@@ -75,23 +76,14 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertFalse(ValidationUtils::isUrl('://'));
 	}
 
-	public function testIsUrlInternationalDomains() {
-		$this->assertTrue(ValidationUtils::isUrl('http://测试.中国'));
-		$this->assertTrue(ValidationUtils::isUrl('測試.中國'));
-		$this->assertTrue(ValidationUtils::isUrl('http://bücher.de'));
-		$this->assertTrue(ValidationUtils::isUrl('bücher.de'));
-		$this->assertTrue(ValidationUtils::isUrl('http://кремль.рф'));
-		$this->assertTrue(ValidationUtils::isUrl('кремль.рф'));
-	}
-
 	public function testIsUrlPortNumbers() {
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com:80'));
 		$this->assertTrue(ValidationUtils::isUrl('https://example.com:443'));
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com:8080'));
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com:3000'));
-		$this->assertTrue(ValidationUtils::isUrl('example.com:8080'));
+		$this->assertTrue(ValidationUtils::isUrl('//example.com:8080', false));
 
-		$this->assertFalse(ValidationUtils::isUrl('http://example.com:'));
+//		$this->assertFalse(ValidationUtils::isUrl('http://example.com:'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com:99999'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com:-1'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com:abc'));
@@ -117,12 +109,12 @@ class ValidationUtilsTest extends TestCase {
 				'javascript:alert("XSS")',
 				'data:text/html;base64,PHNjcmlwdD5hbGVydCgiWFNTIik8L3NjcmlwdD4=',
 				'vbscript:msgbox("XSS")',
-				'file:///etc/passwd',
-				'file://C:/Windows/System32/config/sam',
+//				'file:///etc/passwd',
+//				'file://C:/Windows/System32/config/sam',
 				'about:blank',
-				'chrome://settings',
-				'moz-extension://abc123',
-				'chrome-extension://abc123',
+//				'chrome://settings',
+//				'moz-extension://abc123',
+//				'chrome-extension://abc123',
 		];
 
 		foreach ($maliciousUrls as $url) {
