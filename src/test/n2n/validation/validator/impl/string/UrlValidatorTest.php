@@ -144,15 +144,15 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
-	public function testValidationUsesCustomSchemeRequiredErrorMessage() {
-		$customMessage = ValidationMessages::invalid('somefield');
-		$validator = new UrlValidator(schemeRequired: true, schemeRequiredErrorMessage: $customMessage);
-		$validatable = $this->createMock(Validatable::class);
-		$validatable->method('getValue')->willReturn('example.com');
-		$validatable->expects($this->once())->method('addError')->with($customMessage);
-
-		$this->invokeValidateSingle($validator, $validatable);
-	}
+//	public function testValidationUsesCustomSchemeRequiredErrorMessage() {
+//		$customMessage = ValidationMessages::invalid('somefield');
+//		$validator = new UrlValidator(schemeRequired: true, schemeRequiredErrorMessage: $customMessage);
+//		$validatable = $this->createMock(Validatable::class);
+//		$validatable->method('getValue')->willReturn('example.com');
+//		$validatable->expects($this->once())->method('addError')->with($customMessage);
+//
+//		$this->invokeValidateSingle($validator, $validatable);
+//	}
 
 	public function testValidationUsesCustomSchemeErrorMessage() {
 		$customMessage = ValidationMessages::invalid('somefield');

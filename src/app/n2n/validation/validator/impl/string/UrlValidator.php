@@ -35,8 +35,7 @@ use n2n\validation\plan\ValidationContext;
 class UrlValidator extends SingleValidatorAdapter {
 	
 	public function __construct(private bool $schemeRequired = false, private ?array $allowedSchemes = null,
-			private ?Message $errorMessage = null, private ?Message $schemeRequiredErrorMessage = null,
-			private ?Message $schemeErrorMessage = null) {
+			private ?Message $errorMessage = null, private ?Message $schemeErrorMessage = null) {
 
 		ArgUtils::valArray($allowedSchemes, 'string', true, 'allowedSchemes');
 	}
@@ -48,16 +47,16 @@ class UrlValidator extends SingleValidatorAdapter {
 			return true;
 		}
 
-		if (!ValidationUtils::isUrl($value, false)) {
+		if (!ValidationUtils::isUrl($value, $this->schemeRequired)) {
 			return false;
 		}
+
+		if ($this->allowedSchemes === null) {
+			return true;
+		}
+
 		$url = Url::create($value);
-		
-		if ($this->schemeRequired && !$url->hasScheme()) {
-			return false;
-		}
-		
-		if ($this->allowedSchemes !== null && $url->hasScheme() && !in_array($url->getScheme(), $this->allowedSchemes)) {
+		if ($url->hasScheme() && !in_array($url->getScheme(), $this->allowedSchemes)) {
 			return false;
 		}
 		
@@ -71,20 +70,18 @@ class UrlValidator extends SingleValidatorAdapter {
 			return;
 		}
 
-		if (!ValidationUtils::isUrl($value, false)) {
+		if (!ValidationUtils::isUrl($value, $this->schemeRequired)) {
 			$validatable->addError($this->errorMessage ?? ValidationMessages::url($this->readLabel($validatable)));
 			return;
 		}
-		
-		$url = Url::create($value);
-		
-		if ($this->schemeRequired && !$url->hasScheme()) {
-			$validatable->addError($this->schemeRequiredErrorMessage
-					?? ValidationMessages::urlSchemeRequired($this->readLabel($validatable)));
+
+		if ($this->allowedSchemes === null) {
 			return;
 		}
-		
-		if ($this->allowedSchemes !== null && $url->hasScheme() && !in_array($url->getScheme(), $this->allowedSchemes)) {
+
+
+		$url = Url::create($value);
+		if ($url->hasScheme() && !in_array($url->getScheme(), $this->allowedSchemes)) {
 			$validatable->addError($this->schemeErrorMessage
 					?? ValidationMessages::urlScheme($this->allowedSchemes, $this->readLabel($validatable)));
 			return;
