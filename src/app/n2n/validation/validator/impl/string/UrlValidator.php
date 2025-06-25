@@ -29,7 +29,6 @@ use n2n\l10n\Message;
 use n2n\validation\validator\impl\ValidationUtils;
 use n2n\validation\lang\ValidationMessages;
 use n2n\util\type\ArgUtils;
-use n2n\util\type\TypeConstraint;
 use n2n\util\type\TypeConstraints;
 use n2n\validation\plan\ValidationContext;
 
@@ -49,7 +48,7 @@ class UrlValidator extends SingleValidatorAdapter {
 			return true;
 		}
 
-		if (!ValidationUtils::isUrl($value, $this->schemeRequired)) {
+		if (!ValidationUtils::isUrl($value)) {
 			return false;
 		}
 		
@@ -73,7 +72,7 @@ class UrlValidator extends SingleValidatorAdapter {
 			return;
 		}
 
-		if (!ValidationUtils::isUrl($value, $this->schemeRequired)) {
+		if (!ValidationUtils::isUrl($value)) {
 			$validatable->addError($this->errorMessage ?? ValidationMessages::url($this->readLabel($validatable)));
 			return;
 		}
@@ -81,13 +80,13 @@ class UrlValidator extends SingleValidatorAdapter {
 		$url = Url::create($value);
 		
 		if ($this->schemeRequired && !$url->hasScheme()) {
-			$validatable->addError($this->schemeErrorMessage 
+			$validatable->addError($this->schemeRequiredErrorMessage
 					?? ValidationMessages::urlSchemeRequired($this->readLabel($validatable)));
 			return;
 		}
 		
 		if ($this->allowedSchemes !== null && $url->hasScheme() && !in_array($url->getScheme(), $this->allowedSchemes)) {
-			$validatable->addError($this->schemeRequiredErrorMessage
+			$validatable->addError($this->schemeErrorMessage
 					?? ValidationMessages::urlScheme($this->allowedSchemes, $this->readLabel($validatable)));
 			return;
 		}
