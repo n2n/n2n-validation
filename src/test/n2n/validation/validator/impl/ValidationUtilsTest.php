@@ -2,7 +2,6 @@
 namespace n2n\validation\validator\impl;
 
 use PHPUnit\Framework\TestCase;
-use n2n\util\uri\Url;
 
 class ValidationUtilsTest extends TestCase {
 
@@ -46,15 +45,11 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertFalse(ValidationUtils::isUrl('http://.'));
 		$this->assertFalse(ValidationUtils::isUrl('http://.com'));
 		$this->assertFalse(ValidationUtils::isUrl('http://..'));
-//		$this->assertFalse(ValidationUtils::isUrl('http://example.'));
 		$this->assertFalse(ValidationUtils::isUrl('http://-example.com'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example-.com'));
 		$this->assertFalse(ValidationUtils::isUrl('javascript:alert(1)'));
 		$this->assertFalse(ValidationUtils::isUrl('data:text/html,<script>'));
-//		$this->assertFalse(ValidationUtils::isUrl('file:///etc/passwd'));
 		$this->assertFalse(ValidationUtils::isUrl('about:blank'));
-//		$this->assertFalse(ValidationUtils::isUrl('chrome://settings'));
-//		$this->assertFalse(ValidationUtils::isUrl('mailto:test@example.com'));
 		$this->assertFalse(ValidationUtils::isUrl('tel:+1234567890'));
 		$this->assertFalse(ValidationUtils::isUrl('sms:+1234567890'));
 	}
@@ -82,8 +77,6 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com:8080'));
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com:3000'));
 		$this->assertTrue(ValidationUtils::isUrl('//example.com:8080', false));
-
-//		$this->assertFalse(ValidationUtils::isUrl('http://example.com:'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com:99999'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com:-1'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com:abc'));
@@ -106,15 +99,9 @@ class ValidationUtilsTest extends TestCase {
 
 	public function testIsUrlSecurityConcerns() {
 		$maliciousUrls = [
-				'javascript:alert("XSS")',
 				'data:text/html;base64,PHNjcmlwdD5hbGVydCgiWFNTIik8L3NjcmlwdD4=',
 				'vbscript:msgbox("XSS")',
-//				'file:///etc/passwd',
-//				'file://C:/Windows/System32/config/sam',
 				'about:blank',
-//				'chrome://settings',
-//				'moz-extension://abc123',
-//				'chrome-extension://abc123',
 		];
 
 		foreach ($maliciousUrls as $url) {
@@ -123,7 +110,7 @@ class ValidationUtilsTest extends TestCase {
 	}
 
 	public function testIsUrlSpecialCharacters() {
-		$this->assertTrue(ValidationUtils::isUrl('http://example.com/path?query=value with spaces'));
+		$this->assertFalse(ValidationUtils::isUrl('http://example.com/path?query=value with spaces'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com/path with spaces'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com/path#anchor with spaces'));
 

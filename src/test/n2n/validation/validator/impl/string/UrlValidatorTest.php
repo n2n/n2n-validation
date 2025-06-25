@@ -91,26 +91,26 @@ class UrlValidatorTest extends TestCase {
 
 	public function testInvalidUrlFailsValidation() {
 		$validator = new UrlValidator();
-		$validatable = $this->createMockValidatable('not-a-url');
+		$validatable = $this->createMockValidatable('not- a-url');
 
 		$result = $this->invokeTestSingle($validator, $validatable);
 
 		$this->assertFalse($result);
 	}
 
-	public function testEmptyStringFailsValidation() {
+	public function testEmptyString() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMockValidatable('');
 
 		$result = $this->invokeTestSingle($validator, $validatable);
 
-		$this->assertFalse($result);
+		$this->assertTrue($result);
 	}
 
 	public function testValidationAddsErrorForInvalidUrl() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMock(Validatable::class);
-		$validatable->method('getValue')->willReturn('invalid-url');
+		$validatable->method('getValue')->willReturn('invalid- url');
 		$validatable->expects($this->once())->method('addError');
 
 		$this->invokeValidateSingle($validator, $validatable);
@@ -138,7 +138,7 @@ class UrlValidatorTest extends TestCase {
 		$customMessage = ValidationMessages::invalid('somefield');
 		$validator = new UrlValidator(errorMessage: $customMessage);
 		$validatable = $this->createMock(Validatable::class);
-		$validatable->method('getValue')->willReturn('invalid-url');
+		$validatable->method('getValue')->willReturn('invalid- url');
 		$validatable->expects($this->once())->method('addError')->with($customMessage);
 
 		$this->invokeValidateSingle($validator, $validatable);

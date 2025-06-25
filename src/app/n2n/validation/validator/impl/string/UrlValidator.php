@@ -48,10 +48,9 @@ class UrlValidator extends SingleValidatorAdapter {
 			return true;
 		}
 
-		if (!ValidationUtils::isUrl($value)) {
+		if (!ValidationUtils::isUrl($value, $this->schemeRequired)) {
 			return false;
 		}
-		
 		$url = Url::create($value);
 		
 		if ($this->schemeRequired && !$url->hasScheme()) {
@@ -72,7 +71,7 @@ class UrlValidator extends SingleValidatorAdapter {
 			return;
 		}
 
-		if (!ValidationUtils::isUrl($value)) {
+		if (!ValidationUtils::isUrl($value, false)) {
 			$validatable->addError($this->errorMessage ?? ValidationMessages::url($this->readLabel($validatable)));
 			return;
 		}
