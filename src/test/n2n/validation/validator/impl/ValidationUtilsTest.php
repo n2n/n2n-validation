@@ -5,6 +5,16 @@ use PHPUnit\Framework\TestCase;
 
 class ValidationUtilsTest extends TestCase {
 
+
+	public function testIsEmailValid() {
+		$this->assertTrue(ValidationUtils::isEmail('holeradio@huii.ch'));
+		$this->assertTrue(ValidationUtils::isEmail('hölerädio@huii.ch'));
+	}
+
+	public function testIsEmailInvalid() {
+		$this->assertFalse(ValidationUtils::isEmail('holeradiohuii.ch'));
+	}
+
 	public function testIsUrlValid() {
 		$this->assertTrue(ValidationUtils::isUrl('http://example.com'));
 		$this->assertTrue(ValidationUtils::isUrl('https://example.com'));

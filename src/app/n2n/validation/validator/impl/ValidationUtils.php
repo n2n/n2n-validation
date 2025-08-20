@@ -16,7 +16,7 @@ class ValidationUtils {
 	 * @return bool
 	 */
 	public static function isEmail(string $email) {
-		return false !== filter_var($email, FILTER_VALIDATE_EMAIL);
+		return false !== filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_FLAG_EMAIL_UNICODE);
 	}
 
 
