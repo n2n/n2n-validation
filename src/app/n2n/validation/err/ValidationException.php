@@ -21,7 +21,7 @@
  */
 namespace n2n\validation\err;
 
-use n2n\util\magic\MagicTaskExecutionException;
+use n2n\util\magic\TaskInputMismatchException;
 
-class ValidationException extends  \RuntimeException implements MagicTaskExecutionException {
+class ValidationException extends  \RuntimeException implements TaskInputMismatchException {
 }
