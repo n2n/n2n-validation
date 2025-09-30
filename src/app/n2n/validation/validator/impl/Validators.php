@@ -22,7 +22,7 @@ use n2n\validation\validator\impl\elements\MaxElementsValidator;
 use n2n\validation\validator\impl\elements\MinElementsValidator;
 use n2n\validation\validator\impl\number\MaxValidator;
 use n2n\validation\validator\impl\number\MinValidator;
-use n2n\validation\validator\impl\string\HexColorValidator;
+use n2n\validation\validator\impl\string\ColorHexValidator;
 
 class Validators {
 
@@ -195,9 +195,9 @@ class Validators {
 
 	/**
 	 * @param mixed $errorMessage
-	 * @return EmailValidator
+	 * @return ColorHexValidator
 	 */
-	static function hexColor(mixed $errorMessage = null): HexColorValidator {
-		return new HexColorValidator(Message::build($errorMessage));
+	static function colorHex(mixed $errorMessage = null): ColorHexValidator {
+		return new ColorHexValidator(Message::build($errorMessage));
 	}
 }

@@ -130,4 +130,13 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com<script>'));
 		$this->assertFalse(ValidationUtils::isUrl('http://example.com"onclick="alert(1)"'));
 	}
+
+	public function testValidColorHex() {
+		$this->assertTrue(ValidationUtils::isColorHex('#FFAABB')); // true
+		$this->assertFalse(ValidationUtils::isColorHex('#FFAABB', false)); // false, because prefix = false
+		$this->assertTrue(ValidationUtils::isColorHex('FFAABB', false)); // true, because $hasPrefix = false
+		$this->assertTrue(ValidationUtils::isColorHex('#FFAABBCC', true, true)); // true
+		$this->assertFalse(ValidationUtils::isColorHex('#FFAA')); // false because not 6 Chars
+		$this->assertFalse(ValidationUtils::isColorHex('#FFQQBB')); // false because not Hex Chars
+	}
 }

@@ -363,7 +363,7 @@ class ValidationMessages {
 		return Message::createCodeArg('field_special_chars_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function hexColor(?string $fieldName = null) {
+	static function colorHex(?string $fieldName = null) {
 		if ($fieldName === null) {
 			return Message::createCode('hex_color_err', null, self::NS);
 		}

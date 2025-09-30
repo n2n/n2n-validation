@@ -145,7 +145,7 @@ class ValidationUtils {
 		return !(self::RESERVATED_MEMORY_SIZE + ($requiredMemorySize * 2) > $memoryLimit);
 	}
 
-	static function isHexColor(string $color, bool $prefixRequired = true, bool $hasAlphaChannel = false): bool {
+	static function isColorHex(string $color, bool $prefixRequired = true, bool $hasAlphaChannel = false): bool {
 		$pattern = '/^' . ($prefixRequired ? '#' : '') . '([0-9A-Fa-f]{2}){' . ($hasAlphaChannel ? 4 : 3) . '}$/';
 
 		return preg_match($pattern, $color) === 1;

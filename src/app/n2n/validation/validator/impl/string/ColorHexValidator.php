@@ -30,7 +30,7 @@ use n2n\util\magic\MagicContext;
 use n2n\l10n\Message;
 use n2n\validation\plan\ValidationContext;
 
-class HexColorValidator extends SimpleValidatorAdapter {
+class ColorHexValidator extends SimpleValidatorAdapter {
 	
 	function __construct(?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
@@ -42,10 +42,10 @@ class HexColorValidator extends SimpleValidatorAdapter {
 	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		
-		return $value === null || ValidationUtils::isHexColor($value);
+		return $value === null || ValidationUtils::isColorHex($value);
 	}
 	
 	protected function createErrorMessage(Validatable $validatable, MagicContext $magicContext): Message {
-		return ValidationMessages::hexColor($this->readLabel($validatable));
+		return ValidationMessages::colorHex($this->readLabel($validatable));
 	}
 }
