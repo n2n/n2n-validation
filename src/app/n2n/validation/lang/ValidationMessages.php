@@ -369,6 +369,29 @@ class ValidationMessages {
 		}
 
 		return Message::createCodeArg('field_hex_color_err', ['field' => $fieldName], null, self::NS);
+	}
 
+	static function doesNotExist(?string $fieldName = null): Message {
+		if ($fieldName === null) {
+			return Message::createCode('does_not_exist_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_does_not_exist_err', ['field' => $fieldName], null, self::NS);
+	}
+
+	static function dateFormat(?string $fieldName = null): Message {
+		if ($fieldName === null) {
+			return Message::createCode('date_format_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_date_format_err', ['field' => $fieldName], null, self::NS);
+	}
+
+	static function timeFormat(?string $fieldName = null): Message {
+		if ($fieldName === null) {
+			return Message::createCode('time_format_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_time_format_err', ['field' => $fieldName], null, self::NS);
 	}
 }
