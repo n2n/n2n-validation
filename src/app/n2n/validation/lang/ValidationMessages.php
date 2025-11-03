@@ -5,6 +5,7 @@ use n2n\l10n\Message;
 use n2n\io\managed\File;
 use n2n\util\type\ArgUtils;
 use n2n\l10n\impl\TextCodeMessage;
+use n2n\util\StringUtils;
 
 class ValidationMessages {
 	const NS = 'n2n\validation';
@@ -218,13 +219,17 @@ class ValidationMessages {
 				['fileName' => $fileName, 'field' => $fieldName], null, self::NS);
 	}
 
+	private static function implodeValues(array $values): string {
+		return implode(', ', array_map(fn ($v) => StringUtils::strOf($v), $values));
+	}
+
 	/**
 	 * @param array $allowedValues
 	 * @param string|null $fieldName
 	 * @return TextCodeMessage
 	 */
 	static function enum(array $allowedValues, ?string $fieldName = null): TextCodeMessage {
-		$allowedValuesStr = implode(', ', $allowedValues);
+		$allowedValuesStr = self::implodeValues($allowedValues);
 
 		if ($fieldName === null) {
 			return Message::createCodeArg('enum_err', ['allowedValues' => $allowedValuesStr], null, self::NS);
@@ -234,9 +239,9 @@ class ValidationMessages {
 				null, self::NS);
 	}
 
-	static function wrongValues(array $allowedValues, array $wrongValues, ?string $fieldName = null) {
-		$allowedValuesStr = implode(', ', $allowedValues);
-		$wrongValuesStr = implode(', ', $wrongValues);
+	static function wrongValues(array $allowedValues, array $wrongValues, ?string $fieldName = null): TextCodeMessage {
+		$allowedValuesStr = self::implodeValues($allowedValues);
+		$wrongValuesStr = self::implodeValues($wrongValues);
 
 		if ($fieldName === null) {
 			return Message::createCodeArg('wrong_values_err', ['allowedValues' => $allowedValuesStr,
