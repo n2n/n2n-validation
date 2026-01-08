@@ -194,14 +194,15 @@ class ValidationMessages {
 	 * @param string|null $fieldName
 	 * @return TextCodeMessage
 	 */
-	static function uploadMaxSize(int $maxSize, string $fileName, string $size, ?string $fieldName = null): TextCodeMessage {
+	static function uploadMaxSize(string $maxSize, string $fileName, string $size, ?string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
-			return Message::createCodeArg('upload_size_err', ['fileName' => $fileName, 'size' => $size],
+			return Message::createCodeArg('upload_max_size_err',
+					['file_name' => $fileName, 'size' => $size, 'max_size' => $maxSize],
 					null, self::NS);
 		}
 
 		return Message::createCodeArg('field_upload_max_size_err',
-				['fileName' => $fileName, 'size' => $size, 'field' => $fieldName], null, self::NS);
+				['file_name' => $fileName, 'size' => $size, 'max_size' => $maxSize, 'field' => $fieldName], null, self::NS);
 	}
 
 	/**
