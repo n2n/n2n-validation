@@ -27,7 +27,7 @@
         "ext-mbstring": "*"
     },
 	"require-dev" : {
-		"phpunit/phpunit" : "^9.5"
+		"phpunit/phpunit" : "^9.6.26"
 	},
 	"autoload" : {
 		"psr-4" : {
