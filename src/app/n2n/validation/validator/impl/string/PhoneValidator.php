@@ -35,10 +35,7 @@ class PhoneValidator extends SimpleValidatorAdapter {
 	function __construct(?Message $errorMessage = null) {
 		parent::__construct($errorMessage);
 	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
+
 	protected function testSingle(Validatable $validatable, ValidationContext $validationContext, MagicContext $magicContext): bool {
 		$value = $this->readSafeValue($validatable, TypeConstraints::string(true));
 		

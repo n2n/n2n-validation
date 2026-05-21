@@ -22,6 +22,9 @@ class PhoneValidatorTest extends TestCase {
 	}
 
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	private function invokeTestSingle(PhoneValidator $validator, Validatable $validatable) {
 		$reflection = new \ReflectionClass($validator);
 		$method = $reflection->getMethod('testSingle');
@@ -30,10 +33,12 @@ class PhoneValidatorTest extends TestCase {
 				$validator,
 				$validatable,
 				$this->createMockContext(),
-				$this->createMockMagicContext()
-		);
+				$this->createMockMagicContext());
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	private function invokeValidateSingle(PhoneValidator $validator, Validatable $validatable) {
 		$reflection = new \ReflectionClass($validator);
 		$method = $reflection->getMethod('validateSingle');
@@ -42,10 +47,12 @@ class PhoneValidatorTest extends TestCase {
 				$validator,
 				$validatable,
 				$this->createMockContext(),
-				$this->createMockMagicContext()
-		);
+				$this->createMockMagicContext());
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidPhonePassesValidation() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMockValidatable('+49 (0)228-997799-0');
@@ -55,16 +62,9 @@ class PhoneValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
-//	public function testPhoneObjectPassesValidation() {
-//		$validator = new PhoneValidator();
-//		$phone = Phone::from('https://example.com');
-//		$validatable = $this->createMockValidatable($phone);
-//
-//		$result = $this->invokeTestSingle($validator, $validatable);
-//
-//		$this->assertTrue($result);
-//	}
-
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testNullValuePassesValidation() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMockValidatable(null);
@@ -74,6 +74,9 @@ class PhoneValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testInvalidPhoneFailsValidation() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMockValidatable('+41 (1)23');
@@ -83,6 +86,9 @@ class PhoneValidatorTest extends TestCase {
 		$this->assertFalse($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testEmptyString() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMockValidatable('');
@@ -92,6 +98,9 @@ class PhoneValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationAddsErrorForInvalidPhone() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMock(Validatable::class);
@@ -101,6 +110,9 @@ class PhoneValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationUsesCustomErrorMessage() {
 		$customMessage = ValidationMessages::invalid('somefield');
 		$validator = new PhoneValidator(errorMessage: $customMessage);

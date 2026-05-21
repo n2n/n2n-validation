@@ -25,7 +25,7 @@ class ValidationUtils {
 		// - "followed by an optional (0)",
 		// - followed by "digits", "minus signs", "whitespace" characters
 
-		return preg_match('/^(\+\d{1,3}(\s?\(0\))?)?[0-9\s-]+$/', $phone) === 1;
+		return preg_match('/^((\+|00)\d{1,3}(\s?\(0\))?)?[0-9\s-]+$/', $phone) === 1;
 	}
 
 
