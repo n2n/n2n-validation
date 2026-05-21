@@ -25,6 +25,9 @@ class UrlValidatorTest extends TestCase {
 		return $this->createMock(MagicContext::class);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidUrlWithSchemePassesValidation() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMockValidatable('https://example.com');
@@ -34,6 +37,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidUrlWithoutSchemeFailsWhenSchemeRequired() {
 		$validator = new UrlValidator(schemeRequired: true);
 		$validatable = $this->createMockValidatable('example.com');
@@ -43,6 +49,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertFalse($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidUrlWithoutSchemePassesWhenSchemeNotRequired() {
 		$validator = new UrlValidator(schemeRequired: false);
 		$validatable = $this->createMockValidatable('example.com');
@@ -52,6 +61,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testUrlWithAllowedSchemePassesValidation() {
 		$validator = new UrlValidator(allowedSchemes: ['https', 'http']);
 		$validatable = $this->createMockValidatable('https://example.com');
@@ -61,6 +73,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testUrlWithDisallowedSchemeFailsValidation() {
 		$validator = new UrlValidator(allowedSchemes: ['https']);
 		$validatable = $this->createMockValidatable('ftp://example.com');
@@ -70,6 +85,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertFalse($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testUrlObjectPassesValidation() {
 		$validator = new UrlValidator();
 		$url = Url::create('https://example.com');
@@ -80,6 +98,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testNullValuePassesValidation() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMockValidatable(null);
@@ -89,6 +110,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testInvalidUrlFailsValidation() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMockValidatable('not- a-url');
@@ -98,6 +122,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertFalse($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testEmptyString() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMockValidatable('');
@@ -107,6 +134,9 @@ class UrlValidatorTest extends TestCase {
 		$this->assertTrue($result);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationAddsErrorForInvalidUrl() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMock(Validatable::class);
@@ -116,6 +146,9 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationAddsErrorForMissingRequiredScheme() {
 		$validator = new UrlValidator(schemeRequired: true);
 		$validatable = $this->createMock(Validatable::class);
@@ -125,6 +158,9 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationAddsErrorForDisallowedScheme() {
 		$validator = new UrlValidator(allowedSchemes: ['https']);
 		$validatable = $this->createMock(Validatable::class);
@@ -134,6 +170,9 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationUsesCustomErrorMessage() {
 		$customMessage = ValidationMessages::invalid('somefield');
 		$validator = new UrlValidator(errorMessage: $customMessage);
@@ -154,6 +193,9 @@ class UrlValidatorTest extends TestCase {
 //		$this->invokeValidateSingle($validator, $validatable);
 //	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationUsesCustomSchemeErrorMessage() {
 		$customMessage = ValidationMessages::invalid('somefield');
 		$validator = new UrlValidator(allowedSchemes: ['https'], schemeErrorMessage: $customMessage);
@@ -164,6 +206,9 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationDoesNotAddErrorForNullValue() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMock(Validatable::class);
@@ -173,6 +218,9 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testValidationDoesNotAddErrorForValidUrl() {
 		$validator = new UrlValidator();
 		$validatable = $this->createMock(Validatable::class);
@@ -182,6 +230,9 @@ class UrlValidatorTest extends TestCase {
 		$this->invokeValidateSingle($validator, $validatable);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testMultipleAllowedSchemesWork() {
 		$validator = new UrlValidator(allowedSchemes: ['http', 'https', 'ftp']);
 
@@ -201,10 +252,12 @@ class UrlValidatorTest extends TestCase {
 		new UrlValidator(allowedSchemes: ['valid', 123]);
 	}
 
+	/**
+	 * @throws \ReflectionException
+	 */
 	private function invokeTestSingle(UrlValidator $validator, Validatable $validatable) {
 		$reflection = new \ReflectionClass($validator);
 		$method = $reflection->getMethod('testSingle');
-		$method->setAccessible(true);
 
 		return $method->invoke(
 				$validator,
@@ -214,10 +267,12 @@ class UrlValidatorTest extends TestCase {
 		);
 	}
 
-	private function invokeValidateSingle(UrlValidator $validator, Validatable $validatable) {
+	/**
+	 * @throws \ReflectionException
+	 */
+	private function invokeValidateSingle(UrlValidator $validator, Validatable $validatable): void {
 		$reflection = new \ReflectionClass($validator);
 		$method = $reflection->getMethod('validateSingle');
-		$method->setAccessible(true);
 
 		$method->invoke(
 				$validator,
