@@ -139,4 +139,15 @@ class ValidationUtilsTest extends TestCase {
 		$this->assertFalse(ValidationUtils::isColorHex('#FFAA')); // false because not 6 Chars
 		$this->assertFalse(ValidationUtils::isColorHex('#FFQQBB')); // false because not Hex Chars
 	}
+
+	public function testValidPhoneNumber() {
+		$this->assertTrue(ValidationUtils::isPhone('079 123 45 67'));
+		$this->assertTrue(ValidationUtils::isPhone('+41 52 233 79 77'));
+		$this->assertTrue(ValidationUtils::isPhone('+49 (0)228-997799-0'));
+		$this->assertTrue(ValidationUtils::isPhone('+41 79 123 45 67'));
+		$this->assertTrue(ValidationUtils::isPhone('+41 12 123 45 67'));
+		$this->assertFalse(ValidationUtils::isPhone('a0791234567'));
+		$this->assertFalse(ValidationUtils::isPhone('+ (0)791234567'));
+		$this->assertFalse(ValidationUtils::isPhone('(0)791234567'));
+	}
 }

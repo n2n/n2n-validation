@@ -59,6 +59,18 @@ class ValidationMessages {
 	}
 
 	/**
+	 * @param string|null $fieldName
+	 * @return TextCodeMessage
+	 */
+	static function phone(?string $fieldName = null): TextCodeMessage {
+		if ($fieldName === null) {
+			return Message::createCode('phone_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_phone_err', ['field' => $fieldName], null, self::NS);
+	}
+
+	/**
 	 * @param string $maxlength
 	 * @param string|null $fieldName
 	 * @return TextCodeMessage

@@ -1,12 +1,9 @@
 <?php
 namespace n2n\validation\validator\impl;
 
-use n2n\util\uri\Url;
 use n2n\util\StringUtils;
 use n2n\util\io\IoUtils;
 use n2n\util\ex\IllegalStateException;
-use n2n\io\managed\File;
-use n2n\io\managed\img\ImageFile;
 
 class ValidationUtils {
 	/**
@@ -17,6 +14,18 @@ class ValidationUtils {
 	 */
 	public static function isEmail(string $email): bool {
 		return false !== filter_var($email, FILTER_VALIDATE_EMAIL, FILTER_FLAG_EMAIL_UNICODE);
+	}
+
+	public static function isPhone(string $phone): bool {
+		if (empty($phone)) {
+			return true;
+		}
+		// phone is ok if:
+		// - "an optional leading plus sign followed by a one to three digits exist",
+		// - "followed by an optional (0)",
+		// - followed by "digits", "minus signs", "whitespace" characters
+
+		return preg_match('/^(\+\d{1,3}(\s?\(0\))?)?[0-9\s-]+$/', $phone) === 1;
 	}
 
 

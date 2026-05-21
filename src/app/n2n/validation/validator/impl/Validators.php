@@ -23,6 +23,7 @@ use n2n\validation\validator\impl\elements\MinElementsValidator;
 use n2n\validation\validator\impl\number\MaxValidator;
 use n2n\validation\validator\impl\number\MinValidator;
 use n2n\validation\validator\impl\string\ColorHexValidator;
+use n2n\validation\validator\impl\string\PhoneValidator;
 
 class Validators {
 
@@ -108,6 +109,14 @@ class Validators {
 	 */
 	static function email(mixed $errorMessage = null): EmailValidator {
 		return new EmailValidator(Message::build($errorMessage));
+	}
+
+	/**
+	 * @param mixed $errorMessage
+	 * @return PhoneValidator
+	 */
+	static function phone(mixed $errorMessage = null): PhoneValidator {
+		return new PhoneValidator(Message::build($errorMessage));
 	}
 
 	/**
