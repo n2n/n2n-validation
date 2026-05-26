@@ -25,7 +25,6 @@ class ValidationUtils {
 		// - "an optional leading plus sign followed by a one to three digits exist",
 		// - "followed by an optional (0)",
 		// - followed by "digits", "minus signs", "space characters"
-		$phone = preg_replace('/^00/', '+', $phone);
 		$phone = preg_replace('/^(\+[\d]{1,3})\s*\(0\)/', '$1 ', $phone);
 
 		$digitsOnlyStr = preg_replace('/\D/', '', $phone);
