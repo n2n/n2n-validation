@@ -20,12 +20,21 @@ class ValidationUtils {
 		if (empty($phone)) {
 			return true;
 		}
+		// E.164 define that max length is 15 digits. the plus is not counted
 		// phone is ok if:
 		// - "an optional leading plus sign followed by a one to three digits exist",
 		// - "followed by an optional (0)",
-		// - followed by "digits", "minus signs", "whitespace" characters
+		// - followed by "digits", "minus signs", "space characters"
+		$phone = preg_replace('/^00/', '+', $phone);
+		$phone = preg_replace('/^(\+[\d]{1,3})\s*\(0\)/', '$1 ', $phone);
 
-		return preg_match('/^((\+|00)\d{1,3}(\s?\(0\))?)?[0-9\s-]+$/', $phone) === 1;
+		$digitsOnlyStr = preg_replace('/\D/', '', $phone);
+		$noneDigitsOnlyStr = preg_replace('/\d/', '', $phone);
+		if (strlen($digitsOnlyStr) > 15 || strlen($digitsOnlyStr) < 3 || strlen($noneDigitsOnlyStr) > strlen($digitsOnlyStr)) {
+			return false;
+		}
+
+		return preg_match('/^\+?[0-9 -]+$/', $phone) === 1;
 	}
 
 

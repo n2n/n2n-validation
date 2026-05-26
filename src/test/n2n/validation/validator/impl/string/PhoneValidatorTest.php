@@ -89,6 +89,19 @@ class PhoneValidatorTest extends TestCase {
 	/**
 	 * @throws \ReflectionException
 	 */
+	public function testInvalidPhoneFailsValidationBecauseEnterUsedAsWhitespace() {
+		$validator = new PhoneValidator();
+		$validatable = $this->createMockValidatable('+41 
+		123');
+
+		$result = $this->invokeTestSingle($validator, $validatable);
+
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * @throws \ReflectionException
+	 */
 	public function testEmptyString() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMockValidatable('');
@@ -104,7 +117,7 @@ class PhoneValidatorTest extends TestCase {
 	public function testValidationAddsErrorForInvalidPhone() {
 		$validator = new PhoneValidator();
 		$validatable = $this->createMock(Validatable::class);
-		$validatable->method('getValue')->willReturn('invalid-phone +41 123');
+		$validatable->method('getValue')->willReturn('+41 123 123 123 123 123');
 		$validatable->expects($this->once())->method('addError');
 
 		$this->invokeValidateSingle($validator, $validatable);
