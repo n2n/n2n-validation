@@ -4,6 +4,7 @@ namespace n2n\validation\validator\impl;
 use n2n\util\StringUtils;
 use n2n\util\io\IoUtils;
 use n2n\util\ex\IllegalStateException;
+use n2n\io\managed\File;
 
 class ValidationUtils {
 	/**
