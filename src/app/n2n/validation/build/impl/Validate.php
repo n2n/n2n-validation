@@ -1,14 +1,14 @@
 <?php
 namespace n2n\validation\build\impl;
 
-use n2n\util\type\attrs\DataMap;
-use n2n\util\type\attrs\AttributeReader;
+use n2n\util\attr\DataMap;
+use n2n\util\attr\AttributeReader;
 use n2n\validation\build\impl\source\StaticUnionValidationComposerSource;
 use n2n\validation\build\impl\compose\union\UnionValidationComposer;
 use n2n\validation\build\impl\source\AttrsPropValidationComposerSource;
 use n2n\validation\plan\impl\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidationComposer;
-use n2n\util\type\attrs\AttributePath;
+use n2n\util\attr\AttributePath;
 
 class Validate {
 	/**

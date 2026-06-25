@@ -8,7 +8,7 @@ use n2n\util\type\ArgUtils;
 use n2n\validation\plan\ValidatableSource;
 use n2n\validation\plan\ValidationContext;
 use n2n\util\ex\IllegalStateException;
-use n2n\util\type\attrs\AttributePath;
+use n2n\util\attr\AttributePath;
 
 abstract class ComposerSourceAdapter implements ValidatableSource, ValidationContext {
 	/**

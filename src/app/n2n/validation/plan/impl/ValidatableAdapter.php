@@ -4,7 +4,7 @@ namespace n2n\validation\plan\impl;
 use n2n\l10n\Message;
 use n2n\validation\plan\Validatable;
 use n2n\l10n\Lstr;
-use n2n\util\type\attrs\AttributePath;
+use n2n\util\attr\AttributePath;
 
 
 abstract class ValidatableAdapter implements Validatable {

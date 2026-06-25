@@ -1,10 +1,10 @@
 <?php
 namespace n2n\validation\build\impl\source;
 
-use n2n\util\type\attrs\AttributeReader;
-use n2n\util\type\attrs\AttributePath;
+use n2n\util\attr\AttributeReader;
+use n2n\util\attr\AttributePath;
 use n2n\validation\err\UnresolvableValidationException;
-use n2n\util\type\attrs\AttributesException;
+use n2n\util\attr\AttributesException;
 use n2n\validation\plan\impl\ValueValidatable;
 use n2n\validation\build\impl\compose\prop\PropValidationComposerSource;
 

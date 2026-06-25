@@ -25,7 +25,7 @@ use n2n\l10n\Message;
 use n2n\l10n\Lstr;
 use n2n\util\ex\IllegalStateException;
 use n2n\validation\validator\Validator;
-use n2n\util\type\attrs\AttributePath;
+use n2n\util\attr\AttributePath;
 
 /**
  * Describes unit (e.g. property) that can be validated and added to a {@see ValidationGroup}.

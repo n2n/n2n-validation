@@ -1,7 +1,7 @@
 <?php
 namespace n2n\validation\plan\impl;
 
-use n2n\util\type\attrs\AttributePath;
+use n2n\util\attr\AttributePath;
 
 class ValueValidatable extends ValidatableAdapter {
 
