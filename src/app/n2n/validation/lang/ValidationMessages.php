@@ -397,6 +397,14 @@ class ValidationMessages {
 		return Message::createCodeArg('field_does_not_exist_err', ['field' => $fieldName], null, self::NS);
 	}
 
+	static function dateTimeFormat(?string $fieldName = null): Message {
+		if ($fieldName === null) {
+			return Message::createCode('date_time_format_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_date_time_format_err', ['field' => $fieldName], null, self::NS);
+	}
+
 	static function dateFormat(?string $fieldName = null): Message {
 		if ($fieldName === null) {
 			return Message::createCode('date_format_err', null, self::NS);
