@@ -62,6 +62,7 @@ class ValidateTest extends TestCase {
 		$this->assertTrue($validationResult->hasErrors());
 		$this->assertFalse($validationResult->get());
 	}
+
 	function testUpperCaseOnlyChars() {
 		$validationResult = Validate::value('asDF', null)->val(Validators::uppercaseOnlyChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
