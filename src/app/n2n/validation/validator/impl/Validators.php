@@ -24,6 +24,8 @@ use n2n\validation\validator\impl\number\MaxValidator;
 use n2n\validation\validator\impl\number\MinValidator;
 use n2n\validation\validator\impl\string\ColorHexValidator;
 use n2n\validation\validator\impl\string\PhoneValidator;
+use n2n\validation\validator\impl\string\LowercaseOnlyValidator;
+use n2n\validation\validator\impl\string\UppercaseOnlyValidator;
 
 class Validators {
 
@@ -59,8 +61,8 @@ class Validators {
 	 * @param string|null $errorMessage The error message for the validator.
 	 * @return ConditionalValidator Returns an instance of ConditionalValidator wrapping a MandatoryValidator.
 	 */
-	public static function mandatoryIf(Closure|bool $condition, $errorMessage = null): ConditionalValidator {
-		return new ConditionalValidator($condition, new MandatoryValidator($errorMessage));
+	public static function mandatoryIf(Closure|bool $condition, mixed $errorMessage = null): ConditionalValidator {
+		return new ConditionalValidator($condition, new MandatoryValidator(Message::build($errorMessage)));
 	}
 
 	/**
@@ -178,6 +180,14 @@ class Validators {
 
 	static function noSpecialChars(mixed $errorMessage = null): NoSpecialCharsValidator {
 		return new NoSpecialCharsValidator(Message::build($errorMessage));
+	}
+
+	static function lowercaseOnlyChars(mixed $errorMessage = null): LowercaseOnlyValidator {
+		return new LowercaseOnlyValidator(Message::build($errorMessage));
+	}
+
+	static function uppercaseOnlyChars(mixed $errorMessage = null): UppercaseOnlyValidator {
+		return new UppercaseOnlyValidator(Message::build($errorMessage));
 	}
 
 	static function uniqueClosure(\Closure $uniqueTester, mixed $errorMessage = null): UniqueClosureValidator {

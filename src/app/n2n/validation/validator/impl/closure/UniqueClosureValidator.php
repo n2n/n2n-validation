@@ -24,12 +24,11 @@ namespace n2n\validation\validator\impl\closure;
 use n2n\validation\plan\Validatable;
 use n2n\validation\lang\ValidationMessages;
 use n2n\validation\validator\impl\SimpleValidatorAdapter;
-use n2n\validation\validator\impl\ValidationUtils;
 use n2n\util\type\TypeConstraints;
 use n2n\util\magic\MagicContext;
 use n2n\l10n\Message;
-use n2n\reflection\magic\MagicMethodInvoker;
 use n2n\validation\plan\ValidationContext;
+use n2n\util\magic\impl\MagicMethodInvoker;
 
 class UniqueClosureValidator extends SimpleValidatorAdapter {
 	

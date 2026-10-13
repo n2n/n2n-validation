@@ -47,7 +47,7 @@ class ValidateTest extends TestCase {
 	}
 
 	function testSpecialChars() {
-		$validationResult = Validate::value('asdf', null)->val(Validators::noSpecialChars())
+		$validationResult = Validate::value('asDF', null)->val(Validators::noSpecialChars())
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertFalse($validationResult->hasErrors());
 		$this->assertTrue($validationResult->get());
@@ -61,6 +61,39 @@ class ValidateTest extends TestCase {
 				->exec($this->getMockBuilder(MagicContext::class)->getMock());
 		$this->assertTrue($validationResult->hasErrors());
 		$this->assertFalse($validationResult->get());
+	}
+	function testUpperCaseOnlyChars() {
+		$validationResult = Validate::value('asDF', null)->val(Validators::uppercaseOnlyChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
+
+		$validationResult = Validate::value('ASDF', null)->val(Validators::uppercaseOnlyChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+		$this->assertTrue($validationResult->get());
+
+		$validationResult = Validate::value('asdf', null)->val(Validators::uppercaseOnlyChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
+	}
+
+	function testLowerCaseOnlyChars() {
+		$validationResult = Validate::value('asDF', null)->val(Validators::lowercaseOnlyChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
+
+		$validationResult = Validate::value('ASDF', null)->val(Validators::lowercaseOnlyChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertTrue($validationResult->hasErrors());
+		$this->assertFalse($validationResult->get());
+
+		$validationResult = Validate::value('asdf', null)->val(Validators::lowercaseOnlyChars())
+				->exec($this->getMockBuilder(MagicContext::class)->getMock());
+		$this->assertFalse($validationResult->hasErrors());
+		$this->assertTrue($validationResult->get());
 	}
 
 	function testMandatoryIf() {

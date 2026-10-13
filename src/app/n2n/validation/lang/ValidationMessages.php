@@ -373,7 +373,7 @@ class ValidationMessages {
 		return Message::createCodeArg('field_already_taken_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function containsSpecialCharsErr(?string $fieldName = null) {
+	static function containsSpecialCharsErr(?string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('special_chars_err', null, self::NS);
 		}
@@ -381,7 +381,23 @@ class ValidationMessages {
 		return Message::createCodeArg('field_special_chars_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function colorHex(?string $fieldName = null) {
+	static function containsLowercaseCharsErr(?string $fieldName = null): TextCodeMessage {
+		if ($fieldName === null) {
+			return Message::createCode('lowercase_chars_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_lowercase_chars_err', ['field' => $fieldName], null, self::NS);
+	}
+
+	static function containsUppercaseCharsErr(?string $fieldName = null): TextCodeMessage {
+		if ($fieldName === null) {
+			return Message::createCode('uppercase_chars_err', null, self::NS);
+		}
+
+		return Message::createCodeArg('field_uppercase_chars_err', ['field' => $fieldName], null, self::NS);
+	}
+
+	static function colorHex(?string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('hex_color_err', null, self::NS);
 		}
@@ -397,7 +413,7 @@ class ValidationMessages {
 		return Message::createCodeArg('field_does_not_exist_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function dateTimeFormat(?string $fieldName = null): Message {
+	static function dateTimeFormat(?string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('date_time_format_err', null, self::NS);
 		}
@@ -405,7 +421,7 @@ class ValidationMessages {
 		return Message::createCodeArg('field_date_time_format_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function dateFormat(?string $fieldName = null): Message {
+	static function dateFormat(?string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('date_format_err', null, self::NS);
 		}
@@ -413,7 +429,7 @@ class ValidationMessages {
 		return Message::createCodeArg('field_date_format_err', ['field' => $fieldName], null, self::NS);
 	}
 
-	static function timeFormat(?string $fieldName = null): Message {
+	static function timeFormat(?string $fieldName = null): TextCodeMessage {
 		if ($fieldName === null) {
 			return Message::createCode('time_format_err', null, self::NS);
 		}
