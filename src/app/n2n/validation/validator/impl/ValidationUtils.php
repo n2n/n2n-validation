@@ -18,9 +18,6 @@ class ValidationUtils {
 	}
 
 	public static function isPhone(string $phone): bool {
-		if (empty($phone)) {
-			return true;
-		}
 		// E.164 define that max length is 15 digits. the plus is not counted
 		// phone is ok if:
 		// - "an optional leading plus sign followed by a one to three digits exist",

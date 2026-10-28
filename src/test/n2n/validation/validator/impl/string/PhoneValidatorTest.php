@@ -108,7 +108,7 @@ class PhoneValidatorTest extends TestCase {
 
 		$result = $this->invokeTestSingle($validator, $validatable);
 
-		$this->assertTrue($result);
+		$this->assertFalse($result);
 	}
 
 	/**
