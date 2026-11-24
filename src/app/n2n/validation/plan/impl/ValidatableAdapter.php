@@ -29,6 +29,13 @@ abstract class ValidatableAdapter implements Validatable {
 		$this->messages[] = $message;
 	}
 
+	/**
+	 * @return Message[]
+	 */
+	function getErrors(): array {
+		return $this->messages;
+	}
+
 	function isValid(): bool {
 		return empty($this->messages);
 	}

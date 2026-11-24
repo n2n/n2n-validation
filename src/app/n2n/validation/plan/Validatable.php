@@ -68,6 +68,11 @@ interface Validatable {
 	 * @param Message $message
 	 */
 	function addError(Message $message);
+
+	/**
+	 * @return Message[]
+	 */
+	function getErrors(): array;
 	
 	/**
 	 * 
